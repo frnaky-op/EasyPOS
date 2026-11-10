@@ -80,6 +80,14 @@ ipcMain.on("app-reload", (event, arg) => {
     mainWindow.reload();
 });
 
+ipcMain.on("settings-backup", () => {
+    menuController.saveBackupDialog(menuController.dbFolderPath, menuController.uploadsFolderPath);
+});
+
+ipcMain.on("settings-restore", () => {
+    menuController.restoreBackupDialog(menuController.dbFolderPath, menuController.uploadsFolderPath);
+});
+
 ipcMain.on("restart-app", () => {
     autoUpdater.quitAndInstall();
 });

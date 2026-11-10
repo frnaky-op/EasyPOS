@@ -49,6 +49,8 @@ let inventoryDB = new Datastore({
 });
 
 inventoryDB.ensureIndex({ fieldName: "_id", unique: true });
+const stockMovementsDB = require('./stock')(app, inventoryDB, appData, appName);
+require('./receiving')(app, inventoryDB, stockMovementsDB, appData, appName);
 
 function generateUniqueProductId(callback) {
     let candidateId = Number(`${Date.now()}${Math.floor(Math.random() * 1000).toString().padStart(3, "0")}`);
@@ -111,6 +113,56 @@ app.get("/product/:productId", function (req, res) {
 app.get("/products", function (req, res) {
     inventoryDB.find({}, function (err, docs) {
         res.send(docs);
+    });
+});
+
+app.get("/products/category-counts", function (req, res) {
+    inventoryDB.find({}, { category: 1 }, function (err, products) {
+        if (err) return res.status(500).json({ error: "Could not load category counts." });
+        const counts = Object.create(null);
+        for (const product of products) {
+            const key = String(product.category || "0");
+            counts[key] = (counts[key] || 0) + 1;
+        }
+        res.json({ counts, total: products.length });
+    });
+});
+
+app.get("/products/page", function (req, res) {
+    const page = Number(req.query.page || 1);
+    const pageSize = Number(req.query.pageSize || 24);
+    const search = String(req.query.q || '').trim();
+    const category = String(req.query.category || '').trim();
+    if (!Number.isSafeInteger(page) || page < 1 || !Number.isSafeInteger(pageSize) ||
+        pageSize < 1 || pageSize > 100 || search.length > 100 || category.length > 100) {
+        return res.status(400).json({ error: 'Invalid product page request.' });
+    }
+    const filters = [];
+    if (category && category !== '0') filters.push({ category });
+    if (search) {
+        const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const pattern = new RegExp(escaped, 'i');
+        filters.push({ $or: [{ name: pattern }, { barcode: pattern }, { reference: pattern }, { supplier: pattern }] });
+    }
+    const query = filters.length === 2 ? { $and: filters } : filters[0] || {};
+    inventoryDB.count(query, function (countErr, total) {
+        if (countErr) return res.status(500).json({ error: 'Could not count products.' });
+        const currentPage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+        inventoryDB.find(query).sort({ _id: -1 }).skip((currentPage - 1) * pageSize).limit(pageSize).exec(function (findErr, items) {
+            if (findErr) return res.status(500).json({ error: 'Could not load products.' });
+            res.json({ items, total, page: currentPage, pageSize });
+        });
+    });
+});
+
+app.post("/products/stocks", function (req, res) {
+    const ids = req.body.ids;
+    if (!Array.isArray(ids) || ids.length > 1000 || ids.some(id => !Number.isSafeInteger(Number(id)))) {
+        return res.status(400).json({ error: 'Invalid product IDs.' });
+    }
+    inventoryDB.find({ _id: { $in: ids.map(Number) } }, function (err, products) {
+        if (err) return res.status(500).json({ error: 'Could not load product stock.' });
+        res.json(products.map(({ _id, quantity, stock }) => ({ _id, quantity, stock })));
     });
 });
 
@@ -177,14 +229,14 @@ app.post("/product", function (req, res) {
 
     let Product = {
         _id: parseInt(validator.escape(req.body.id)),
-        barcode: parseInt(validator.escape(req.body.barcode)),
+        barcode: validator.escape(req.body.barcode).trim(),
         expirationDate: validator.escape(req.body.expirationDate),
         price: validator.escape(req.body.price),
         category: validator.escape(req.body.category),
         supplier: validator.escape(req.body.supplier || ""),
         quantity:
             validator.escape(req.body.quantity) == ""
-                ? 0
+                ? 100
                 : validator.escape(req.body.quantity),
         name: validator.escape(req.body.name),
         stock: req.body.stock === "on" ? 0 : 1,
@@ -217,11 +269,12 @@ app.post("/product", function (req, res) {
             });
         });
     } else {
+        const { _id, ...editableProduct } = Product;
         inventoryDB.update(
             {
                 _id: parseInt(validator.escape(req.body.id)),
             },
-            Product,
+            { $set: editableProduct },
             {},
             function (err, numReplaced, product) {
                 if (err) {
@@ -238,6 +291,8 @@ app.post("/product", function (req, res) {
     }
     });
 });
+
+require('./catalogImport')(app, inventoryDB, generateUniqueProductId, appData, appName);
 
 /**
  * DELETE endpoint: Delete a product by product ID.
@@ -275,9 +330,12 @@ app.delete("/product/:productId", function (req, res) {
 
 app.post("/product/sku", function (req, res) {
     let sku = validator.escape(req.body.skuCode);
+    const legacyNumber = Number(sku);
+    const barcodeValues = [sku];
+    if (Number.isSafeInteger(legacyNumber)) barcodeValues.push(legacyNumber);
     inventoryDB.findOne(
         {
-            barcode: parseInt(sku),
+            barcode: { $in: barcodeValues },
         },
         function (err, doc) {
             if (err) {
@@ -286,8 +344,13 @@ app.post("/product/sku", function (req, res) {
                     error: "Internal Server Error",
                     message: "An unexpected error occurred.",
                 });
-            } else {
+            } else if (doc || !Number.isSafeInteger(legacyNumber)) {
                 res.send(doc);
+            } else {
+                inventoryDB.findOne({ _id: legacyNumber }, function (idErr, byId) {
+                    if (idErr) return res.status(500).json({ error: "Could not find product." });
+                    res.send(byId);
+                });
             }
         },
     );
@@ -299,34 +362,95 @@ app.post("/product/sku", function (req, res) {
  * @param {Array} products - List of products in the transaction.
  * @returns {void}
  */
-app.decrementInventory = function (products) {
-    async.eachSeries(products, function (transactionProduct, callback) {
-        inventoryDB.findOne(
-            {
-                _id: parseInt(transactionProduct.id),
-            },
-            function (err, product) {
-                if (!product || !product.quantity) {
-                    callback();
-                } else {
-                    let updatedQuantity =
-                        parseInt(product.quantity) -
-                        parseInt(transactionProduct.quantity);
+app.decrementInventory = function (products, done, saleReference) {
+    if (!Array.isArray(products) || products.length === 0) {
+        return done(new Error("A sale must contain at least one product."));
+    }
 
-                    inventoryDB.update(
-                        {
-                            _id: parseInt(product._id),
-                        },
-                        {
-                            $set: {
-                                quantity: updatedQuantity,
-                            },
-                        },
-                        {},
-                        callback,
-                    );
+    const quantities = new Map();
+    for (const transactionProduct of products) {
+        const productId = Number(transactionProduct.id);
+        const soldQuantity = Number(transactionProduct.quantity);
+        if (!Number.isSafeInteger(productId) || !Number.isSafeInteger(soldQuantity) || soldQuantity <= 0) {
+            return done(new Error("Invalid product or quantity in sale."));
+        }
+        quantities.set(productId, (quantities.get(productId) || 0) + soldQuantity);
+    }
+
+    const changes = [];
+    async.eachSeries(quantities, function (entry, callback) {
+        const [productId, soldQuantity] = entry;
+        inventoryDB.findOne(
+            { _id: productId },
+            function (err, product) {
+                if (err) return callback(err);
+                if (!product) return callback(new Error("Product no longer exists."));
+                if (product.stock === 0) return callback();
+
+                const available = Number(product.quantity);
+                if (!Number.isSafeInteger(available) || available < soldQuantity) {
+                    return callback(new Error("Insufficient stock for " + product.name + "."));
                 }
+
+                changes.push({ productId, productName: product.name, previous: product.quantity, remaining: available - soldQuantity });
+                callback();
             },
         );
+    }, function (checkErr) {
+        if (checkErr) return done(checkErr);
+
+        const applied = [];
+        async.eachSeries(changes, function (change, callback) {
+            inventoryDB.update(
+                { _id: change.productId, quantity: change.previous },
+                { $set: { quantity: change.remaining } },
+                {},
+                function (updateErr, updated) {
+                    if (updateErr) return callback(updateErr);
+                    if (updated !== 1) return callback(new Error("Stock changed during the sale. Please retry."));
+                    applied.push(change);
+                    callback();
+                },
+            );
+        }, function (updateErr) {
+            if (!updateErr) {
+                const savedMovementIds = [];
+                const date = new Date().toISOString();
+                return async.eachSeries(applied, function (change, callback) {
+                    stockMovementsDB.insert({
+                        productId: change.productId, productName: change.productName,
+                        date, mode: 'sale', change: change.remaining - Number(change.previous),
+                        previous: Number(change.previous), quantity: change.remaining,
+                        reference: saleReference || '', note: '',
+                    }, function (insertErr, movement) {
+                        if (!insertErr) savedMovementIds.push(movement._id);
+                        callback(insertErr);
+                    });
+                }, function (movementErr) {
+                    if (!movementErr) return done();
+                    stockMovementsDB.remove({ _id: { $in: savedMovementIds } }, { multi: true }, function (removeErr) {
+                        if (removeErr) console.error('Could not remove partial sale movements:', removeErr);
+                        rollbackStock(movementErr);
+                    });
+                });
+            }
+            rollbackStock(updateErr);
+        });
+
+        function rollbackStock(reason) {
+            async.eachSeries(applied.reverse(), function (change, callback) {
+                inventoryDB.update(
+                    { _id: change.productId, quantity: change.remaining },
+                    { $set: { quantity: change.previous } },
+                    {},
+                    function (rollbackErr, restored) {
+                        callback(rollbackErr || (restored !== 1 && new Error("Stock rollback failed.")));
+                    },
+                );
+            }, function (rollbackErr) {
+                if (rollbackErr) console.error("Could not restore stock after failed sale:", rollbackErr);
+                done(rollbackErr || reason);
+            });
+        }
     });
 };

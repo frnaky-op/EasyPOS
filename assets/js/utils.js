@@ -91,7 +91,7 @@ const filterFile = (req, file, callback) => {
 const setContentSecurityPolicy = () => {
   let scriptHash = getFileHash(path.join(__dirname,"../dist","js","bundle.min.js"))
   let styleHash = getFileHash(path.join(__dirname,"../dist","css","bundle.min.css"));
-  let content = `default-src 'self'; img-src 'self' data:;script-src 'self' 'unsafe-eval' 'unsafe-inline' sha256-${scriptHash}; style-src 'self' 'unsafe-inline' sha256-${styleHash};font-src 'self';base-uri 'self'; form-action 'self'; ;connect-src 'self' http://localhost:${PORT};`;
+  let content = `default-src 'self'; img-src 'self' data:;script-src 'self' 'unsafe-eval' 'unsafe-inline' sha256-${scriptHash}; style-src 'self' 'unsafe-inline' sha256-${styleHash};font-src 'self';base-uri 'self'; form-action 'self'; connect-src 'self' http://127.0.0.1:${PORT};`;
   let metaTag = document.createElement("meta");
   metaTag.setAttribute("http-equiv", "Content-Security-Policy");
   metaTag.setAttribute("content", content);

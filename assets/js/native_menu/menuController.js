@@ -8,7 +8,7 @@ const pkg = require("../../../package.json");
 const { appConfig } = require("../../../app.config");
 const { autoUpdater } = require("electron-updater");
 const unzipper = require('unzipper');
-const archiver = require('archiver');
+const { ZipArchive } = require('archiver');
 const dbFolderPath = path.join(
   process.env.APPDATA,
   process.env.APPNAME,
@@ -50,6 +50,10 @@ function getDocs() {}
 function sendFeedback() {}
 
 function checkForUpdates() {
+  if (!updateServer) {
+    dialog.showMessageBox({ type: "info", buttons: ["OK"], message: "No update server is configured for this fork." });
+    return;
+  }
   if (!isPackaged) {
     console.log(`Skipping update check in development mode`);
     return;
@@ -141,7 +145,7 @@ const handleError = async (err) => {
  */
 const createBackup = async (dbFolderPath, uploadsFolderPath, backupZipPath) => {
   return new Promise((resolve, reject) => {
-    const archive = archiver('zip', { zlib: { level: 9 } });
+    const archive = new ZipArchive({ zlib: { level: 9 } });
     const output = fs.createWriteStream(backupZipPath);
 
     output.on('close', async () => {
@@ -154,7 +158,7 @@ const createBackup = async (dbFolderPath, uploadsFolderPath, backupZipPath) => {
           const digest = hash.digest('hex');
           // Add sha256.txt to the zip
           const tempZipPath = backupZipPath + '.tmp';
-          const tempArchive = archiver('zip', { zlib: { level: 9 } });
+          const tempArchive = new ZipArchive({ zlib: { level: 9 } });
           const tempOutput = fs.createWriteStream(tempZipPath);
 
           tempOutput.on('close', () => {

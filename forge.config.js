@@ -32,23 +32,11 @@ module.exports = {
   { name: '@electron-forge/maker-rpm', config: {} },
   // { name: '@electron-forge/maker-snap', config: {} },
 
-  // macOS
-  { name: '@electron-forge/maker-dmg', config: { format: 'ULFO' } },
+  // macOS is covered by the ZIP maker above.
   // { name: '@electron-forge/maker-pkg', config: {} }
   ],
 
-  publishers: [
-    {
-      name: '@electron-forge/publisher-github',
-      config: {
-        repository: {
-          owner: 'drkNsubuga',
-          name: 'PharmaSpot',
-          draft: true,
-        },
-      },
-    },
-  ],
+  publishers: [],
 
   // Fix issue with packaging Linux apps (node_gyp_bins)
   hooks: {

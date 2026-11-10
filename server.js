@@ -19,7 +19,7 @@ express.use(bodyParser.json());
 express.use(bodyParser.urlencoded({ extended: false }));
 express.use(limiter);
 
-express.all("/*", function (req, res, next) {
+express.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
     res.header(
@@ -44,7 +44,7 @@ express.use("/api/settings", require("./api/settings"));
 express.use("/api/users", require("./api/users"));
 express.use("/api", require("./api/transactions"));
 
-server.listen(PORT, () => {
+server.listen(PORT, "127.0.0.1", () => {
     process.env.PORT = server.address().port;
     console.log("Listening on PORT", process.env.PORT);
 });

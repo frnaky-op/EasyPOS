@@ -177,85 +177,40 @@ app.delete("/user/:userId", function (req, res) {
  * @returns {void}
  */
 app.post("/post", function (req, res) {
-    //encrypt password
-    bcrypt
-        .hash(req.body.password, saltRounds)
-        .then((hash) => {
-            req.body.password = hash;
-            const perms = [
-                "perm_products",
-                "perm_categories",
-                "perm_transactions",
-                "perm_users",
-                "perm_settings",
-            ];
-
-            for (const perm of perms) {
-                if (!!req.body[perm]) {
-                    req.body[perm] = req.body[perm] === "on" ? 1 : 0;
-                } else {
-                    //create missing permission only with new users
-                    if(req.body.id==="")
-                    {
-                      req.body[perm] = 0;  
-                    }
-                    
-                }
-            }
-
-            let User = {
-                ...req.body,
-                status: "",
-            };
-            delete User.id;
-            delete User.pass;
-            if (req.body.id === "") {
-                User._id = Math.floor(Date.now() / 1000);
-                usersDB.insert(User, function (err, user) {
-                    if (err) {
-                        console.error(err);
-                        res.status(500).json({
-                            error: "Internal Server Error",
-                            message: `An unexpected error occurred. ${err}`,
-                        });
-                    }
-                    else {
-                        res.send( user);
-                    }
-                });
-            } else {
-                usersDB.update(
-                    {
-                        _id: parseInt(req.body.id),
-                    },
-                    {
-                        $set: User,
-                    },
-                    {},
-                    function (err, numReplaced, user) {
-                        if (err) {
-                        console.error(err);
-                        res.status(500).json({
-                            error: "Internal Server Error",
-                            message: `An unexpected error occurred. ${err}`,
-                        });
-                    }
-                        else {
-                            res.sendStatus(200);
-                        }
-                    },
-                );
-            }
-        })
-        .catch((err) => 
-        {
-          
-                console.error(err);
-                res.status(500).json({
-                    error: "Internal Server Error",
-                    message: `An unexpected error occurred. ${err}`,
-                });
-        });
+    const id = req.body.id === undefined ? "" : String(req.body.id);
+    const isNew = id === "";
+    const fullname = String(req.body.fullname || "").trim();
+    const username = String(req.body.username || "").trim();
+    const password = String(req.body.password || "");
+    if (!fullname || !username || (isNew && !password) || (!isNew && !/^\d+$/.test(id))) {
+        return res.status(400).json({ message: "Name, username, and a password for new accounts are required." });
+    }
+    const save = (hash) => {
+        const account = {
+            fullname: validator.escape(fullname),
+            username: validator.escape(username),
+        };
+        for (const perm of ["perm_products", "perm_categories", "perm_transactions", "perm_users", "perm_settings"]) {
+            account[perm] = req.body[perm] === "on" || req.body[perm] === 1 || req.body[perm] === "1" ? 1 : 0;
+        }
+        if (hash) account.password = hash;
+        if (isNew) {
+            account._id = Date.now();
+            account.status = "";
+            usersDB.insert(account, function (err, inserted) {
+                if (err) return res.status(500).json({ message: "Could not create user." });
+                res.json({ _id: inserted._id });
+            });
+        } else {
+            usersDB.update({ _id: Number(id) }, { $set: account }, {}, function (err, changed) {
+                if (err) return res.status(500).json({ message: "Could not update user." });
+                if (!changed) return res.status(404).json({ message: "User not found." });
+                res.sendStatus(200);
+            });
+        }
+    };
+    if (password) bcrypt.hash(password, saltRounds).then(save).catch(() => res.status(500).json({ message: "Could not save user." }));
+    else save(null);
 });
 
 /**

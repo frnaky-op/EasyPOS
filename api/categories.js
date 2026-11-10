@@ -25,6 +25,18 @@ let categoryDB = new Datastore({
 
 categoryDB.ensureIndex({ fieldName: "_id", unique: true });
 
+// Used by catalogue imports so products always point to a visible category.
+app.ensureCategory = function (name, done) {
+    categoryDB.findOne({ name }, function (findErr, existing) {
+        if (findErr || existing) return done(findErr, existing && existing._id);
+        const candidate = { _id: Number(`${Date.now()}${Math.floor(Math.random() * 1000).toString().padStart(3, "0")}`), name };
+        categoryDB.insert(candidate, function (insertErr, inserted) {
+            if (insertErr) return done(insertErr);
+            done(null, inserted._id);
+        });
+    });
+};
+
 /**
  * GET endpoint: Get the welcome message for the Category API.
  *

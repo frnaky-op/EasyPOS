@@ -2,7 +2,6 @@ const gulp = require("gulp");
 const { parallel, series } = require("gulp");
 const bs = require("browser-sync").create();
 const concat = require("gulp-concat");
-const minify = require("gulp-minify");
 var uglify = require("gulp-uglify");
 const cleanCss = require("gulp-clean-css");
 const purgecss = require("gulp-purgecss");

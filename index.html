@@ -5,89 +5,82 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="assets/dist/css/bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/redesign.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
     <div class="splash loading">
-        <img src="assets/images/logo.svg" />
+        <img src="assets/images/easypos-logo.svg" alt="EasyPOS" />
         <h1 class="pull-right pt-3"><i class="fa fa-spinner fa-spin"></i> Please wait...</h1>
     </div>
     <div id="login">
-        <div class="login-box">
-            <div id="load" class="login-box-body">
-                <center><img src="assets/images/logo.svg" /></center>
-                <form id="account">
-                    <div class="form-group">
-                        <input type="text" placeholder="Username" name="username" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" name="password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-block btn-default">Login</button>
-                </form>
+        <section class="login-brand" aria-label="EasyPOS">
+            <div class="login-brand-name"><span class="login-brand-mark">E</span><strong>EasyPOS</strong></div>
+            <div class="login-brand-copy">
+                <h1>La droguerie,<br>à portée de main.</h1>
+                <p>Encaissement, catalogue et stock dans un espace de travail rapide et lisible.</p>
             </div>
-        </div>
+            <div class="login-brand-bars" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="login-brand-footer">DROGUERIE GÉNÉRALE · CASABLANCA</div>
+        </section>
+        <main class="login-content">
+            <div class="login-box">
+                <div id="load" class="login-box-body">
+                    <h2>Bienvenue</h2>
+                    <p class="login-intro">Connectez-vous à votre espace de vente.</p>
+                    <form id="account">
+                        <div class="login-form-field">
+                            <label for="loginUsername">Nom d’utilisateur</label>
+                            <input id="loginUsername" type="text" placeholder="Votre identifiant" name="username" class="form-control" autocomplete="username" required>
+                        </div>
+                        <div class="login-form-field">
+                            <label for="loginPassword">Mot de passe</label>
+                            <input id="loginPassword" type="password" placeholder="Votre mot de passe" name="password" class="form-control" autocomplete="current-password" required>
+                        </div>
+                        <p id="loginMessage" class="login-message" role="status" aria-live="polite"></p>
+                        <button type="submit" class="login-submit">Se connecter</button>
+                    </form>
+                    <p class="login-help">Besoin d’aide ? Contactez l’administrateur.</p>
+                </div>
+            </div>
+        </main>
     </div>
     <div id="main_app">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="button-list pull-left m-t-15 m-l-10">
-                        <div class="btn-group p_one">
-                            <button id="productModal" data-toggle="modal" data-target="#Products" type="button" class="btn btn-success waves-effect waves-light">
-                                <span class="btn-label"><i class="  glyphicon glyphicon-barcode"></i> </span> Products
-                            </button>
-                            <button id="newProductModal" data-toggle="modal" data-target="#newProduct" type="button" class="btn btn-warning waves-effect waves-light">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="btn-group p_two">
-                            <button id="categoryModal" data-toggle="modal" data-target="#Categories" type="button" class="btn btn-success waves-effect waves-light">
-                                <span class="btn-label"><i class="glyphicon glyphicon-th"></i> </span> Categories
-                            </button>
-                            <button id="newCategoryModal" data-toggle="modal" data-target="#newCategory" type="button" class="btn btn-warning waves-effect waves-light">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <button id="viewRefOrders" data-toggle="modal" data-target="#holdOrdersModal" type="button" class="btn btn-info waves-effect waves-light">
-                            <span class="btn-label"><i class="fa fa-shopping-basket"></i> </span> Open Tabs
-                        </button>
-                        <button id="viewCustomerOrders" data-toggle="modal" data-target="#customerModal" type="button" onclick="$(this).getCustomerOrders()" class="btn btn-info waves-effect waves-light">
-                            <span class="btn-label"><i class="fa fa-shopping-cart"></i></span> Orders
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="button-list m-t-15">
-                        <button id="settings" data-toggle="modal" data-target="#settingsModal" type="button" class="btn btn-success waves-effect waves-light p_five">
-                            <i class="glyphicon glyphicon-cog"></i>
-                        </button>
-                        <button id="transactions" type="button" class="btn btn-success waves-effect waves-light p_three">
-                            <span class="btn-label"><i class="  glyphicon glyphicon-credit-card"></i> </span>
-                            Transactions
-                        </button>
-                        <button id="pointofsale" type="button" class="btn btn-success waves-effect waves-light">
-                            <span class="btn-label"><i class="  glyphicon glyphicon-shopping-cart"></i> </span> Point of
-                            Sale
-                        </button>
-                        <div class="btn-group p_four">
-                            <button id="usersModal" data-toggle="modal" data-target="#Users" type="button" class="btn btn-success waves-effect waves-light">
-                                <span class="btn-label"><i class="  glyphicon glyphicon-user"></i> </span> Users
-                            </button>
-                            <button id="add-user" data-toggle="modal" type="button" class="btn btn-warning waves-effect waves-light">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <button type="button" title="My Profile" class="btn btn-default waves-effect waves-light" id="cashier">
-                            <span class="btn-label"><i class="glyphicon glyphicon-user"></i> </span> <span id="loggedin-user"></span>
-                        </button>
-                        <button id="log-out" type="button" class="btn btn-warning waves-effect waves-light">
-                            <i class="glyphicon glyphicon-log-out"></i> <span>Log out</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <header class="app-topbar">
+                <button id="appMenuToggle" type="button" class="app-menu-toggle" aria-label="Open navigation" aria-controls="appNavigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
+                <span class="app-brand-mark">E</span><strong class="app-brand-name">EasyPOS</strong>
+                <span id="appSection" class="app-section">Caisse</span>
+                <span class="app-store-name" id="appStoreName">Droguerie Générale</span>
+                <button type="button" title="My Profile" class="app-user-button" id="cashier"><i class="fa fa-user"></i> <span id="loggedin-user"></span></button>
+                <button id="log-out" type="button" class="app-logout" title="Log out"><i class="fa fa-sign-out"></i></button>
+            </header>
+            <nav id="appNavigation" class="app-navigation" aria-label="Main navigation" hidden>
+                <button id="pointofsale" type="button"><i class="fa fa-shopping-cart"></i> Caisse</button>
+                <button id="productModal" class="p_one" data-toggle="modal" data-target="#Products" type="button"><i class="fa fa-th-large"></i> Catalogue</button>
+                <button id="stockPage" class="p_one" type="button"><i class="fa fa-cubes"></i> Stock</button>
+                <button id="receivingPage" class="p_one" type="button"><i class="fa fa-truck"></i> Achats</button>
+                <button id="newProductModal" class="p_one" data-toggle="modal" data-target="#newProduct" type="button"><i class="fa fa-plus"></i> Ajouter un produit</button>
+                <button id="categoryModal" class="p_two" type="button"><i class="fa fa-tags"></i> Catégories</button>
+                <button id="newCategoryModal" class="p_two" data-toggle="modal" data-target="#newCategory" type="button"><i class="fa fa-plus"></i> Ajouter une catégorie</button>
+                <button id="viewRefOrders" data-toggle="modal" data-target="#holdOrdersModal" type="button"><i class="fa fa-bookmark"></i> Ventes en attente</button>
+                <button id="viewCustomerOrders" data-toggle="modal" data-target="#customerModal" type="button" onclick="$(this).getCustomerOrders()"><i class="fa fa-shopping-basket"></i> Commandes</button>
+                <button id="transactions" class="p_three" type="button"><i class="fa fa-credit-card"></i> Ventes</button>
+                <button id="clientsPage" type="button"><i class="fa fa-address-book"></i> Clients</button>
+                <button id="usersModal" class="p_four" type="button"><i class="fa fa-users"></i> Utilisateurs</button>
+                <button id="add-user" class="p_four" type="button"><i class="fa fa-user-plus"></i> Ajouter un utilisateur</button>
+                <button id="settings" class="p_five" type="button"><i class="fa fa-cog"></i> Paramètres</button>
+            </nav>
             <div id="transactions_view">
+                <div class="sales-dashboard">
+                    <div class="sales-page-head"><div><h1>Ventes &amp; rapports</h1><p>Suivez les encaissements, les produits vendus et les transactions récentes.</p></div><button type="button" id="salesExportCsv"><i class="fa fa-download"></i> Exporter CSV (7 jours)</button></div>
+                    <div class="sales-stats"><div><span>Ventes du jour</span><strong id="salesTodayAmount">—</strong></div><div><span>Transactions du jour</span><strong id="salesTodayCount">—</strong></div><div><span>Panier moyen du jour</span><strong id="salesTodayAverage">—</strong></div></div>
+                    <div class="sales-visual-grid"><section class="sales-chart-panel"><h2>Ventes des 7 derniers jours</h2><div id="salesWeekChart" class="sales-week-chart" role="img" aria-label="Ventes des sept derniers jours"></div></section><aside class="sales-top-panel"><h2>Meilleures ventes</h2><div id="salesTopProducts"></div></aside></div>
+                    <section class="sales-recent-panel"><div class="sales-panel-head"><h2>Transactions récentes</h2><button type="button" id="salesRefresh" aria-label="Actualiser les ventes"><i class="fa fa-refresh"></i></button></div><div class="sales-table-wrap"><table><thead><tr><th>Heure</th><th>Référence</th><th>Caissier</th><th>Client</th><th>Montant</th><th>État</th></tr></thead><tbody id="salesRecentRows"></tbody></table></div></section>
+                    <div id="salesDashboardMessage" role="status" aria-live="polite"></div>
+                </div>
+                <details id="salesDetailedReport" class="sales-detailed-report"><summary>Rapport détaillé et filtres</summary>
                 <div class="container">
                     <div class="row text-center m-t-20" id="totals">
                         <div id="total_sales" class="col-md-3 py-2 bg-success">
@@ -190,104 +183,114 @@
                         </div>
                     </div>
                 </div>
+                </details>
+            </div>
+            <div id="users_view" class="users-page" hidden>
+                <div class="users-page-head"><div><h1>Utilisateurs</h1><p>Gérez les comptes et les accès à la caisse.</p></div><button type="button" id="usersAddButton"><i class="fa fa-user-plus"></i> Nouveau compte</button></div>
+                <div class="users-stats"><div><span>Comptes</span><strong id="usersTotal">—</strong></div><div><span>Administrateurs</span><strong id="usersAdmins">—</strong></div><div><span>Sessions ouvertes</span><strong id="usersOnline">—</strong></div></div>
+                <section class="users-card"><div class="users-toolbar"><h2>Équipe</h2><label class="users-search"><i class="fa fa-search"></i><input id="usersSearch" type="search" placeholder="Rechercher par nom ou identifiant" aria-label="Rechercher un utilisateur"></label></div><div class="users-table-wrap"><table><thead><tr><th>Utilisateur</th><th>Identifiant</th><th>Accès</th><th>État</th><th>Actions</th></tr></thead><tbody id="usersRows"></tbody></table></div><p id="usersMessage" role="status" aria-live="polite"></p></section>
+            </div>
+            <div id="categories_view" class="categories-page" hidden>
+                <div class="categories-page-head"><div><h1>Catégories</h1><p>Organisez vos produits pour les retrouver rapidement à la caisse.</p></div><button type="button" id="categoriesAddButton"><i class="fa fa-plus"></i> Nouvelle catégorie</button></div>
+                <div class="categories-stats"><div><span>Catégories</span><strong id="categoriesTotal">—</strong></div><div><span>Produits classés</span><strong id="categoriesAssigned">—</strong></div><div><span>Sans catégorie</span><strong id="categoriesUnassigned">—</strong></div></div>
+                <section class="categories-card"><div class="categories-toolbar"><h2>Liste des catégories</h2><label class="categories-search"><i class="fa fa-search"></i><input id="categoriesSearch" type="search" placeholder="Rechercher une catégorie" aria-label="Rechercher une catégorie"></label></div><div class="categories-table-wrap"><table><thead><tr><th>Catégorie</th><th>Produits</th><th>Actions</th></tr></thead><tbody id="categoriesRows"></tbody></table></div><p id="categoriesMessage" role="status" aria-live="polite"></p></section>
+            </div>
+            <div id="settings_view" class="settings-page" hidden>
+                <form id="settingsPageForm" enctype="multipart/form-data">
+                    <div class="settings-page-head"><div><h1>Paramètres</h1><p>Configurez la boutique, les comptes et les données locales.</p></div><button type="submit" id="settingsPageSave"><i class="fa fa-check"></i> Enregistrer</button></div>
+                    <div class="settings-page-grid">
+                        <section class="settings-store-card"><h2>Informations de la boutique</h2><div class="settings-fields">
+                            <div class="settings-field settings-wide"><label for="settingsPageStore">Nom de la boutique *</label><input type="text" id="settingsPageStore" name="store" required></div>
+                            <div class="settings-field"><label for="settingsPageContact">Téléphone</label><input type="tel" id="settingsPageContact" name="contact"></div>
+                            <div class="settings-field"><label for="settingsPageCity">Ville / adresse complémentaire</label><input type="text" id="settingsPageCity" name="address_two"></div>
+                            <div class="settings-field settings-wide"><label for="settingsPageAddress">Adresse *</label><input type="text" id="settingsPageAddress" name="address_one" required></div>
+                            <div class="settings-field"><label for="settingsPageSymbol">Devise *</label><input type="text" id="settingsPageSymbol" name="symbol" maxlength="3" required></div>
+                            <div class="settings-field"><label for="settingsPageVat">TVA par défaut (%) *</label><input type="number" id="settingsPageVat" name="percentage" min="0" max="100" step="0.01" required></div>
+                        </div><div class="settings-receipt-section"><h3>Ticket de caisse</h3><p>Logo, pied de ticket et informations fiscales</p><div class="settings-fields">
+                            <div class="settings-field"><label for="settingsPageTax">Numéro fiscal</label><input type="text" id="settingsPageTax" name="tax"></div>
+                            <div class="settings-field"><label for="settingsPageLogo">Logo</label><input type="file" id="settingsPageLogo" name="imagename" accept=".jpg,.jpeg,.png,.webp"><span id="settingsPageLogoName" class="settings-logo-name"></span></div>
+                            <div class="settings-field settings-wide"><label for="settingsPageFooter">Pied de ticket</label><textarea id="settingsPageFooter" name="footer" rows="3"></textarea></div>
+                            <label class="settings-check"><input type="checkbox" id="settingsPageChargeTax" name="charge_tax"> Ajouter la TVA aux ventes</label>
+                            <label class="settings-check"><input type="checkbox" id="settingsPageQuickBilling" name="quick_billing"> Encaissement rapide</label>
+                        </div></div></section>
+                        <aside class="settings-side"><section class="settings-side-card"><h2>Utilisateurs</h2><p id="settingsUserCount">Chargement des comptes…</p><div id="settingsUserRoles" class="settings-user-roles"></div><button type="button" id="settingsManageUsers" class="p_four">Gérer les accès</button></section><section class="settings-side-card"><h2>Données &amp; sauvegardes</h2><p>Sauvegardez la base et les images pour une autre installation.</p><button type="button" id="settingsBackup">Créer une sauvegarde ZIP</button><button type="button" id="settingsRestore">Restaurer une sauvegarde</button><button type="button" id="settingsImportCatalog" class="p_one">Importer un catalogue ZIP</button><small>La restauration remplace les données locales après confirmation.</small></section><section class="settings-side-card settings-advanced"><button type="button" id="settingsAdvanced">Configuration réseau et avancée</button></section></aside>
+                    </div>
+                    <div id="settingsPageMessage" role="status" aria-live="polite"></div>
+                </form>
+            </div>
+            <div id="clients_view" class="clients-page" hidden>
+                <div class="clients-page-head"><div><h1>Clients</h1><p>Retrouvez les coordonnées et les achats de vos clients réguliers.</p></div><button type="button" id="clientsAddButton"><i class="fa fa-plus"></i> Nouveau client</button></div>
+                <div class="clients-card">
+                    <div class="clients-toolbar"><label class="clients-search"><i class="fa fa-search"></i><input type="search" id="clientsSearch" placeholder="Rechercher par nom, téléphone, ville ou email" aria-label="Rechercher des clients"></label><div class="clients-filters"><button type="button" id="clientsAllFilter" class="active">Tous</button><button type="button" id="clientsProfessionalFilter">Professionnels</button></div></div>
+                    <div class="clients-table-wrap"><table><thead><tr><th>Client</th><th>Téléphone</th><th>Ville</th><th>Type</th><th>Dernier achat</th><th>Action</th></tr></thead><tbody id="clientsRows"></tbody></table></div>
+                    <section id="clientDetails" class="client-details"><strong>Sélectionnez un client pour voir ses achats</strong><p>Coordonnées, factures et produits fréquemment achetés.</p></section>
+                    <div class="clients-pager"><span id="clientsPageInfo"></span><button type="button" id="clientsPrevious">Précédent</button><button type="button" id="clientsNext">Suivant</button></div>
+                </div>
+            </div>
+            <div id="stock_view" class="stock-page" hidden>
+                <div class="stock-page-head"><div><h1>Stock</h1><p>Suivez les quantités et corrigez les écarts d'inventaire.</p></div><div class="stock-page-actions"><button type="button" id="stockCountButton"><i class="fa fa-list-ol"></i> Nouvel inventaire</button><button type="button" id="stockAdjustButton"><i class="fa fa-plus"></i> Ajustement</button></div></div>
+                <div class="stock-stats"><div><span>Valeur au prix de vente</span><strong id="stockValue">—</strong></div><div><span>Produits à réapprovisionner</span><strong id="stockLowCount">—</strong></div><div><span>Produits en rupture</span><strong id="stockOutCount">—</strong></div></div>
+                <div class="stock-page-grid"><section class="stock-movements-panel"><div class="stock-panel-head"><h2>Mouvements récents</h2><button type="button" id="stockRefresh" aria-label="Actualiser le stock"><i class="fa fa-refresh"></i></button></div><div class="stock-table-wrap"><table><thead><tr><th>Date</th><th>Produit</th><th>Type</th><th>Qté</th><th>Stock</th></tr></thead><tbody id="stockMovementRows"></tbody></table></div><div class="stock-movement-pager"><span id="stockMovementPageInfo"></span><button type="button" id="stockMovementPrevious">Précédent</button><button type="button" id="stockMovementNext">Suivant</button></div></section><aside class="stock-low-panel"><h2>À réapprovisionner</h2><div id="stockLowProducts"></div><button type="button" id="stockOpenCatalogue">Ouvrir le catalogue</button></aside></div>
+            </div>
+            <div id="receiving_view" class="receiving-page" hidden>
+                <form id="receivingForm">
+                    <div class="receiving-page-head">
+                        <div><h1>Réception fournisseur</h1><p>Ajoutez les quantités livrées avec une trace du fournisseur et du coût.</p></div>
+                        <div class="receiving-page-actions"><button type="button" id="receivingSaveDraft">Enregistrer brouillon</button><button type="submit" id="receivingPost"><i class="fa fa-check"></i> Valider la réception</button></div>
+                    </div>
+                    <section class="receiving-supplier-card">
+                        <div class="receiving-field"><label for="receivingSupplier">Fournisseur *</label><input id="receivingSupplier" type="text" maxlength="120" placeholder="Nom du fournisseur" required></div>
+                        <div class="receiving-field"><label for="receivingReference">N° facture / BL *</label><input id="receivingReference" type="text" maxlength="80" placeholder="Référence du document" required></div>
+                        <div class="receiving-field"><label for="receivingDate">Date de réception *</label><input id="receivingDate" type="date" required></div>
+                        <span class="receiving-draft-badge" id="receivingState">Nouvelle réception</span>
+                    </section>
+                    <section class="receiving-lines-card">
+                        <div class="receiving-lines-head"><h2>Produits livrés</h2><button type="button" id="receivingAddLine"><i class="fa fa-plus"></i> Ajouter une ligne</button></div>
+                        <div class="receiving-table-wrap"><table><thead><tr><th>Produit</th><th>Stock actuel</th><th>Qté reçue</th><th>Coût unit.</th><th>Nouveau stock</th><th></th></tr></thead><tbody id="receivingLines"></tbody></table></div>
+                        <button type="button" id="receivingAddSearch"><i class="fa fa-barcode"></i> Scanner un code-barres ou rechercher un autre produit</button>
+                    </section>
+                    <div class="receiving-summary"><strong id="receivingLineCount">0 référence · 0 unité reçue</strong><strong>Coût total <span id="receivingTotal">0,00 MAD</span></strong></div>
+                    <div id="receivingMessage" role="status" aria-live="polite"></div>
+                </form>
             </div>
             <div id="pos_view">
-                <div class="row m-t-20">
-                    <div class="col-md-6">
-                        <div class="card-box" id="card-box">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-10">
-                                        <div class="input-group">
-                                            <select name="" id="customer" class="form-control">
-                                            </select>
-                                            <span class="input-group-btn">
-                                                <button id="newCustomerModal" data-toggle="modal" data-target="#newCustomer" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                                                <button id="editCustomerModal" class="btn btn-warning"><i class="fa fa-pencil"></i></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-10 m-t-5">
-                                        <form action="" id="searchBarCode">
-                                            <div class="input-group">
-                                                <input type="text" required id="skuCode" name="skuCode" class="form-control number-input" placeholder="Scan barcode or type the number then hit enter" aria-label="barcode" aria-describedby="basic-addon2">
-                                                <span class="input-group-btn">
-                                                    <button type="submit" class="btn btn-default search-barcode-btn"><i class="glyphicon glyphicon-ok"></i></button>
-                                                </span>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="row p-t-10" id="cartTable">
-                                    <div class="card-box">
-                                        <div class="card-title">
-                                            <div class="row">
-                                                <div class="col-md-1"><strong>#</strong></div>
-                                                <div class="col-md-3"><strong>Item</strong></div>
-                                                <div class="col-md-3"><strong>Qty</strong></div>
-                                                <div class="col-md-3"><strong>Price</strong></div>
-                                                <div class="col-md-1"><button onclick="$(this).cancelOrder()" class="btn btn-light btn-xs"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="m-t-5">
-                                <div class="row">
-                                    <div class="col-md-3">Total Item(s)</div>
-                                    <div class="col-md-3">: <span id="total">0</span>
-                                    </div>
-                                    <div class="col-md-3">Price :</div>
-                                    <div class="col-md-3">: <span id="price">0.0</span></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">Discount</div>
-                                    <div class="col-md-3"><input class="form-control" type="number" id="inputDiscount" minimum="0" placeholder="amount" oninput="$(this).calculateCart();"></div>
-                                    <div class="col-md-3">Gross Price (inc <span id="taxInfo"></span>% Tax)</div>
-                                    <div class="col-md-3">
-                                        <h3 id="gross_price">0.00</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="button-list pull-right">
-                                <button onclick="$(this).submitDueOrder(3);" type="button" class="btn btn-info waves-effect waves-light">
-                                    <i class="fa fa-print"></i>
-                                </button>
-                                <button onclick="$(this).cancelOrder()" type="button" class="btn btn-danger waves-effect waves-light">
-                                    <span class="btn-label"><i class="fa fa-ban"></i></span>Cancel
-                                </button>
-                                <button type="button" id="hold" class="btn btn-info waves-effect waves-light">
-                                    <span class="btn-label"><i class="fa fa-hand-paper-o"></i></span>Hold
-                                </button>
-                                <button type="button" id="payButton" class="btn btn-success waves-effect waves-light">
-                                    <span class="btn-label"><i class="fa fa-money"></i></span>Pay
-                                </button>
-                            </div>
-                            <hr>
+                <div class="pos-workspace">
+                    <section class="pos-product-panel" aria-label="Products for sale">
+                        <div class="pos-search-row">
+                            <label class="pos-product-search"><i class="fa fa-search"></i><input type="search" id="search" placeholder="Rechercher un produit par nom, marque ou code" aria-label="Search products"></label>
+                            <form id="searchBarCode" class="pos-barcode-search">
+                                <input type="text" required id="skuCode" name="skuCode" placeholder="Scanner un code-barres" aria-label="Scan a barcode">
+                                <button type="submit" class="search-barcode-btn" aria-label="Add scanned product"><i class="fa fa-barcode"></i></button>
+                            </form>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card-box">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <input type="text" id="search" class="form-control" placeholder="Search product by name or sku">
-                                </div>
-                                <div class="col-md-6">
-                                    <select id="categories" class="form-control">
-                                    </select>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row" id="parent">
-                            </div>
+                        <div class="pos-filter-row"><div id="posCategoryPills" class="pos-category-pills" aria-label="Product categories"></div><select id="categories" aria-label="Filter products by category"></select></div>
+                        <div class="pos-results-meta"><span id="posVisibleCount">Produits disponibles</span></div>
+                        <div id="parent" class="pos-product-grid"></div>
+                        <div id="posProductPager" class="pos-product-pager">
+                            <span id="posPageInfo"></span>
+                            <div><button type="button" id="posPrevious">Précédent</button><button type="button" id="posNext">Suivant</button></div>
                         </div>
-                    </div>
+                    </section>
+                    <aside id="card-box" class="pos-cart-panel" aria-label="Current sale">
+                        <div class="pos-cart-head"><h2>Vente en cours</h2><span id="total">0</span></div>
+                        <div class="pos-customer-row"><select id="customer" aria-label="Customer"></select><button id="newCustomerModal" data-toggle="modal" data-target="#newCustomer" type="button" title="Add customer"><i class="fa fa-plus"></i></button><button id="editCustomerModal" type="button" title="Edit customer"><i class="fa fa-pencil"></i></button></div>
+                        <div id="cartTable" class="pos-cart-lines"><div class="card-body"></div></div>
+                        <div class="pos-cart-summary">
+                            <div><span>Sous-total</span><strong id="price">0,00 MAD</strong></div>
+                            <div><label for="inputDiscount">Remise</label><input type="number" id="inputDiscount" min="0" value="0" oninput="$(this).calculateCart();" aria-label="Discount amount"></div>
+                            <div><span>TVA</span><span><span id="taxInfo">0</span> %</span></div>
+                            <div class="pos-cart-total"><span>Total</span><strong id="gross_price">0,00 MAD</strong></div>
+                        </div>
+                        <div class="pos-cart-actions">
+                            <button type="button" id="payButton" class="pos-pay-button"><i class="fa fa-money"></i> Encaisser</button>
+                            <button type="button" id="hold"><i class="fa fa-pause"></i> Mettre en attente</button>
+                            <div><button type="button" onclick="$(this).cancelOrder()"><i class="fa fa-times"></i> Annuler</button><button type="button" onclick="$(this).submitDueOrder(3);"><i class="fa fa-print"></i> Imprimer</button></div>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </div>
+        <div id="stockAdjustModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="stockAdjustTitle" aria-hidden="true"><div class="modal-dialog modal-sm"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button><h4 id="stockAdjustTitle" class="modal-title">Ajuster le stock</h4></div><div class="modal-body"><form id="stockAdjustForm"><div class="form-group"><label for="stockProductSearch">Produit</label><input type="search" id="stockProductSearch" class="form-control" placeholder="Nom, référence ou code-barres" autocomplete="off" required><div id="stockProductResults" class="stock-product-results"></div><input type="hidden" id="stockProductId" required></div><p id="stockCurrentQuantity" class="stock-current-quantity"></p><div class="form-group"><label for="stockAdjustMode">Opération</label><select id="stockAdjustMode" class="form-control"><option value="add">Entrée (+)</option><option value="remove">Sortie (−)</option><option value="count">Inventaire : quantité comptée</option></select></div><div class="form-group"><label for="stockAdjustAmount">Quantité</label><input type="number" id="stockAdjustAmount" class="form-control" min="0" step="1" required></div><div class="form-group"><label for="stockAdjustNote">Note (facultatif)</label><input type="text" id="stockAdjustNote" class="form-control" maxlength="200" placeholder="Motif ou référence"></div><div id="stockAdjustError" role="alert"></div><div class="stock-adjust-actions"><button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button><button type="submit" class="btn btn-primary">Enregistrer</button></div></form></div></div></div></div>
         <div id="dueModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
@@ -492,118 +495,180 @@
                                 <label for="userName">Customer Address</label>
                                 <input type="text" name="address" parsley-trigger="change" placeholder="Enter address" class="form-control" id="userAddress">
                             </div>
+                            <div class="form-group">
+                                <label for="customerCity">Ville</label>
+                                <input type="text" name="city" placeholder="Ville" class="form-control" id="customerCity">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerType">Type de client</label>
+                                <select name="type" id="customerType" class="form-control"><option value="">Non précisé</option><option value="individual">Particulier</option><option value="professional">Professionnel</option></select>
+                            </div>
                             <input id="saveCustomerBtn" type="submit" value="Save Customer" class="btn btn-primary btn-block waves-effect waves-light">
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="newProduct" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
+        <div id="newProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newProductTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Product
-                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">×</button>
+                        <h4 class="modal-title" id="newProductTitle">Fiche produit</h4>
                     </div>
                     <div class="modal-body">
                         <form id="saveProduct" encType="multipart/form-data">
                             <input type="hidden" name="id" id="product_id">
                             <input type="hidden" name="img" id="img">
                             <input type="hidden" name="remove" id="remove_img">
+                            <div class="product-form-intro"><strong>Informations produit</strong><p>Renseignez les données utiles à la caisse et au stock.</p></div>
+                            <div class="product-form-grid">
                             <div class="form-group">
-                                <label for="category">Category</label>
+                                <label for="category">Catégorie</label>
                                 <select name="category" class="form-control" id="category"></select>
                             </div>
                             <div class="form-group">
-                                <label for="supplier">Supplier</label>
-                                <input type="text" name="supplier" placeholder="Enter supplier name" class="form-control" id="supplier">
+                                <label for="supplier">Fournisseur ou marque</label>
+                                <input type="text" name="supplier" placeholder="Ex. Ingelec, Bosch, Colorado" class="form-control" id="supplier">
+                            </div>
+                            <div class="form-group product-form-wide">
+                                <label for="productName">Nom du produit *</label>
+                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Ex. Tube PPR Ø20 · 4 m" class="form-control" id="productName">
                             </div>
                             <div class="form-group">
-                                <label for="productName">Product Name</label>
-                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter a product name" class="form-control" id="productName">
+                                <label for="barcode">Code-barres / référence *</label>
+                                <input type="text" required="required" name="barcode" parsley-trigger="change" placeholder="Code EAN ou référence interne" class="form-control" id="barcode">
                             </div>
                             <div class="form-group">
-                                <label for="barcode">BarCode</label>
-                                <input type="text" required="required" name="barcode" parsley-trigger="change" placeholder="Enter product barcode" class="form-control number-input" id="barcode">
+                                <label for="product_price">Prix de vente *</label>
+                                <input type="text" required="required" name="price" placeholder="0,00 MAD" class="form-control number-input" id="product_price">
                             </div>
                             <div class="form-group">
-                                <label for="product_price">Price</label>
-                                <input type="text" required="required" name="price" placeholder="Price" class="form-control number-input" id="product_price">
-                            </div>
-                            <div class="form-group">
-                                <label for="expirationDate">Expiry Date</label>
+                                <label for="expirationDate">Date d'expiration (facultatif)</label>
                                 <input type="text" name="expirationDate" parsley-trigger="change" placeholder="dd/mm/yyyy" class="form-control" id="expirationDate" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Stock</label>
-                                <input type="number" name="quantity" placeholder="Available stock" class="form-control" id="quantity" min="0">
+                                <label for="quantity">Quantité en stock</label>
+                                <input type="number" name="quantity" value="100" placeholder="Quantité disponible" class="form-control" id="quantity" min="0">
                             </div>
                             <div class="form-group">
-                                <label for="quantity">Minimum Stock</label>
-                                <input type="number" name="minStock" placeholder="Minimum Stock" class="form-control" id="minStock" min="1">
+                                <label for="minStock">Seuil de stock faible</label>
+                                <input type="number" name="minStock" placeholder="Seuil minimum" class="form-control" id="minStock" min="1">
                             </div>
-                            <div class="form-group">
-                                <label><input type="checkbox" name="stock" id="stock"> Disable stock check </label>
+                            <div class="form-group product-form-wide product-stock-toggle">
+                                <label><input type="checkbox" name="stock" id="stock"> Ne pas suivre le stock de ce produit</label>
                             </div>
-                            <div class="form-group">
-                                <label for="imagename"><span id="rmv_img" class="btn btn-xs btn-warning">Remove</span>
-                                Picture </label>
+                            <div class="form-group product-form-wide product-image-field">
+                                <label for="imagename">Image du produit</label>
                                 <div id="current_img"></div>
-                                <input type="file" name="imagename" id="imagename">
+                                <input type="file" name="imagename" id="imagename" accept="image/*">
+                                <button type="button" id="rmv_img" class="btn btn-xs btn-warning">Retirer l'image</button>
                             </div>
-                            <input type="submit" id="submitProduct" class="btn btn-primary btn-block waves-effect waves-light">
+                            </div>
+                            <div class="product-form-actions"><button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button><button type="submit" id="submitProduct" class="btn btn-primary"><i class="fa fa-check"></i> Enregistrer le produit</button></div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="newCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div id="newCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle" aria-hidden="true">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Category
+                        <h4 class="modal-title" id="newCategoryTitle">Nouvelle catégorie
                         </h4>
                     </div>
                     <div class="modal-body">
                         <form id="saveCategory">
                             <div class="form-group">
-                                <label for="userName">Name</label>
+                                <label for="categoryName">Nom de la catégorie *</label>
                                 <input id="category_id" type="hidden" name="id">
-                                <input id="categoryName" type="text" required="required" name="name" placeholder="Enter a category name" class="form-control">
+                                <input id="categoryName" type="text" required="required" name="name" placeholder="Ex. Plomberie" class="form-control">
                             </div>
-                            <input type="submit" id="submitCategory" class="btn btn-primary btn-block waves-effect waves-light">
+                            <button type="submit" id="submitCategory" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Enregistrer</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="catalogueTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Products
-                        </h4>
+                        <h4 class="modal-title" id="catalogueTitle">Catalogue produits</h4>
                     </div>
-                    <div class="modal-body p-20 p-r-40" id="all_products">
+                    <div class="modal-body" id="all_products">
+                        <div class="catalogue-intro"><div><strong>Catalogue</strong><p>Retrouvez les produits, leurs stocks et leurs codes-barres.</p></div><button type="button" id="catalogueAddProduct" class="btn catalogue-add-button"><i class="fa fa-plus"></i> Nouveau produit</button></div>
+                        <form id="importCatalogForm" enctype="multipart/form-data" class="catalogue-import-form">
+                            <label for="catalogPackage"><i class="fa fa-file-archive-o"></i> Importer un catalogue ZIP</label>
+                            <input id="catalogPackage" name="package" type="file" accept=".zip,application/zip" required>
+                            <button id="importCatalogButton" type="submit" class="btn btn-primary btn-sm">Importer produits et images</button>
+                            <p class="help-block">Stock initial : 100. Prix de vente initial : 0. Vérifiez les fiches avant la vente.</p>
+                            <div id="importCatalogStatus" role="status" aria-live="polite"></div>
+                        </form>
+                        <div class="catalogue-search"><i class="fa fa-search"></i><input id="productListSearch" type="search" class="form-control" placeholder="Rechercher par nom, code-barres ou fournisseur" aria-label="Rechercher des produits"></div>
+                        <div class="product-selection-toolbar">
+                            <label><input id="productListSelectPage" type="checkbox"> Sélectionner la page</label>
+                            <span id="productListSelectionCount" aria-live="polite">0 sélectionné(s)</span>
+                            <button type="button" id="productListClearSelection" class="btn btn-default btn-sm">Effacer la sélection</button>
+                            <button type="button" id="exportSelectedBarcodes" class="btn btn-success btn-sm" disabled><i class="fa fa-barcode"></i> Exporter les codes-barres PDF</button>
+                        </div>
+                        <div class="catalogue-table-wrap">
                         <table class="table table-bordered" id="productList">
                             <thead>
                                 <tr>
-                                    <th>Barcode</th>
-                                    <th>Item</th>
-                                    <th>Name</th>
-                                    <th>Price</th>
+                                    <th aria-label="Sélectionner le produit"></th>
+                                    <th>Code-barres</th>
+                                    <th>Image</th>
+                                    <th>Produit</th>
+                                    <th>Prix</th>
                                     <th>Stock</th>
-                                    <th>Expiry Date</th>
-                                    <th>Category</th>
-                                    <th>Supplier</th>
-                                    <th>Action</th>
+                                    <th>Expiration</th>
+                                    <th>Catégorie</th>
+                                    <th>Fournisseur</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="product_list"></tbody>
                         </table>
+                        </div>
+                        <div id="productListPager" class="catalogue-pager">
+                            <button type="button" id="productListPrevious" class="btn btn-default">Précédent</button>
+                            <span id="productListPageInfo" style="margin: 0 12px;"></span>
+                            <button type="button" id="productListNext" class="btn btn-default">Suivant</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="productDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="productDetailsTitle" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        <h4 class="modal-title" id="productDetailsTitle">Fiche produit</h4>
+                    </div>
+                    <div class="modal-body product-fiche">
+                        <div class="product-fiche-head">
+                            <img id="productDetailsImage" alt="Product image">
+                            <div>
+                                <h3 id="productDetailsName"></h3>
+                                <p id="productDetailsCategory"></p>
+                                <p id="productDetailsSupplier"></p>
+                            </div>
+                        </div>
+                        <div class="product-fiche-barcode">
+                            <svg id="productDetailsBarcode" aria-label="Product barcode"></svg>
+                            <div id="productDetailsCode"></div>
+                        </div>
+                        <dl class="product-fiche-facts">
+                            <div><dt>Prix</dt><dd id="productDetailsPrice"></dd></div>
+                            <div><dt>Stock</dt><dd id="productDetailsStock"></dd></div>
+                            <div><dt>Stock minimum</dt><dd id="productDetailsMinimum"></dd></div>
+                            <div><dt>Date d'expiration</dt><dd id="productDetailsExpiry"></dd></div>
+                        </dl>
                     </div>
                 </div>
             </div>
@@ -654,58 +719,54 @@
                 </div>
             </div>
         </div>
-        <div id="userModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
+        <div id="userModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="userEditorTitle" aria-hidden="true">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Account Infomarion
+                        <h4 class="modal-title" id="userEditorTitle">Compte utilisateur
                         </h4>
                     </div>
                     <div class="modal-body">
                         <form id="saveUser" data-parsley-validate>
                             <input type="hidden" name="id" id="user_id">
                             <div class="form-group">
-                                <label for="userName">Name*</label>
-                                <input type="text" required="required" name="fullname" parsley-trigger="change" placeholder="Enter name" class="form-control" id="fullname">
+                                <label for="fullname">Nom complet *</label>
+                                <input type="text" required="required" name="fullname" parsley-trigger="change" placeholder="Nom et prénom" class="form-control" id="fullname">
                             </div>
                             <div class="form-group">
-                                <label for="userName">Username*</label>
-                                <input type="text" name="username" parsley-trigger="change" placeholder="Login Username" class="form-control" id="username">
+                                <label for="username">Identifiant *</label>
+                                <input type="text" required name="username" parsley-trigger="change" placeholder="Identifiant de connexion" class="form-control" id="username" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="userName">Password</label>
-                                <input type="password" name="password" parsley-trigger="change" placeholder="Password" class="form-control" id="password">
+                                <label for="password">Mot de passe <span id="userPasswordHint">*</span></label>
+                                <input type="password" name="password" parsley-trigger="change" placeholder="Mot de passe" class="form-control" id="password" autocomplete="new-password">
                             </div>
                             <div class="form-group">
-                                <label for="userName">Repeat Password</label>
-                                <input type="password" name="pass" parsley-trigger="change" placeholder="Repeat" class="form-control" id="pass">
+                                <label for="pass">Confirmer le mot de passe</label>
+                                <input type="password" name="pass" parsley-trigger="change" placeholder="Répéter le mot de passe" class="form-control" id="pass" autocomplete="new-password">
                             </div>
                             <div class="perms">
-                                <h3 class="m-t-20">Permissions</h3>
+                                <h3 class="m-t-20">Autorisations</h3>
                                 <hr>
                                 <div class="form-group">
-                                    <span><input type="checkbox" name="perm_products" id="perm_products"> Manage
-                                    Products and Stock </span>
+                                    <span><input type="checkbox" name="perm_products" id="perm_products"> Produits et stock</span>
                                 </div>
                                 <div class="form-group">
-                                    <span><input type="checkbox" name="perm_categories" id="perm_categories"> Manage
-                                    Product Categories </span>
+                                    <span><input type="checkbox" name="perm_categories" id="perm_categories"> Catégories</span>
                                 </div>
                                 <div class="form-group">
-                                    <span><input type="checkbox" name="perm_transactions" id="perm_transactions"> View
-                                    Transactions </span>
+                                    <span><input type="checkbox" name="perm_transactions" id="perm_transactions"> Ventes et rapports</span>
                                 </div>
                                 <div class="form-group">
-                                    <span><input type="checkbox" name="perm_users" id="perm_users"> Manage Users and
-                                    Permissions </span>
+                                    <span><input type="checkbox" name="perm_users" id="perm_users"> Utilisateurs et accès</span>
                                 </div>
                                 <div class="form-group">
-                                    <span><input type="checkbox" name="perm_settings" id="perm_settings"> Manage
-                                    Settings </span>
+                                    <span><input type="checkbox" name="perm_settings" id="perm_settings"> Paramètres</span>
                                 </div>
                             </div>
-                            <input type="submit" class="btn btn-primary btn-block waves-effect waves-light">
+                            <p id="userEditorMessage" class="user-editor-message" role="status" aria-live="polite"></p>
+                            <button type="submit" id="saveUserButton" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Enregistrer le compte</button>
                         </form>
                     </div>
                 </div>
