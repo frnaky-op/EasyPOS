@@ -443,26 +443,17 @@
                 </div>
             </div>
         </div>
-        <div id="newCategory" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="newCategoryTitle">Nouvelle catégorie
-                        </h4>
+        <div id="newCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document"><div class="modal-content">
+                <div class="category-editor-header"><span class="category-editor-icon" aria-hidden="true"><i class="fa fa-tags"></i></span><div><h4 id="newCategoryTitle">Nouvelle catégorie</h4><p>Organisez vos produits pour les retrouver rapidement.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
+                <form id="saveCategory">
+                    <div class="category-editor-body"><label for="categoryName">Nom de la catégorie *</label><input id="category_id" type="hidden" name="id"><input id="categoryName" type="text" required name="name" maxlength="80" placeholder="Ex. Plomberie" class="form-control" autocomplete="off">
+                        <div class="category-editor-info"><i class="fa fa-info-circle" aria-hidden="true"></i><div><strong>Visible partout dans EasyPOS</strong><p>La catégorie apparaîtra dans le catalogue, les fiches produit et les filtres de la caisse.</p></div></div>
+                        <p id="categoryEditorError" class="category-editor-error" role="alert"></p>
                     </div>
-                    <div class="modal-body">
-                        <form id="saveCategory">
-                            <div class="form-group">
-                                <label for="categoryName">Nom de la catégorie *</label>
-                                <input id="category_id" type="hidden" name="id">
-                                <input id="categoryName" type="text" required="required" name="name" placeholder="Ex. Plomberie" class="form-control">
-                            </div>
-                            <button type="submit" id="submitCategory" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Enregistrer</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                    <div class="category-editor-footer"><span>* Champ obligatoire</span><button type="button" class="category-editor-cancel" data-dismiss="modal">Annuler</button><button type="submit" id="submitCategory" class="category-editor-save"><i class="fa fa-check"></i> Enregistrer</button></div>
+                </form>
+            </div></div>
         </div>
         <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="catalogueTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg">

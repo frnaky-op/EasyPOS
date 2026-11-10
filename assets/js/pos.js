@@ -950,17 +950,22 @@ if (auth == undefined) {
     $("#categoriesAddButton").on("click", function () {
       $("#saveCategory").get(0).reset();
       $("#category_id").val("");
+      $("#categoryEditorError").text("");
       $("#newCategoryTitle").text("Nouvelle catégorie");
       $("#newCategory").modal("show");
     });
     $("#newCategoryModal").on("click", function () {
       $("#saveCategory").get(0).reset();
       $("#category_id").val("");
+      $("#categoryEditorError").text("");
       $("#newCategoryTitle").text("Nouvelle catégorie");
     });
     $("#newCategory").on("hidden.bs.modal", function () {
       $("#saveCategory").get(0).reset();
       $("#category_id").val("");
+      $("#categoryEditorError").text("");
+    }).on("shown.bs.modal", function () {
+      $("#categoryName").trigger("focus");
     });
 
     function loadCustomers() {
@@ -2237,6 +2242,14 @@ if (auth == undefined) {
 
     $("#saveCategory").submit(function (e) {
       e.preventDefault();
+      const name = $("#categoryName").val().trim();
+      if (!name) {
+        $("#categoryEditorError").text("Saisissez un nom de catégorie.");
+        $("#categoryName").trigger("focus");
+        return;
+      }
+      $("#categoryName").val(name);
+      $("#categoryEditorError").text("");
       const categoryMethod = $("#category_id").val() ? "PUT" : "POST";
       const button = $("#submitCategory").prop("disabled", true);
       $.ajax({
@@ -2251,7 +2264,7 @@ if (auth == undefined) {
           loadProducts();
           $("#categoriesMessage").text("Catégorie enregistrée.");
         },
-        error: () => $("#categoriesMessage").text("Enregistrement de la catégorie impossible."),
+        error: (response) => $("#categoryEditorError").text(response.responseJSON?.message || "Enregistrement de la catégorie impossible. Réessayez."),
         complete: () => button.prop("disabled", false),
       });
     });
@@ -2328,6 +2341,7 @@ if (auth == undefined) {
       $("#Categories").modal("hide");
       $("#categoryName").val(validator.unescape(String(allCategories[index].name)));
       $("#category_id").val(allCategories[index]._id);
+      $("#categoryEditorError").text("");
       $("#newCategoryTitle").text("Modifier la catégorie");
       $("#newCategory").modal("show");
     };
