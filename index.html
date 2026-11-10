@@ -297,74 +297,25 @@
             </div>
         </div>
         <div id="stockAdjustModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="stockAdjustTitle" aria-hidden="true"><div class="modal-dialog modal-sm"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button><h4 id="stockAdjustTitle" class="modal-title">Ajuster le stock</h4></div><div class="modal-body"><form id="stockAdjustForm"><div class="form-group"><label for="stockProductSearch">Produit</label><input type="search" id="stockProductSearch" class="form-control" placeholder="Nom, référence ou code-barres" autocomplete="off" required><div id="stockProductResults" class="stock-product-results"></div><input type="hidden" id="stockProductId" required></div><p id="stockCurrentQuantity" class="stock-current-quantity"></p><div class="form-group"><label for="stockAdjustMode">Opération</label><select id="stockAdjustMode" class="form-control"><option value="add">Entrée (+)</option><option value="remove">Sortie (−)</option><option value="count">Inventaire : quantité comptée</option></select></div><div class="form-group"><label for="stockAdjustAmount">Quantité</label><input type="number" id="stockAdjustAmount" class="form-control" min="0" step="1" required></div><div class="form-group"><label for="stockAdjustNote">Note (facultatif)</label><input type="text" id="stockAdjustNote" class="form-control" maxlength="200" placeholder="Motif ou référence"></div><div id="stockAdjustError" role="alert"></div><div class="stock-adjust-actions"><button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button><button type="submit" class="btn btn-primary">Enregistrer</button></div></form></div></div></div></div>
-        <div id="dueModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
+        <div id="dueModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="holdTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Hold Order
-                        </h4>
+                    <div class="hold-header">
+                        <span class="hold-icon" aria-hidden="true"><i class="fa fa-pause"></i></span>
+                        <div><h4 id="holdTitle">Mettre la vente en attente</h4><p>Retrouvez cette vente plus tard depuis Commandes en attente.</p></div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <form action="">
-                            <input type="text" id="refNumber" placeholder="Enter a reference" class="form-control">
-                        </form>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <button data-val="1" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="2" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="3" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <button data-val="4" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="5" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="6" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <button data-val="7" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="8" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="9" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">9</button>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <button data-val="del" class="btn btn-warning btn-lg btn-block">⌫</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="0" data-isdue="true" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
-                            </div>
-                            <div class="col-md-4">
-                                <button data-val="ac" data-isdue="true" class="btn btn-danger btn-lg btn-block keypad-btn">AC</button>
-                            </div>
-                        </div>
+                    <div class="hold-body">
+                        <label for="refNumber">Référence de la vente</label>
+                        <p class="hold-help">Donnez un nom court pour identifier facilement cette vente.</p>
+                        <input type="text" id="refNumber" class="form-control" placeholder="Ex. Client chantier, commande 42" maxlength="80" autocomplete="off">
+                        <div class="hold-facts"><div><span>Client</span><strong id="holdCustomerName">Client comptoir</strong></div><div><span>Articles</span><strong id="holdItemCount">0 produit</strong></div></div>
+                        <div class="hold-total"><div><span>Total de la vente</span><small>La vente sera enregistrée sans paiement.</small></div><strong id="holdTotalAmount">0,00 MAD</strong></div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="$(this).submitDueOrder(0);" class="btn btn-primary btn-block btn-lg waves-effect waves-light">Hold Order</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        <!--  Modal content for the above example -->
+                    <div class="hold-footer"><button type="button" class="hold-cancel" data-dismiss="modal">Annuler</button><button type="button" id="confirmHold" class="hold-confirm" onclick="$(this).submitDueOrder(0);"><i class="fa fa-pause"></i> Mettre en attente</button></div>
+                </div>
+            </div>
+        </div>
         <div id="paymentModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="paymentTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

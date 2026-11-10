@@ -587,6 +587,32 @@ body.login-page { min-height: 100vh; background: #f5f8f6; }
 @media (max-width: 700px) { .pending-page-head, .pending-toolbar { align-items: flex-start; flex-direction: column; } }
 
 /* Encaissement */
+#dueModal .modal-dialog { width: min(680px, calc(100vw - 32px)); margin: max(18px, calc((100vh - 542px)/2)) auto; }
+#dueModal .modal-content { overflow: hidden; border: 0; border-radius: 16px; background: white; box-shadow: 0 22px 55px #102a2250; }
+.hold-header { display: flex; align-items: flex-start; gap: 18px; min-height: 103px; padding: 30px 31px 23px; border-bottom: 1px solid var(--pos-line); }
+.hold-icon { display: grid; place-items: center; flex: none; width: 46px; height: 46px; border-radius: 11px; background: var(--pos-mint); color: var(--pos-green); font-size: 18px; }
+.hold-header > div { flex: 1; min-width: 0; }
+.hold-header h4 { margin: 2px 0 4px; color: var(--pos-ink); font-size: 23px; font-weight: 700; }
+.hold-header p { margin: 0; color: var(--pos-muted); font-size: 12px; }
+#dueModal .hold-header .close { display: grid; place-items: center; flex: none; width: 30px; height: 30px; margin: 0; border-radius: 8px; background: #edf2ee; color: var(--pos-muted); opacity: 1; font-size: 22px; font-weight: 400; }
+.hold-body { padding: 28px 31px 35px; }
+.hold-body > label { display: block; margin-bottom: 5px; color: var(--pos-ink); font-size: 13px; font-weight: 700; }
+.hold-help { margin: 0 0 13px; color: var(--pos-muted); font-size: 11px; }
+#dueModal #refNumber { height: 52px; padding: 0 16px; border: 2px solid var(--pos-green); border-radius: 9px; box-shadow: none; color: var(--pos-ink); font-size: 14px; }
+.hold-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0 27px; }
+.hold-facts div { display: flex; flex-direction: column; gap: 6px; }
+.hold-facts span, .hold-total span { color: var(--pos-muted); font-size: 11px; font-weight: 700; }
+.hold-facts strong { color: var(--pos-ink); font-size: 14px; }
+.hold-total { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; min-height: 74px; padding: 17px 18px; border: 1px solid var(--pos-line); border-radius: 10px; background: #f8faf8; }
+.hold-total div { display: flex; flex-direction: column; gap: 8px; }
+.hold-total small { color: var(--pos-muted); font-size: 11px; }
+.hold-total strong { color: var(--pos-green); font-size: 21px; white-space: nowrap; }
+.hold-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 25px 31px 28px; border-top: 1px solid var(--pos-line); }
+.hold-footer button { min-height: 47px; padding: 8px 17px; border-radius: 9px; font-size: 13px; font-weight: 700; }
+.hold-cancel { min-width: 149px; border: 1px solid var(--pos-line); background: white; color: var(--pos-ink); }
+.hold-confirm { min-width: 207px; border: 1px solid var(--pos-green); background: var(--pos-green); color: white; }
+.hold-confirm i { margin-right: 8px; }
+@media (max-width: 600px) { .hold-header { padding: 22px; } .hold-header h4 { font-size: 19px; } .hold-body { padding: 22px; } .hold-footer { padding: 18px 22px; } .hold-footer button { flex: 1; min-width: 0; } .hold-total { flex-wrap: wrap; } }
 #paymentModel .modal-dialog { width: min(834px, calc(100vw - 32px)); margin: max(18px, calc((100vh - 738px)/2)) auto; }
 #paymentModel .modal-content { overflow: hidden; border: 0; border-radius: 16px; background: white; box-shadow: 0 22px 55px #102a2250; }
 #paymentModel .payment-header { min-height: 93px; padding: 26px 34px 15px; border-bottom: 1px solid var(--pos-line); }

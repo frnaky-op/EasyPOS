@@ -1273,9 +1273,23 @@ if (auth == undefined) {
 
     $("#hold").on("click", function () {
       if (cart.length != 0) {
-        $("#dueModal").modal("toggle");
+        const selectedCustomer = JSON.parse($("#customer").val() || "0");
+        $("#holdCustomerName").text(selectedCustomer && selectedCustomer.name ? selectedCustomer.name : "Client comptoir");
+        $("#holdItemCount").text(`${cart.length} ${cart.length === 1 ? "produit" : "produits"}`);
+        $("#holdTotalAmount").text(`${moneyFormat(Number(orderTotal).toFixed(2))} ${validator.unescape(settings.symbol)}`);
+        $("#dueModal").modal("show");
       } else {
         notiflix.Report.warning("Oops!", "There is nothing to hold!", "Ok");
+      }
+    });
+
+    $("#dueModal").on("shown.bs.modal", function () {
+      $("#refNumber").trigger("focus");
+    });
+    $("#refNumber").on("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        $("#confirmHold").trigger("click");
       }
     });
 
@@ -1304,6 +1318,11 @@ if (auth == undefined) {
       let paid =
         $("#payment").val() == "" ? "" : parseFloat(paymentAmount).toFixed(2);
       let change = paid === "" ? "" : changeAmount.toFixed(2);
+      if (status === 0) {
+        paid = "";
+        change = "";
+        paymentType = null;
+      }
       let refNumber = $("#refNumber").val();
       let orderNumber = holdOrder;
       let type = "";
@@ -1350,11 +1369,11 @@ if (auth == undefined) {
       }
 
       if (status == 0) {
-        if ($("#customer").val() == 0 && $("#refNumber").val() == "") {
+        if ($("#customer").val() == 0 && $("#refNumber").val().trim() == "") {
           notiflix.Report.warning(
-            "Reference Required!",
-            "You either need to select a customer <br> or enter a reference!",
-            "Ok",
+            "Référence requise",
+            "Sélectionnez un client ou saisissez une référence pour retrouver cette vente.",
+            "OK",
           );
           return;
         }
@@ -1474,7 +1493,7 @@ if (auth == undefined) {
         items: cart,
         date: currentTime,
         payment_type: type,
-        payment_info: $("#paymentInfo").val(),
+        payment_info: status === 0 ? "" : $("#paymentInfo").val(),
         total: orderTotal,
         paid: paid,
         change: change,
@@ -1503,6 +1522,7 @@ if (auth == undefined) {
           $(".loading").hide();
           $("#dueModal").modal("hide");
           $("#paymentModel").modal("hide");
+          $("#refNumber").val("");
           $(this).getHoldOrders();
           $(this).getCustomerOrders();
           $(this).renderTable(cart);
