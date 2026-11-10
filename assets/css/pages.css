@@ -73,14 +73,11 @@ margin-right: 30px;
 #newCategory,
 #Products,
 #productDetails,
-#Categories,
 #userModal,
-#holdOrdersModal,
-#customerModal,
 #orderModal,
 #settingsModal,
 #dueModal,
-#Users
+#stockAdjustModal
 {
 display:none;
 }
@@ -358,7 +355,7 @@ overflow-y:scroll
   color: #fff; 
 }
 
-#counter {
+.counter {
   /*text-align: center !important;
   margin-top: 10px;*/
   font-size: 32px;

@@ -1,0 +1,716 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "root",
+      "name": "20 · Utilisateurs | Compte utilisateur",
+      "x": 6400,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "1 Top bar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "2 Top bar line",
+      "x": 0,
+      "y": 55,
+      "width": 1440,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "3 Brand mark",
+      "x": 18,
+      "y": 11,
+      "width": 33,
+      "height": 33,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "4 Brand initial",
+      "characters": "E",
+      "x": 28,
+      "y": 16,
+      "size": 18,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "5 Brand",
+      "characters": "EasyPOS",
+      "x": 62,
+      "y": 17,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 125
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "6 Section badge",
+      "x": 205,
+      "y": 14,
+      "width": 128,
+      "height": 28,
+      "fill": "#E2F4EA",
+      "radius": 14
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "7 Section",
+      "characters": "Utilisateurs",
+      "x": 219,
+      "y": 21,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "8 Store",
+      "characters": "Droguerie Générale",
+      "x": 1180,
+      "y": 20,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 220
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "9 Page title",
+      "characters": "Utilisateurs",
+      "x": 34,
+      "y": 92,
+      "size": 25,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 600
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "10 Backdrop",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900,
+      "fill": "#102A22B0"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "11 Dialog",
+      "x": 326,
+      "y": 60,
+      "width": 788,
+      "height": 780,
+      "fill": "#FFFFFF",
+      "radius": 16,
+      "shadow": {
+        "color": "#071D1799",
+        "blur": 40,
+        "x": 0,
+        "y": 18
+      }
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "12 Icon box",
+      "x": 357,
+      "y": 91,
+      "width": 44,
+      "height": 44,
+      "fill": "#E2F4EA",
+      "radius": 10
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "13 Icon",
+      "characters": "✚",
+      "x": 368,
+      "y": 100,
+      "size": 22,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 25
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "14 Heading",
+      "characters": "Nouveau compte",
+      "x": 419,
+      "y": 89,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 510
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "15 Context",
+      "characters": "Définissez les informations et les accès de ce compte.",
+      "x": 419,
+      "y": 121,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 535
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "16 Close",
+      "x": 1054,
+      "y": 91,
+      "width": 30,
+      "height": 30,
+      "fill": "#EDF2EE",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "17 Close sign",
+      "characters": "×",
+      "x": 1062,
+      "y": 94,
+      "size": 20,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 20
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "18 Header line",
+      "x": 326,
+      "y": 157,
+      "width": 788,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "19 Field label Nom complet *",
+      "characters": "Nom complet *",
+      "x": 357,
+      "y": 183,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 354
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "20 Field Nom complet *",
+      "x": 357,
+      "y": 206,
+      "width": 354,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "21 Placeholder Nom complet *",
+      "characters": "Nom et prénom",
+      "x": 371,
+      "y": 222,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 326
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "22 Field label Identifiant *",
+      "characters": "Identifiant *",
+      "x": 729,
+      "y": 183,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 354
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "23 Field Identifiant *",
+      "x": 729,
+      "y": 206,
+      "width": 354,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "24 Placeholder Identifiant *",
+      "characters": "Identifiant de connexion",
+      "x": 743,
+      "y": 222,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 326
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "25 Field label Mot de passe *",
+      "characters": "Mot de passe *",
+      "x": 357,
+      "y": 278,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 354
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "26 Field Mot de passe *",
+      "x": 357,
+      "y": 301,
+      "width": 354,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "27 Placeholder Mot de passe *",
+      "characters": "Mot de passe",
+      "x": 371,
+      "y": 317,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 326
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "28 Field label Confirmation *",
+      "characters": "Confirmation *",
+      "x": 729,
+      "y": 278,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 354
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "29 Field Confirmation *",
+      "x": 729,
+      "y": 301,
+      "width": 354,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "30 Placeholder Confirmation *",
+      "characters": "Répéter le mot de passe",
+      "x": 743,
+      "y": 317,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 326
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "31 Permissions panel",
+      "x": 357,
+      "y": 389,
+      "width": 726,
+      "height": 320,
+      "fill": "#F8FAF8",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "32 Permission heading",
+      "characters": "Autorisations",
+      "x": 377,
+      "y": 409,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 300
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "33 Permission help",
+      "characters": "Sélectionnez les pages accessibles à cet utilisateur.",
+      "x": 377,
+      "y": 434,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 470
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "34 Check 0",
+      "x": 378,
+      "y": 477,
+      "width": 17,
+      "height": 17,
+      "fill": "#087A5C",
+      "radius": 4,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "35 Checkmark 0",
+      "characters": "✓",
+      "x": 381,
+      "y": 479,
+      "size": 11,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "36 Permission 0",
+      "characters": "Produits et stock",
+      "x": 407,
+      "y": 478,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 300
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "37 Check 1",
+      "x": 378,
+      "y": 519,
+      "width": 17,
+      "height": 17,
+      "fill": "#087A5C",
+      "radius": 4,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "38 Checkmark 1",
+      "characters": "✓",
+      "x": 381,
+      "y": 521,
+      "size": 11,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "39 Permission 1",
+      "characters": "Catégories",
+      "x": 407,
+      "y": 520,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 300
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "40 Check 2",
+      "x": 378,
+      "y": 561,
+      "width": 17,
+      "height": 17,
+      "fill": "#FFFFFF",
+      "radius": 4,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "41 Permission 2",
+      "characters": "Ventes et rapports",
+      "x": 407,
+      "y": 562,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 300
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "42 Check 3",
+      "x": 378,
+      "y": 603,
+      "width": 17,
+      "height": 17,
+      "fill": "#FFFFFF",
+      "radius": 4,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "43 Permission 3",
+      "characters": "Utilisateurs et accès",
+      "x": 407,
+      "y": 604,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 300
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "44 Check 4",
+      "x": 378,
+      "y": 645,
+      "width": 17,
+      "height": 17,
+      "fill": "#FFFFFF",
+      "radius": 4,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "45 Permission 4",
+      "characters": "Paramètres",
+      "x": 407,
+      "y": 646,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 300
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "46 Footer line",
+      "x": 326,
+      "y": 733,
+      "width": 788,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "47 Footer hint",
+      "characters": "* Champs obligatoires",
+      "x": 357,
+      "y": 771,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 230
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "48 Button Annuler",
+      "x": 813,
+      "y": 752,
+      "width": 119,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "49 Button label Annuler",
+      "characters": "Annuler",
+      "x": 821,
+      "y": 765,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 103,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "50 Button Enregistrer",
+      "x": 944,
+      "y": 752,
+      "width": 139,
+      "height": 42,
+      "fill": "#087A5C",
+      "radius": 8,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "51 Button label Enregistrer",
+      "characters": "Enregistrer",
+      "x": 952,
+      "y": 765,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 123,
+      "align": "CENTER"
+    }
+  ]
+}

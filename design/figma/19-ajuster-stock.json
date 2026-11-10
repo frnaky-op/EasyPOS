@@ -1,0 +1,607 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "root",
+      "name": "19 · Stock | Ajuster le stock",
+      "x": 4800,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "1 Top bar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "2 Top bar line",
+      "x": 0,
+      "y": 55,
+      "width": 1440,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "3 Brand mark",
+      "x": 18,
+      "y": 11,
+      "width": 33,
+      "height": 33,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "4 Brand initial",
+      "characters": "E",
+      "x": 28,
+      "y": 16,
+      "size": 18,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "5 Brand",
+      "characters": "EasyPOS",
+      "x": 62,
+      "y": 17,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 125
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "6 Section badge",
+      "x": 205,
+      "y": 14,
+      "width": 78,
+      "height": 28,
+      "fill": "#E2F4EA",
+      "radius": 14
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "7 Section",
+      "characters": "Stock",
+      "x": 219,
+      "y": 21,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "8 Store",
+      "characters": "Droguerie Générale",
+      "x": 1180,
+      "y": 20,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 220
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "9 Page title",
+      "characters": "Stock",
+      "x": 34,
+      "y": 92,
+      "size": 25,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 600
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "10 Backdrop",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900,
+      "fill": "#102A22B0"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "11 Dialog",
+      "x": 370,
+      "y": 132,
+      "width": 700,
+      "height": 636,
+      "fill": "#FFFFFF",
+      "radius": 16,
+      "shadow": {
+        "color": "#071D1799",
+        "blur": 40,
+        "x": 0,
+        "y": 18
+      }
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "12 Icon box",
+      "x": 401,
+      "y": 163,
+      "width": 44,
+      "height": 44,
+      "fill": "#E2F4EA",
+      "radius": 10
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "13 Icon",
+      "characters": "↕",
+      "x": 412,
+      "y": 171,
+      "size": 23,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 22
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "14 Heading",
+      "characters": "Ajuster le stock",
+      "x": 463,
+      "y": 161,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 480
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "15 Context",
+      "characters": "Enregistrez une entrée, une sortie ou un inventaire.",
+      "x": 463,
+      "y": 193,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 465
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "16 Close",
+      "x": 1010,
+      "y": 163,
+      "width": 30,
+      "height": 30,
+      "fill": "#EDF2EE",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "17 Close sign",
+      "characters": "×",
+      "x": 1018,
+      "y": 166,
+      "size": 20,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 20
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "18 Header line",
+      "x": 370,
+      "y": 229,
+      "width": 700,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "19 Field label Produit *",
+      "characters": "Produit *",
+      "x": 401,
+      "y": 255,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 638
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "20 Field Produit *",
+      "x": 401,
+      "y": 278,
+      "width": 638,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "21 Placeholder Produit *",
+      "characters": "Nom, référence ou code-barres",
+      "x": 415,
+      "y": 294,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 610
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "22 Product result",
+      "x": 401,
+      "y": 331,
+      "width": 638,
+      "height": 57,
+      "fill": "#F8FAF8",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "23 Result name",
+      "characters": "Tube PPR Ø20 · 4 m",
+      "x": 417,
+      "y": 345,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 380
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "24 Result stock",
+      "characters": "Stock actuel : 42",
+      "x": 831,
+      "y": 345,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 190,
+      "align": "RIGHT"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "25 Operation label",
+      "characters": "Opération",
+      "x": 401,
+      "y": 414,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 280
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "26 Button Entrée (+)",
+      "x": 401,
+      "y": 438,
+      "width": 203,
+      "height": 42,
+      "fill": "#087A5C",
+      "radius": 8,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "27 Button label Entrée (+)",
+      "characters": "Entrée (+)",
+      "x": 409,
+      "y": 451,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 187,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "28 Button Sortie (−)",
+      "x": 615,
+      "y": 438,
+      "width": 203,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "29 Button label Sortie (−)",
+      "characters": "Sortie (−)",
+      "x": 623,
+      "y": 451,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 187,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "30 Button Inventaire",
+      "x": 829,
+      "y": 438,
+      "width": 210,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "31 Button label Inventaire",
+      "characters": "Inventaire",
+      "x": 837,
+      "y": 451,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 194,
+      "align": "CENTER"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "32 Field label Quantité *",
+      "characters": "Quantité *",
+      "x": 401,
+      "y": 510,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 305
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "33 Field Quantité *",
+      "x": 401,
+      "y": 533,
+      "width": 305,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "34 Placeholder Quantité *",
+      "characters": "0",
+      "x": 415,
+      "y": 549,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 277
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "35 Field label Note (facultatif)",
+      "characters": "Note (facultatif)",
+      "x": 734,
+      "y": 510,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 305
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "36 Field Note (facultatif)",
+      "x": 734,
+      "y": 533,
+      "width": 305,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "37 Placeholder Note (facultatif)",
+      "characters": "Motif ou référence",
+      "x": 748,
+      "y": 549,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 277
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "38 Footer line",
+      "x": 370,
+      "y": 671,
+      "width": 700,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "39 Footer hint",
+      "characters": "Les mouvements sont visibles dans la page Stock.",
+      "x": 401,
+      "y": 708,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 380
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "40 Button Annuler",
+      "x": 782,
+      "y": 692,
+      "width": 115,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "41 Button label Annuler",
+      "characters": "Annuler",
+      "x": 790,
+      "y": 705,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 99,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "42 Button Enregistrer",
+      "x": 908,
+      "y": 692,
+      "width": 131,
+      "height": 42,
+      "fill": "#087A5C",
+      "radius": 8,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "43 Button label Enregistrer",
+      "characters": "Enregistrer",
+      "x": 916,
+      "y": 705,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 115,
+      "align": "CENTER"
+    }
+  ]
+}

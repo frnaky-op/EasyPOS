@@ -12,9 +12,6 @@ let fs = require("fs");
 let path = require("path");
 let moment = require("moment");
 let { ipcRenderer } = require("electron");
-let dotInterval = setInterval(function () {
-  $(".dot").text(".");
-}, 3000);
 let Store = require("electron-store");
 const remote = require("@electron/remote");
 const app = remote.app;
@@ -40,7 +37,6 @@ let auth;
 let holdOrder = 0;
 let vat = 0;
 let perms = null;
-let deleteId = 0;
 let paymentType = 0;
 let receipt = "";
 let totalVat = 0;
@@ -61,12 +57,9 @@ let categories = [];
 let holdOrderList = [];
 let customerOrderList = [];
 let ownUserEdit = null;
-let totalPrice = 0;
 let orderTotal = 0;
 let auth_error = "Incorrect username or password";
 let auth_empty = "Please enter a username and password";
-let holdOrderlocation = $("#renderHoldOrders");
-let customerOrderLocation = $("#renderCustomerOrders");
 let storage = new Store();
 let settings;
 let platform;
@@ -243,6 +236,9 @@ if (auth == undefined) {
       $(document).renderTable(cart);
 
       if (settings == undefined && auth != undefined) {
+        $("#app").val((platform && platform.app) || "Standalone Point of Sale");
+        if (platform && platform.ip) $("#ip").val(platform.ip);
+        if (platform && platform.till) $("#till").val(platform.till);
         $("#settingsModal").modal("show");
       } else {
         vat = parseFloat(validator.unescape(settings.percentage));
@@ -428,6 +424,9 @@ if (auth == undefined) {
       $("#stockProductId").val("");
       $("#stockProductResults,#stockCurrentQuantity,#stockAdjustError").empty();
       $("#stockAdjustMode").val(mode);
+      $(".stock-mode-buttons button").each(function () {
+        $(this).attr("aria-pressed", String($(this).data("mode") === mode));
+      });
       $("#stockAdjustTitle").text(mode === "count" ? "Nouvel inventaire" : "Ajuster le stock");
       $("#stockAdjustAmount").attr("min", mode === "count" ? 0 : 1);
       $("#stockAdjustModal").modal("show");
@@ -435,8 +434,14 @@ if (auth == undefined) {
     }
     $("#stockCountButton").on("click", () => openStockAdjust("count"));
     $("#stockAdjustButton").on("click", () => openStockAdjust("add"));
+    $(".stock-mode-buttons button").on("click", function () {
+      $("#stockAdjustMode").val($(this).data("mode")).trigger("change");
+    });
     $("#stockAdjustMode").on("change", function () {
       $("#stockAdjustAmount").attr("min", this.value === "count" ? 0 : 1);
+      $(".stock-mode-buttons button").each((_, button) => {
+        $(button).attr("aria-pressed", String($(button).data("mode") === this.value));
+      });
     });
     let stockSearchTimer;
     let stockSearchRequest;
@@ -893,7 +898,6 @@ if (auth == undefined) {
     function loadCategories() {
       return $.get(api + "categories/all", function (data) {
         allCategories = data;
-        loadCategoryList();
         renderCategoriesPage();
         $("#category,#categories").empty().append($("<option>", { value: "0", text: "Toutes les catégories" }));
         allCategories.forEach((category) => {
@@ -1528,8 +1532,7 @@ if (auth == undefined) {
           $("#dueModal").modal("hide");
           $("#paymentModel").modal("hide");
           $("#refNumber").val("");
-          $(this).getHoldOrders();
-          $(this).getCustomerOrders();
+          if (!$("#pending_view").prop("hidden")) loadPendingPage(pendingPage);
           $(this).renderTable(cart);
         },
 
@@ -1546,91 +1549,6 @@ if (auth == undefined) {
       $("#refNumber").val("");
       $("#change").text("").removeData("raw");
       $("#payment,#paymentText").val("");
-    };
-
-    $.get(api + "on-hold", function (data) {
-      holdOrderList = data;
-      holdOrderlocation.empty();
-      // clearInterval(dotInterval);
-      $(this).renderHoldOrders(holdOrderList, holdOrderlocation, 1);
-    });
-
-    $.fn.getHoldOrders = function () {
-      $.get(api + "on-hold", function (data) {
-        holdOrderList = data;
-        clearInterval(dotInterval);
-        holdOrderlocation.empty();
-        $(this).renderHoldOrders(holdOrderList, holdOrderlocation, 1);
-      });
-    };
-
-    $.fn.renderHoldOrders = function (data, renderLocation, orderType) {
-      $.each(data, function (index, order) {
-        $(this).calculatePrice(order);
-        renderLocation.append(
-          $("<div>", {
-            class:
-              orderType == 1 ? "col-md-3 order" : "col-md-3 customer-order",
-          }).append(
-            $("<a>").append(
-              $("<div>", { class: "card-box order-box" }).append(
-                $("<p>").append(
-                  $("<b>", { text: "Ref :" }),
-                  $("<span>", { text: order.ref_number, class: "ref_number" }),
-                  $("<br>"),
-                  $("<b>", { text: "Price :" }),
-                  $("<span>", {
-                    text: order.total,
-                    class: "label label-info",
-                    style: "font-size:14px;",
-                  }),
-                  $("<br>"),
-                  $("<b>", { text: "Items :" }),
-                  $("<span>", { text: order.items.length }),
-                  $("<br>"),
-                  $("<b>", { text: "Customer :" }),
-                  $("<span>", {
-                    text:
-                      order.customer != 0
-                        ? order.customer.name
-                        : "Walk in customer",
-                    class: "customer_name",
-                  }),
-                ),
-                $("<button>", {
-                  class: "btn btn-danger del",
-                  onclick:
-                    "$(this).deleteOrder(" + index + "," + orderType + ")",
-                }).append($("<i>", { class: "fa fa-trash" })),
-
-                $("<button>", {
-                  class: "btn btn-default",
-                  onclick:
-                    "$(this).orderDetails(" + index + "," + orderType + ")",
-                }).append($("<span>", { class: "fa fa-shopping-basket" })),
-
-                $("<button>", {
-                  class: "btn btn-success",
-                  title: "Mark as paid",
-                  onclick: "$(this).payOrder(" + index + "," + orderType + ")",
-                }).append($("<span>", { class: "fa fa-money" })),
-              ),
-            ),
-          ),
-        );
-      });
-    };
-
-    $.fn.calculatePrice = function (data) {
-      totalPrice = 0;
-      $.each(data.products, function (index, product) {
-        totalPrice += product.price * product.quantity;
-      });
-
-      let vat = (totalPrice * data.vat) / 100;
-      totalPrice = (totalPrice + vat - data.discount).toFixed(0);
-
-      return totalPrice;
     };
 
     $.fn.orderDetails = function (index, orderType) {
@@ -1718,75 +1636,6 @@ if (auth == undefined) {
         });
       }
       $(this).renderTable(cart);
-      $("#holdOrdersModal").modal("hide");
-      $("#customerModal").modal("hide");
-    };
-
-    $.fn.payOrder = function (index, orderType) {
-      $(this).orderDetails(index, orderType);
-      $("#paymentModel").modal("show");
-    };
-
-    $.fn.deleteOrder = function (index, type) {
-      switch (type) {
-        case 1:
-          deleteId = holdOrderList[index]._id;
-          break;
-        case 2:
-          deleteId = customerOrderList[index]._id;
-      }
-
-      let data = {
-        orderId: deleteId,
-      };
-      let diagOptions = {
-        title: "Delete order?",
-        text: "This will delete the order. Are you sure you want to delete!",
-        icon: "warning",
-        showCancelButton: true,
-        okButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        okButtonText: "Yes, delete it!",
-        cancelButtonText: "Cancel",
-      };
-
-      notiflix.Confirm.show(
-        diagOptions.title,
-        diagOptions.text,
-        diagOptions.okButtonText,
-        diagOptions.cancelButtonText,
-        () => {
-          $.ajax({
-            url: api + "delete",
-            type: "POST",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            cache: false,
-            success: function (data) {
-              $(this).getHoldOrders();
-              $(this).getCustomerOrders();
-
-              notiflix.Report.success(
-                "Deleted!",
-                "You have deleted the order!",
-                "Ok",
-              );
-            },
-            error: function (data) {
-              $(".loading").hide();
-            },
-          });
-        },
-      );
-    };
-
-    $.fn.getCustomerOrders = function () {
-      $.get(api + "customer-orders", function (data) {
-        //clearInterval(dotInterval);
-        customerOrderList = data;
-        customerOrderLocation.empty();
-        $(this).renderHoldOrders(customerOrderList, customerOrderLocation, 2);
-      });
     };
 
     function getSelectedCustomerData() {
@@ -2313,7 +2162,6 @@ if (auth == undefined) {
       user_index = index;
       ownUserEdit = String(allUsers[index]._id) === String(user._id);
 
-      $("#Users").modal("hide");
 
       $(".perms").show();
       $("#saveUser").get(0).reset();
@@ -2338,7 +2186,6 @@ if (auth == undefined) {
     };
 
     $.fn.editCategory = function (index) {
-      $("#Categories").modal("hide");
       $("#categoryName").val(validator.unescape(String(allCategories[index].name)));
       $("#category_id").val(allCategories[index]._id);
       $("#categoryEditorError").text("");
@@ -2428,10 +2275,6 @@ if (auth == undefined) {
 
     $("#productModal").on("click", function () {
       loadProductList();
-    });
-
-    $("#categoryModal").on("click", function () {
-      loadCategoryList();
     });
 
     function loadUserList() {
@@ -2675,34 +2518,6 @@ if (auth == undefined) {
     $("#productListPrevious").on("click", () => loadProductList(listPage - 1));
     $("#productListNext").on("click", () => loadProductList(listPage + 1));
 
-    function loadCategoryList() {
-      let category_list = "";
-      let counter = 0;
-      $("#category_list").empty();
-      $("#categoryList").DataTable().destroy();
-
-      allCategories.forEach((category, index) => {
-        counter++;
-
-        category_list += `<tr>
-     
-            <td>${category.name}</td>
-            <td><span class="btn-group"><button onClick="$(this).editCategory(${index})" class="btn btn-warning"><i class="fa fa-edit"></i></button><button onClick="$(this).deleteCategory(${category._id})" class="btn btn-danger"><i class="fa fa-trash"></i></button></span></td></tr>`;
-      });
-
-      if (counter == allCategories.length) {
-        $("#category_list").html(category_list);
-        $("#categoryList").DataTable({
-          autoWidth: false,
-          info: true,
-          JQueryUI: true,
-          ordering: true,
-          paging: false,
-        });
-      }
-    }
-
-
     $("#log-out").on("click", function () {
       const diagOptions = {
         title: "Are you sure?",
@@ -2726,88 +2541,60 @@ if (auth == undefined) {
       );
     });
 
-    $("#settings_form").on("submit", function (e) {
-      e.preventDefault();
-      let formData = $(this).serializeObject();
-      let mac_address;
-
-      api = "http://" + host + ":" + port + "/api/";
-
-      macaddress.one(function (err, mac) {
-        mac_address = mac;
-      });
-      const appChoice = $("#app").find("option:selected").text();
-    
-      formData["app"] = appChoice;
-      formData["mac"] = mac_address;
-      formData["till"] = 1;
-
-      // Update application field in settings form
-      let $appField = $("#settings_form input[name='app']");
-      let $hiddenAppField = $('<input>', {
-        type: 'hidden',
-        name: 'app',
-        value: formData.app
-    });
-        $appField.length 
-            ? $appField.val(formData.app) 
-            : $("#settings_form").append(`<input type="hidden" name="app" value="${$hiddenAppField}" />`);
-
-
-      if (formData.percentage != "" && typeof formData.percentage === 'number') {
-        notiflix.Report.warning(
-          "Oops!",
-          "Please make sure the tax value is a number",
-          "Ok",
-        );
-      } else {
-        storage.set("settings", formData);
-
-        $(this).attr("action", api + "settings/post");
-        $(this).attr("method", "POST");
-
-        $(this).ajaxSubmit({
-          contentType: "application/json",
+    $("#settings_form").on("submit", function (event) {
+      event.preventDefault();
+      const data = new FormData(this);
+      const appChoice = $("#app").val();
+      const percentage = Number(data.get("percentage"));
+      const error = $("#storeSettingsError").text("");
+      if (!Number.isFinite(percentage) || percentage < 0 || percentage > 100) {
+        error.text("Saisissez un taux de TVA entre 0 et 100.");
+        return;
+      }
+      data.set("app", appChoice);
+      const button = $("#saveStoreSettings").prop("disabled", true);
+      macaddress.one((macError, mac) => {
+        $.ajax({
+          url: api + "settings/post", type: "POST", data,
+          processData: false, contentType: false,
           success: function () {
+            storage.set("settings", { app: appChoice, mac: macError ? "" : (mac || ""), till: 1, port });
             ipcRenderer.send("app-reload", "");
           },
-          error: function (jqXHR) {
-            console.error(jqXHR.responseJSON.message);
-            notiflix.Report.failure(
-              jqXHR.responseJSON.error,
-              jqXHR.responseJSON.message,
-              "Ok",
-            );
-      }
+          error: response => error.text(response.responseJSON?.message || "Enregistrement impossible. Réessayez."),
+          complete: () => button.prop("disabled", false),
+        });
+      });
     });
+
+    $("#net_settings_form").on("submit", function (event) {
+      event.preventDefault();
+      const ip = $("#ip").val().trim();
+      const till = Number($("#till").val());
+      const error = $("#networkSettingsError").text("");
+      if (!ip) return error.text("Saisissez l’adresse IP du serveur.");
+      if (!Number.isSafeInteger(till) || till < 2) return error.text("Le numéro de caisse doit être un entier supérieur à 1.");
+      storage.set("settings", { app: $("#app").val(), ip, till, mac: $("#mac").val(), port });
+      ipcRenderer.send("app-reload", "");
+    });
+
+    function updateAdvancedMode() {
+      const terminal = $("#app").val() === "Network Point of Sale Terminal";
+      $("#settingsModal").toggleClass("network-mode", terminal);
+      $("#net_settings_form").toggle(terminal);
+      $("#settings_form").toggle(!terminal);
+      $("#settingsModalTitle").text(terminal ? "Configuration réseau" : settings ? "Configuration avancée" : "Configurer la boutique");
+      $("#settingsModalSubtitle").text(terminal
+        ? "Choisissez le mode de fonctionnement de cette caisse."
+        : settings ? "Modifiez les paramètres de la boutique." : "Renseignez les informations nécessaires à votre première vente.");
     }
-  });
-
-    $("#net_settings_form").on("submit", function (e) {
-      e.preventDefault();
-      let formData = $(this).serializeObject();
-
-      if (formData.till == 0 || formData.till == 1) {
-        notiflix.Report.warning(
-          "Oops!",
-          "Please enter a number greater than 1.",
-          "Ok",
-        );
-      } else {
-        if (isNumeric(formData.till)) {
-          formData["app"] = $("#app").find("option:selected").text();
-          formData["port"] = port;
-          storage.set("settings", formData);
-          ipcRenderer.send("app-reload", "");
-        } else {
-          notiflix.Report.warning(
-            "Oops!",
-            "Till number must be a number!",
-            "Ok",
-          );
-        }
+    $("#app").on("change", function () {
+      updateAdvancedMode();
+      if (this.value === "Network Point of Sale Terminal") {
+        macaddress.one((error, mac) => { if (!error) $("#mac").val(mac); });
       }
     });
+    $("#settingsModal").on("show.bs.modal", updateAdvancedMode);
 
     $("#saveUser").on("submit", function (e) {
       e.preventDefault();
@@ -2835,24 +2622,9 @@ if (auth == undefined) {
       });
     });
 
-    $("#app").on("change", function () {
-      if (
-        $(this).find("option:selected").text() ==
-        "Network Point of Sale Terminal"
-      ) {
-        $("#net_settings_form").show(500);
-        $("#settings_form").hide(500);
-        macaddress.one(function (err, mac) {
-          $("#mac").val(mac);
-        });
-      } else {
-        $("#net_settings_form").hide(500);
-        $("#settings_form").show(500);
-      }
-    });
-
     $("#cashier").on("click", function () {
       ownUserEdit = true;
+      $(".perms").hide();
       $("#saveUser").get(0).reset();
       $("#userModal").modal("show");
 
@@ -2888,64 +2660,29 @@ if (auth == undefined) {
     });
 
     $("#settings").on("click", function () {
-      if (platform.app == "Network Point of Sale Terminal") {
-        $("#net_settings_form").show(500);
-        $("#settings_form").hide(500);
-
-        $("#ip").val(platform.ip);
-        $("#till").val(platform.till);
-        if (platform.port) {
-          port = platform.port;
-        }
-
-        macaddress.one(function (err, mac) {
-          $("#mac").val(mac);
-        });
-
-        $("#app option")
-          .filter(function () {
-            return $(this).text() == platform.app;
-          })
-          .prop("selected", true);
-      } else {
-        $("#net_settings_form").hide(500);
-        $("#settings_form").show(500);
-
-        $("#settings_id").val("1");
-        $("#store").val(validator.unescape(settings.store));
-        $("#address_one").val(validator.unescape(settings.address_one));
-        $("#address_two").val(validator.unescape(settings.address_two));
-        $("#contact").val(validator.unescape(settings.contact));
-        $("#tax").val(validator.unescape(settings.tax));
-        $("#symbol").val(validator.unescape(settings.symbol));
-        $("#percentage").val(validator.unescape(settings.percentage));
-        $("#footer").val(validator.unescape(settings.footer));
-        $("#logo_img").val(validator.unescape(settings.img));
-        if (settings.charge_tax) {
-          $("#charge_tax").prop("checked", true);
-        } else {
-          $("#charge_tax").prop("checked", false);
-        }
-
-        if (settings.quick_billing) {
-          $("#quick_billing").prop("checked", true);
-        } else {
-          $("#quick_billing").prop("checked", false);
-        }
-        if (validator.unescape(settings.img) != "") {
-          $("#logoname").hide();
-          $("#current_logo").html(
-            `<img src="${img_path + validator.unescape(settings.img)}" alt="">`,
-          );
-          $("#rmv_logo").show();
-        }
-
-        $("#app option")
-          .filter(function () {
-            return $(this).text() == validator.unescape(settings.app);
-          })
-          .prop("selected", true);
+      $("#app").val((platform && platform.app) || (settings && validator.unescape(String(settings.app))) || "Standalone Point of Sale");
+      $("#networkSettingsError,#storeSettingsError").text("");
+      if (platform) {
+        $("#ip").val(platform.ip || "");
+        $("#till").val(platform.till || 2);
+        if (platform.port) port = platform.port;
       }
+      macaddress.one((error, mac) => { if (!error) $("#mac").val(mac); });
+      if (settings) {
+        $("#settings_id").val("1");
+        for (const field of ["store", "address_one", "address_two", "contact", "tax", "symbol", "percentage", "footer"]) {
+          $("#" + field).val(validator.unescape(String(settings[field] || "")));
+        }
+        $("#logo_img").val(validator.unescape(String(settings.img || "")));
+        $("#charge_tax").prop("checked", Boolean(settings.charge_tax));
+        $("#quick_billing").prop("checked", Boolean(settings.quick_billing));
+        const hasLogo = Boolean(settings.img);
+        $("#logoname").toggle(!hasLogo);
+        $("#rmv_logo").toggle(hasLogo);
+        $("#current_logo").empty();
+        if (hasLogo) $("#current_logo").append($("<img>", { src: path.join(img_path, validator.unescape(String(settings.img))), alt: "Logo actuel" }));
+      }
+      updateAdvancedMode();
     });
  });
 
@@ -3046,10 +2783,10 @@ function loadTransactions() {
                     `;
 
         if (counter == transactions.length) {
-          $("#total_sales #counter").text(
+          $("#total_sales .counter").text(
             validator.unescape(settings.symbol) + moneyFormat(parseFloat(sales).toFixed(2)),
           );
-          $("#total_transactions #counter").text(transact);
+          $("#total_transactions .counter").text(transact);
 
           const result = {};
 
@@ -3143,8 +2880,8 @@ function loadSoldProducts() {
             }</td>
             </tr>`;
       });
-      $("#total_items #counter").text(items);
-      $("#total_products #counter").text(sold.length);
+      $("#total_items .counter").text(items);
+      $("#total_products .counter").text(sold.length);
       $("#product_sales").html(soldList);
     },
   });

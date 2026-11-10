@@ -1,0 +1,1281 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "root",
+      "name": "16 · Commandes en attente | Vue opérationnelle",
+      "x": 0,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "1 Top bar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "2 Top bar line",
+      "x": 0,
+      "y": 55,
+      "width": 1440,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "3 Brand mark",
+      "x": 18,
+      "y": 11,
+      "width": 33,
+      "height": 33,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "4 Brand initial",
+      "characters": "E",
+      "x": 28,
+      "y": 16,
+      "size": 18,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "5 Brand",
+      "characters": "EasyPOS",
+      "x": 62,
+      "y": 17,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 125
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "6 Section badge",
+      "x": 205,
+      "y": 14,
+      "width": 101,
+      "height": 28,
+      "fill": "#E2F4EA",
+      "radius": 14
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "7 Section",
+      "characters": "Commandes",
+      "x": 219,
+      "y": 21,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "8 Store",
+      "characters": "Droguerie Générale",
+      "x": 1180,
+      "y": 20,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 220
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "9 Page title",
+      "characters": "Commandes en attente",
+      "x": 34,
+      "y": 92,
+      "size": 25,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 650
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "10 Page description",
+      "characters": "Retrouvez une vente, reprenez son panier ou passez à l’encaissement.",
+      "x": 34,
+      "y": 131,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 780
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "11 Primary action",
+      "x": 1210,
+      "y": 91,
+      "width": 196,
+      "height": 39,
+      "fill": "#087A5C",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "12 Primary action label",
+      "characters": "↻  Actualiser",
+      "x": 1222,
+      "y": 103,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 172,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "13 Tabs base",
+      "x": 34,
+      "y": 170,
+      "width": 520,
+      "height": 40,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "14 All tab",
+      "x": 38,
+      "y": 174,
+      "width": 132,
+      "height": 32,
+      "fill": "#E2F4EA",
+      "radius": 7
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "15 All tab label",
+      "characters": "Toutes",
+      "x": 52,
+      "y": 184,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "16 Hold tab label",
+      "characters": "Ventes en attente",
+      "x": 184,
+      "y": 184,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 165
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "17 Customer tab label",
+      "characters": "Commandes clients",
+      "x": 366,
+      "y": 184,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 175
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "18 Search",
+      "x": 968,
+      "y": 170,
+      "width": 438,
+      "height": 40,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "19 Search placeholder",
+      "characters": "⌕  Référence, client ou numéro",
+      "x": 984,
+      "y": 182,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "20 Orders card",
+      "x": 34,
+      "y": 229,
+      "width": 925,
+      "height": 573,
+      "fill": "#FFFFFF",
+      "radius": 11,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "21 Table header",
+      "x": 50,
+      "y": 248,
+      "width": 893,
+      "height": 40,
+      "fill": "#F4F7F5",
+      "radius": 6
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "22 Header RÉFÉRENCE",
+      "characters": "RÉFÉRENCE",
+      "x": 65,
+      "y": 262,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 140
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "23 Header CLIENT",
+      "characters": "CLIENT",
+      "x": 267,
+      "y": 262,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 140
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "24 Header DATE",
+      "characters": "DATE",
+      "x": 463,
+      "y": 262,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 140
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "25 Header ARTICLES",
+      "characters": "ARTICLES",
+      "x": 641,
+      "y": 262,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 140
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "26 Header TOTAL",
+      "characters": "TOTAL",
+      "x": 757,
+      "y": 262,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 140
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "27 Header ACTION",
+      "characters": "ACTION",
+      "x": 858,
+      "y": 262,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 140
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "28 Row divider 0",
+      "x": 50,
+      "y": 354,
+      "width": 893,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "29 Order 0 cell 0",
+      "characters": "CHANTIER-042",
+      "x": 65,
+      "y": 314,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 190
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "30 Order 0 cell 1",
+      "characters": "Mohamed El Amrani",
+      "x": 267,
+      "y": 314,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 180
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "31 Order 0 cell 2",
+      "characters": "10/11/2026 14:35",
+      "x": 463,
+      "y": 314,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "32 Order 0 cell 3",
+      "characters": "3 articles",
+      "x": 641,
+      "y": 314,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "33 Order 0 cell 4",
+      "characters": "285,50 MAD",
+      "x": 757,
+      "y": 314,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 100
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "34 Order 0 action",
+      "characters": "Voir →",
+      "x": 864,
+      "y": 314,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 70
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "35 Row divider 1",
+      "x": 50,
+      "y": 422,
+      "width": 893,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "36 Order 1 cell 0",
+      "characters": "CMD-105",
+      "x": 65,
+      "y": 382,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 190
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "37 Order 1 cell 1",
+      "characters": "Client comptoir",
+      "x": 267,
+      "y": 382,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 180
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "38 Order 1 cell 2",
+      "characters": "10/11/2026 13:12",
+      "x": 463,
+      "y": 382,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "39 Order 1 cell 3",
+      "characters": "2 articles",
+      "x": 641,
+      "y": 382,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "40 Order 1 cell 4",
+      "characters": "129,00 MAD",
+      "x": 757,
+      "y": 382,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 100
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "41 Order 1 action",
+      "characters": "Voir →",
+      "x": 864,
+      "y": 382,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 70
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "42 Row divider 2",
+      "x": 50,
+      "y": 490,
+      "width": 893,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "43 Order 2 cell 0",
+      "characters": "OULED-ZIANE",
+      "x": 65,
+      "y": 450,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 190
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "44 Order 2 cell 1",
+      "characters": "S. Benali",
+      "x": 267,
+      "y": 450,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 180
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "45 Order 2 cell 2",
+      "characters": "09/11/2026 16:42",
+      "x": 463,
+      "y": 450,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "46 Order 2 cell 3",
+      "characters": "5 articles",
+      "x": 641,
+      "y": 450,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "47 Order 2 cell 4",
+      "characters": "790,00 MAD",
+      "x": 757,
+      "y": 450,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 100
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "48 Order 2 action",
+      "characters": "Voir →",
+      "x": 864,
+      "y": 450,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 70
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "49 Row divider 3",
+      "x": 50,
+      "y": 558,
+      "width": 893,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "50 Order 3 cell 0",
+      "characters": "DEVIS-018",
+      "x": 65,
+      "y": 518,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 190
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "51 Order 3 cell 1",
+      "characters": "Atlas Bâtiment",
+      "x": 267,
+      "y": 518,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 180
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "52 Order 3 cell 2",
+      "characters": "09/11/2026 11:20",
+      "x": 463,
+      "y": 518,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "53 Order 3 cell 3",
+      "characters": "4 articles",
+      "x": 641,
+      "y": 518,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "54 Order 3 cell 4",
+      "characters": "420,00 MAD",
+      "x": 757,
+      "y": 518,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 100
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "55 Order 3 action",
+      "characters": "Voir →",
+      "x": 864,
+      "y": 518,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 70
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "56 Row divider 4",
+      "x": 50,
+      "y": 626,
+      "width": 893,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "57 Order 4 cell 0",
+      "characters": "CLIENT-238",
+      "x": 65,
+      "y": 586,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 190
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "58 Order 4 cell 1",
+      "characters": "K. Berrada",
+      "x": 267,
+      "y": 586,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 180
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "59 Order 4 cell 2",
+      "characters": "08/11/2026 17:05",
+      "x": 463,
+      "y": 586,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "60 Order 4 cell 3",
+      "characters": "1 article",
+      "x": 641,
+      "y": 586,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "61 Order 4 cell 4",
+      "characters": "65,00 MAD",
+      "x": 757,
+      "y": 586,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 100
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "62 Order 4 action",
+      "characters": "Voir →",
+      "x": 864,
+      "y": 586,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 70
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "63 Pager",
+      "characters": "1–5 sur 18 commandes",
+      "x": 56,
+      "y": 760,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 230
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "64 Button Précédent",
+      "x": 725,
+      "y": 748,
+      "width": 100,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "65 Button label Précédent",
+      "characters": "Précédent",
+      "x": 733,
+      "y": 761,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 84,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "66 Button Suivant",
+      "x": 836,
+      "y": 748,
+      "width": 100,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "67 Button label Suivant",
+      "characters": "Suivant",
+      "x": 844,
+      "y": 761,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 84,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "68 Details panel",
+      "x": 975,
+      "y": 229,
+      "width": 431,
+      "height": 573,
+      "fill": "#FFFFFF",
+      "radius": 11,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "69 Details label",
+      "characters": "VENTE EN ATTENTE",
+      "x": 998,
+      "y": 253,
+      "size": 10,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 200
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "70 Details title",
+      "characters": "CHANTIER-042",
+      "x": 998,
+      "y": 282,
+      "size": 20,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 370
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "71 Details sub",
+      "characters": "Mohamed El Amrani · 10/11/2026",
+      "x": 998,
+      "y": 313,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 370
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "72 Details divider",
+      "x": 998,
+      "y": 344,
+      "width": 385,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "73 Details items heading",
+      "characters": "Produits de la commande",
+      "x": 998,
+      "y": 366,
+      "size": 13,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 345
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "74 Detail product 0",
+      "characters": "Tube PPR Ø20 · 4 m",
+      "x": 998,
+      "y": 397,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 230
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "75 Detail price 0",
+      "characters": "2 × 40,00",
+      "x": 1251,
+      "y": 397,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 132,
+      "align": "RIGHT"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "76 Detail line 0",
+      "x": 998,
+      "y": 428,
+      "width": 385,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "77 Detail product 1",
+      "characters": "Clé à molette 250 mm",
+      "x": 998,
+      "y": 445,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 230
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "78 Detail price 1",
+      "characters": "1 × 125,50",
+      "x": 1251,
+      "y": 445,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 132,
+      "align": "RIGHT"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "79 Detail line 1",
+      "x": 998,
+      "y": 476,
+      "width": 385,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "80 Detail product 2",
+      "characters": "Ruban PTFE 12 mm",
+      "x": 998,
+      "y": 493,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 230
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "81 Detail price 2",
+      "characters": "1 × 80,00",
+      "x": 1251,
+      "y": 493,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 132,
+      "align": "RIGHT"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "82 Detail line 2",
+      "x": 998,
+      "y": 524,
+      "width": 385,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "83 Details total label",
+      "characters": "Total",
+      "x": 998,
+      "y": 565,
+      "size": 13,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "84 Details total",
+      "characters": "285,50 MAD",
+      "x": 1217,
+      "y": 562,
+      "size": 18,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 166,
+      "align": "RIGHT"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "85 Button Reprendre",
+      "x": 998,
+      "y": 644,
+      "width": 181,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "86 Button label Reprendre",
+      "characters": "Reprendre",
+      "x": 1006,
+      "y": 657,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 165,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "87 Button Encaisser",
+      "x": 1190,
+      "y": 644,
+      "width": 193,
+      "height": 42,
+      "fill": "#087A5C",
+      "radius": 8,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "88 Button label Encaisser",
+      "characters": "Encaisser",
+      "x": 1198,
+      "y": 657,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 177,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "89 Button Supprimer",
+      "x": 998,
+      "y": 698,
+      "width": 385,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "90 Button label Supprimer",
+      "characters": "Supprimer",
+      "x": 1006,
+      "y": 711,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 369,
+      "align": "CENTER"
+    }
+  ]
+}

@@ -85,19 +85,19 @@
                     <div class="row text-center m-t-20" id="totals">
                         <div id="total_sales" class="col-md-3 py-2 bg-success">
                             <h5>SALES</h5>
-                            <span id="counter">0</span>
+                            <span class="counter">0</span>
                         </div>
                         <div id="total_transactions" class="col-md-3 py-2 bg-warning">
                             <h5>TRANSACTIONS</h5>
-                            <span id="counter">0</span>
+                            <span class="counter">0</span>
                         </div>
                         <div id="total_items" class="col-md-3 py-2 bg-info">
                             <h5>ITEMS SOLD</h5>
-                            <span id="counter">0</span>
+                            <span class="counter">0</span>
                         </div>
                         <div id="total_products" class="col-md-3 py-2 bg-success">
                             <h5>PRODUCTS</h5>
-                            <span id="counter">0</span>
+                            <span class="counter">0</span>
                         </div>
                     </div>
                     <div class="row p-t-10 p-b-10 bg-white m-t-10 m-b-20">
@@ -296,7 +296,21 @@
                 </div>
             </div>
         </div>
-        <div id="stockAdjustModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="stockAdjustTitle" aria-hidden="true"><div class="modal-dialog modal-sm"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button><h4 id="stockAdjustTitle" class="modal-title">Ajuster le stock</h4></div><div class="modal-body"><form id="stockAdjustForm"><div class="form-group"><label for="stockProductSearch">Produit</label><input type="search" id="stockProductSearch" class="form-control" placeholder="Nom, référence ou code-barres" autocomplete="off" required><div id="stockProductResults" class="stock-product-results"></div><input type="hidden" id="stockProductId" required></div><p id="stockCurrentQuantity" class="stock-current-quantity"></p><div class="form-group"><label for="stockAdjustMode">Opération</label><select id="stockAdjustMode" class="form-control"><option value="add">Entrée (+)</option><option value="remove">Sortie (−)</option><option value="count">Inventaire : quantité comptée</option></select></div><div class="form-group"><label for="stockAdjustAmount">Quantité</label><input type="number" id="stockAdjustAmount" class="form-control" min="0" step="1" required></div><div class="form-group"><label for="stockAdjustNote">Note (facultatif)</label><input type="text" id="stockAdjustNote" class="form-control" maxlength="200" placeholder="Motif ou référence"></div><div id="stockAdjustError" role="alert"></div><div class="stock-adjust-actions"><button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button><button type="submit" class="btn btn-primary">Enregistrer</button></div></form></div></div></div></div>
+        <div id="stockAdjustModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="stockAdjustTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document"><div class="modal-content">
+                <div class="stock-editor-header"><span class="stock-editor-icon" aria-hidden="true"><i class="fa fa-exchange"></i></span><div><h4 id="stockAdjustTitle">Ajuster le stock</h4><p>Enregistrez une entrée, une sortie ou un inventaire.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
+                <form id="stockAdjustForm">
+                    <div class="stock-editor-body">
+                        <div class="stock-editor-field"><label for="stockProductSearch">Produit *</label><input type="search" id="stockProductSearch" class="form-control" placeholder="Nom, référence ou code-barres" autocomplete="off" required><div id="stockProductResults" class="stock-product-results"></div><input type="hidden" id="stockProductId"></div>
+                        <p id="stockCurrentQuantity" class="stock-current-quantity"></p>
+                        <div class="stock-editor-field"><label for="stockAdjustMode">Opération</label><select id="stockAdjustMode" class="form-control" aria-label="Opération" hidden><option value="add">Entrée (+)</option><option value="remove">Sortie (−)</option><option value="count">Inventaire</option></select><div class="stock-mode-buttons" role="group" aria-label="Opération"><button type="button" data-mode="add" aria-pressed="true">Entrée (+)</button><button type="button" data-mode="remove" aria-pressed="false">Sortie (−)</button><button type="button" data-mode="count" aria-pressed="false">Inventaire</button></div></div>
+                        <div class="stock-editor-grid"><div class="stock-editor-field"><label for="stockAdjustAmount">Quantité *</label><input type="number" id="stockAdjustAmount" class="form-control" min="1" step="1" placeholder="0" required></div><div class="stock-editor-field"><label for="stockAdjustNote">Note (facultatif)</label><input type="text" id="stockAdjustNote" class="form-control" maxlength="200" placeholder="Motif ou référence"></div></div>
+                        <p id="stockAdjustError" role="alert"></p>
+                    </div>
+                    <div class="stock-editor-footer"><span>Les mouvements sont visibles dans la page Stock.</span><button type="button" class="stock-editor-cancel" data-dismiss="modal">Annuler</button><button type="submit" class="stock-editor-save">Enregistrer</button></div>
+                </form>
+            </div></div>
+        </div>
         <div id="dueModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="holdTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -536,140 +550,21 @@
                 </div>
             </div>
         </div>
-        <div id="Users" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Users
-                        </h4>
+        <div id="userModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userEditorTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document"><div class="modal-content">
+                <div class="account-editor-header"><span class="account-editor-icon" aria-hidden="true"><i class="fa fa-user-plus"></i></span><div><h4 id="userEditorTitle">Nouveau compte</h4><p>Définissez les informations et les accès de ce compte.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
+                <form id="saveUser"><input type="hidden" name="id" id="user_id">
+                    <div class="account-editor-body"><div class="account-editor-grid">
+                        <div class="account-editor-field"><label for="fullname">Nom complet *</label><input type="text" required name="fullname" id="fullname" class="form-control" placeholder="Nom et prénom" autocomplete="name"></div>
+                        <div class="account-editor-field"><label for="username">Identifiant *</label><input type="text" required name="username" id="username" class="form-control" placeholder="Identifiant de connexion" autocomplete="off"></div>
+                        <div class="account-editor-field"><label for="password">Mot de passe <span id="userPasswordHint">*</span></label><input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe" autocomplete="new-password"></div>
+                        <div class="account-editor-field"><label for="pass">Confirmer le mot de passe</label><input type="password" name="pass" id="pass" class="form-control" placeholder="Répéter le mot de passe" autocomplete="new-password"></div>
                     </div>
-                    <div class="modal-body p-20 p-r-20" id="all_userss">
-                        <table class="table table-bordered" id="userList">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="user_list"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="Categories" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Categories
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered" id="categoryList">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="category_list"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="userModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="userEditorTitle" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="userEditorTitle">Compte utilisateur
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="saveUser" data-parsley-validate>
-                            <input type="hidden" name="id" id="user_id">
-                            <div class="form-group">
-                                <label for="fullname">Nom complet *</label>
-                                <input type="text" required="required" name="fullname" parsley-trigger="change" placeholder="Nom et prénom" class="form-control" id="fullname">
-                            </div>
-                            <div class="form-group">
-                                <label for="username">Identifiant *</label>
-                                <input type="text" required name="username" parsley-trigger="change" placeholder="Identifiant de connexion" class="form-control" id="username" autocomplete="off">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Mot de passe <span id="userPasswordHint">*</span></label>
-                                <input type="password" name="password" parsley-trigger="change" placeholder="Mot de passe" class="form-control" id="password" autocomplete="new-password">
-                            </div>
-                            <div class="form-group">
-                                <label for="pass">Confirmer le mot de passe</label>
-                                <input type="password" name="pass" parsley-trigger="change" placeholder="Répéter le mot de passe" class="form-control" id="pass" autocomplete="new-password">
-                            </div>
-                            <div class="perms">
-                                <h3 class="m-t-20">Autorisations</h3>
-                                <hr>
-                                <div class="form-group">
-                                    <span><input type="checkbox" name="perm_products" id="perm_products"> Produits et stock</span>
-                                </div>
-                                <div class="form-group">
-                                    <span><input type="checkbox" name="perm_categories" id="perm_categories"> Catégories</span>
-                                </div>
-                                <div class="form-group">
-                                    <span><input type="checkbox" name="perm_transactions" id="perm_transactions"> Ventes et rapports</span>
-                                </div>
-                                <div class="form-group">
-                                    <span><input type="checkbox" name="perm_users" id="perm_users"> Utilisateurs et accès</span>
-                                </div>
-                                <div class="form-group">
-                                    <span><input type="checkbox" name="perm_settings" id="perm_settings"> Paramètres</span>
-                                </div>
-                            </div>
-                            <p id="userEditorMessage" class="user-editor-message" role="status" aria-live="polite"></p>
-                            <button type="submit" id="saveUserButton" class="btn btn-primary btn-block"><i class="fa fa-check"></i> Enregistrer le compte</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="holdOrdersModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="myLargeModalLabel">Open Orders</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" id="holdOrderInput" placeholder="Search order by reference" class="holdOrderInput form-control">
-                        <div class="holdOrderKeyboard"></div>
-                        <br>
-                        <div class="row" id="renderHoldOrders">
-                            <p>Please wait <span class="dot"></span> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="customerModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="myLargeModalLabel">Customer Orders</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="text" id="holdCustomerOrderInput" placeholder="Search order by customer name" class="holdCustomerOrderInput form-control">
-                        <div class="customerOrderKeyboard"></div>
-                        <br>
-                        <div class="row" id="renderCustomerOrders">
-                            <p>please wait <span class="dot"></span> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <section class="perms account-permissions"><h5>Autorisations</h5><p>Sélectionnez les pages accessibles à cet utilisateur.</p><label><input type="checkbox" name="perm_products" id="perm_products"> Produits et stock</label><label><input type="checkbox" name="perm_categories" id="perm_categories"> Catégories</label><label><input type="checkbox" name="perm_transactions" id="perm_transactions"> Ventes et rapports</label><label><input type="checkbox" name="perm_users" id="perm_users"> Utilisateurs et accès</label><label><input type="checkbox" name="perm_settings" id="perm_settings"> Paramètres</label></section>
+                    <p id="userEditorMessage" class="user-editor-message" role="alert"></p></div>
+                    <div class="account-editor-footer"><span>* Champs obligatoires</span><button type="button" class="account-editor-cancel" data-dismiss="modal">Annuler</button><button type="submit" id="saveUserButton" class="account-editor-save">Enregistrer</button></div>
+                </form>
+            </div></div>
         </div>
         <div id="orderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="receiptTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -684,122 +579,14 @@
                 </div>
             </div>
         </div>
-        <div id="settingsModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="mySmallModalLabel">Settings
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="form-group">
-                                    <label for="app">Application</label>
-                                    <select name="app" id="app" class="form-control">
-                                        <option value="Standalone Point of Sale">Standalone Point of Sale</option>
-                                        <option value="Network Point of Sale Terminal">Network Point of Sale Terminal</option>
-                                        <option value="Network Point of Sale Server">Network Point of Sale Server</option>
-                                    </select>
-                                </div>
-                                <form id="net_settings_form">
-                                    <div class="form-group">
-                                        <label for="ip">Server IP Address*</label>
-                                        <input type="text" required="required" placeholder="Enter the IP address of the admin computer." name="ip" class="form-control" id="ip">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label for="till">Till Number*</label>
-                                            <input type="text" required="required" placeholder="Enter a number" name="till" class="form-control" id="till">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="form-group">
-                                            <label for="mac">Hardware Identification Number </label>
-                                            <input type="text" required="required" name="mac" class="form-control" id="mac" readonly="readonly">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
-                                    </div>
-                                </form>
-                            </div>
-                            <form id="settings_form" encType="multipart/form-data">
-                                <input type="hidden" name="id" id="settings_id">
-                                <input type="hidden" name="img" id="logo_img">
-                                <input type="hidden" name="remove" id="remove_logo">
-                                <div class="container">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="userName">Store Name</label>
-                                            <input type="text" required="required" name="store" class="form-control" id="store" placeholder="Cool Pharmacy">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName">Address Line 1</label>
-                                            <input type="text" required="required" name="address_one" class="form-control" id="address_one" placeholder="123 Main Street, Building#">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName">Address Line 2</label>
-                                            <input type="text" required="required" name="address_two" class="form-control" id="address_two" placeholder="City, Country">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName">Contact Number</label>
-                                            <input type="tel" name="contact" class="form-control" id="contact" placeholder="0800 111 000">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName">Vat Number</label>
-                                            <input type="text" name="tax" parsley-trigger="change" class="form-control number-input" id="tax">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="userName">Currency Symbol</label>
-                                            <input type="text" required="required" name="symbol" class="form-control" id="symbol" minlength="1" maxlength="3" placeholder="USD">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName">Vat Percentage</label>
-                                            <div class="pull-left">
-                                                <div class="col-md-6">
-                                                    <div class="input-group" style="width:130%">
-                                                        <input type="number" min="0" max="100" required="required" name="percentage" class="form-control" id="percentage">
-                                                        <span class="input-group-addon">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br><br>
-                                        <div class="form-group">
-                                            <label><input type="checkbox" name="charge_tax" id="charge_tax"> Charge
-                                            Vat</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <label><input type="checkbox" name="quick_billing" id="quick_billing"> Quick Billing (skip payment confirmation)</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName"><span id="rmv_logo" class="btn btn-xs btn-warning">Remove</span> Logo </label>
-                                            <div id="current_logo"></div>
-                                            <input type="file" name="imagename" id="logoname" accept=".jpg,.jpeg,.png,.webp">
-                                            <small class="text-gray">
-                                            Max filesize: <strong>2MB</strong>; Allowed image types:<strong> jpeg, jpg, png or webp</strong></small>
-
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userName">Receipt Footer</label>
-                                            <textarea name="footer" class="form-control" id="footer"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input id="save_settings" type="submit" class="btn btn-success btn-block waves-effect waves-light" value="Save Settings">
-                                </div>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
+        <div id="settingsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document"><div class="modal-content">
+                <div class="advanced-header"><span class="advanced-icon" aria-hidden="true"><i class="fa fa-cog"></i></span><div><h4 id="settingsModalTitle">Configurer la boutique</h4><p id="settingsModalSubtitle">Renseignez les informations nécessaires à votre première vente.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
+                <div class="advanced-body"><div class="advanced-mode"><label for="app">Mode de l’application</label><select name="app" id="app" class="form-control"><option value="Standalone Point of Sale">Caisse autonome</option><option value="Network Point of Sale Terminal">Terminal réseau</option><option value="Network Point of Sale Server">Serveur réseau</option></select></div>
+                    <form id="net_settings_form" style="display:none"><div class="advanced-mode-info"><strong>Terminal connecté au serveur</strong><p>Cette caisse utilise la base de données de l’ordinateur principal.</p></div><div class="advanced-field"><label for="ip">Adresse IP du serveur *</label><input type="text" required name="ip" id="ip" class="form-control" placeholder="192.168.1.10" inputmode="decimal"></div><div class="advanced-grid"><div class="advanced-field"><label for="till">Numéro de caisse *</label><input type="number" required min="2" step="1" name="till" id="till" class="form-control" placeholder="2"></div><div class="advanced-field"><label for="mac">Identifiant matériel</label><input type="text" name="mac" id="mac" class="form-control" readonly placeholder="Détecté automatiquement"></div></div><p id="networkSettingsError" class="advanced-error" role="alert"></p><div class="advanced-footer"><span>Enregistrer la configuration redémarre l’application.</span><button type="button" class="advanced-cancel" data-dismiss="modal">Annuler</button><button type="submit" id="saveNetworkSettings" class="advanced-save">Enregistrer</button></div></form>
+                    <form id="settings_form" enctype="multipart/form-data"><input type="hidden" name="id" id="settings_id"><input type="hidden" name="img" id="logo_img"><input type="hidden" name="remove" id="remove_logo" value="0"><div class="advanced-store-heading">Informations de la boutique</div><div class="advanced-grid"><div class="advanced-field full"><label for="store">Nom de la boutique *</label><input type="text" required name="store" id="store" class="form-control" placeholder="Ex. Droguerie Générale"></div><div class="advanced-field"><label for="address_one">Adresse *</label><input type="text" required name="address_one" id="address_one" class="form-control" placeholder="Rue, quartier, numéro"></div><div class="advanced-field"><label for="address_two">Ville / complément *</label><input type="text" required name="address_two" id="address_two" class="form-control" placeholder="Ex. Casablanca"></div><div class="advanced-field"><label for="contact">Téléphone</label><input type="tel" name="contact" id="contact" class="form-control" placeholder="Ex. 05 22 00 00 00"></div><div class="advanced-field"><label for="tax">Identifiant fiscal</label><input type="text" name="tax" id="tax" class="form-control" placeholder="Facultatif"></div><div class="advanced-field"><label for="symbol">Devise *</label><input type="text" required name="symbol" id="symbol" class="form-control" maxlength="3" value="MAD"></div><div class="advanced-field"><label for="percentage">TVA par défaut (%) *</label><input type="number" required name="percentage" id="percentage" class="form-control" min="0" max="100" step="0.01" value="20"></div></div><div class="advanced-options"><strong>Options de vente</strong><label><input type="checkbox" name="charge_tax" id="charge_tax" checked> Ajouter la TVA aux ventes</label><label><input type="checkbox" name="quick_billing" id="quick_billing"> Encaissement rapide</label></div><details class="advanced-extra"><summary>Logo et pied de ticket</summary><div class="advanced-grid"><div class="advanced-field"><label for="logoname">Logo</label><div id="current_logo"></div><input type="file" name="imagename" id="logoname" accept=".jpg,.jpeg,.png,.webp"><button type="button" id="rmv_logo">Supprimer le logo</button></div><div class="advanced-field"><label for="footer">Pied de ticket</label><textarea name="footer" id="footer" class="form-control" rows="3"></textarea></div></div></details><div class="advanced-mode-info"><p>Le logo et le pied de ticket peuvent aussi être modifiés ensuite dans Paramètres.</p></div><p id="storeSettingsError" class="advanced-error" role="alert"></p><div class="advanced-footer"><span>* Champs obligatoires</span><button type="button" class="advanced-cancel" data-dismiss="modal">Annuler</button><button type="submit" id="saveStoreSettings" class="advanced-save">Enregistrer et continuer</button></div></form>
                 </div>
-            </div>
+            </div></div>
         </div>
     </div>
     <script src="assets/dist/js/bundle.min.js"></script>

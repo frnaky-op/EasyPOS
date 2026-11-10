@@ -1,0 +1,1198 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "root",
+      "name": "17 · Utilisateurs | Équipe et accès",
+      "x": 1600,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "1 Top bar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "2 Top bar line",
+      "x": 0,
+      "y": 55,
+      "width": 1440,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "3 Brand mark",
+      "x": 18,
+      "y": 11,
+      "width": 33,
+      "height": 33,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "4 Brand initial",
+      "characters": "E",
+      "x": 28,
+      "y": 16,
+      "size": 18,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "5 Brand",
+      "characters": "EasyPOS",
+      "x": 62,
+      "y": 17,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 125
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "6 Section badge",
+      "x": 205,
+      "y": 14,
+      "width": 128,
+      "height": 28,
+      "fill": "#E2F4EA",
+      "radius": 14
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "7 Section",
+      "characters": "Utilisateurs",
+      "x": 219,
+      "y": 21,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "8 Store",
+      "characters": "Droguerie Générale",
+      "x": 1180,
+      "y": 20,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 220
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "9 Page title",
+      "characters": "Utilisateurs",
+      "x": 34,
+      "y": 92,
+      "size": 25,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 650
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "10 Page description",
+      "characters": "Gérez les comptes et les accès à la caisse.",
+      "x": 34,
+      "y": 131,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 780
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "11 Primary action",
+      "x": 1210,
+      "y": 91,
+      "width": 196,
+      "height": 39,
+      "fill": "#087A5C",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "12 Primary action label",
+      "characters": "+  Nouveau compte",
+      "x": 1222,
+      "y": 103,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 172,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "13 Metric Comptes",
+      "x": 34,
+      "y": 169,
+      "width": 440,
+      "height": 94,
+      "fill": "#FFFFFF",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "14 Metric label Comptes",
+      "characters": "Comptes",
+      "x": 52,
+      "y": 187,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "15 Metric value Comptes",
+      "characters": "8",
+      "x": 52,
+      "y": 213,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "16 Metric Administrateurs",
+      "x": 500,
+      "y": 169,
+      "width": 440,
+      "height": 94,
+      "fill": "#FFFFFF",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "17 Metric label Administrateurs",
+      "characters": "Administrateurs",
+      "x": 518,
+      "y": 187,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "18 Metric value Administrateurs",
+      "characters": "2",
+      "x": 518,
+      "y": 213,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "19 Metric Sessions ouvertes",
+      "x": 966,
+      "y": 169,
+      "width": 440,
+      "height": 94,
+      "fill": "#FFFFFF",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "20 Metric label Sessions ouvertes",
+      "characters": "Sessions ouvertes",
+      "x": 984,
+      "y": 187,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "21 Metric value Sessions ouvertes",
+      "characters": "3",
+      "x": 984,
+      "y": 213,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "22 Team card",
+      "x": 34,
+      "y": 284,
+      "width": 1372,
+      "height": 518,
+      "fill": "#FFFFFF",
+      "radius": 11,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "23 Team heading",
+      "characters": "Équipe",
+      "x": 55,
+      "y": 307,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 260
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "24 Search",
+      "x": 999,
+      "y": 299,
+      "width": 383,
+      "height": 40,
+      "fill": "#F4F7F5",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "25 Search label",
+      "characters": "⌕  Rechercher par nom ou identifiant",
+      "x": 1015,
+      "y": 312,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 350
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "26 Table head",
+      "x": 55,
+      "y": 360,
+      "width": 1327,
+      "height": 43,
+      "fill": "#F4F7F5",
+      "radius": 6
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "27 Column UTILISATEUR",
+      "characters": "UTILISATEUR",
+      "x": 72,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "28 Column IDENTIFIANT",
+      "characters": "IDENTIFIANT",
+      "x": 437,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "29 Column ACCÈS",
+      "characters": "ACCÈS",
+      "x": 715,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "30 Column ÉTAT",
+      "characters": "ÉTAT",
+      "x": 976,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "31 Column ACTIONS",
+      "characters": "ACTIONS",
+      "x": 1200,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "32 Row divider 0",
+      "x": 55,
+      "y": 472,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "33 Avatar 0",
+      "x": 72,
+      "y": 422,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 17
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "34 Initials 0",
+      "characters": "AP",
+      "x": 80,
+      "y": 431,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 24
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "35 Name 0",
+      "characters": "Administrateur principal",
+      "x": 119,
+      "y": 432,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 265
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "36 Username 0",
+      "characters": "admin",
+      "x": 437,
+      "y": 433,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 205
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "37 Role pill 0",
+      "x": 715,
+      "y": 426,
+      "width": 130,
+      "height": 27,
+      "fill": "#EAF1FB",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "38 Role 0",
+      "characters": "Administrateur",
+      "x": 724,
+      "y": 434,
+      "size": 10,
+      "color": "#456C9B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "39 Status pill 0",
+      "x": 976,
+      "y": 426,
+      "width": 78,
+      "height": 27,
+      "fill": "#E2F4EA",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "40 Status 0",
+      "characters": "En ligne",
+      "x": 985,
+      "y": 434,
+      "size": 10,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "41 Edit 0",
+      "characters": "✎  Modifier",
+      "x": 1196,
+      "y": 433,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "42 Delete 0",
+      "characters": "🗑",
+      "x": 1316,
+      "y": 432,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 40
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "43 Row divider 1",
+      "x": 55,
+      "y": 542,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "44 Avatar 1",
+      "x": 72,
+      "y": 492,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 17
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "45 Initials 1",
+      "characters": "MB",
+      "x": 80,
+      "y": 501,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 24
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "46 Name 1",
+      "characters": "Mohamed Benali",
+      "x": 119,
+      "y": 502,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 265
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "47 Username 1",
+      "characters": "m.benali",
+      "x": 437,
+      "y": 503,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 205
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "48 Role pill 1",
+      "x": 715,
+      "y": 496,
+      "width": 76,
+      "height": 27,
+      "fill": "#EDF2EE",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "49 Role 1",
+      "characters": "Équipe",
+      "x": 724,
+      "y": 504,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "50 Status pill 1",
+      "x": 976,
+      "y": 496,
+      "width": 78,
+      "height": 27,
+      "fill": "#E2F4EA",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "51 Status 1",
+      "characters": "En ligne",
+      "x": 985,
+      "y": 504,
+      "size": 10,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "52 Edit 1",
+      "characters": "✎  Modifier",
+      "x": 1196,
+      "y": 503,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "53 Delete 1",
+      "characters": "🗑",
+      "x": 1316,
+      "y": 502,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 40
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "54 Row divider 2",
+      "x": 55,
+      "y": 612,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "55 Avatar 2",
+      "x": 72,
+      "y": 562,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 17
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "56 Initials 2",
+      "characters": "FA",
+      "x": 80,
+      "y": 571,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 24
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "57 Name 2",
+      "characters": "Fatima Ait",
+      "x": 119,
+      "y": 572,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 265
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "58 Username 2",
+      "characters": "f.ait",
+      "x": 437,
+      "y": 573,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 205
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "59 Role pill 2",
+      "x": 715,
+      "y": 566,
+      "width": 76,
+      "height": 27,
+      "fill": "#EDF2EE",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "60 Role 2",
+      "characters": "Équipe",
+      "x": 724,
+      "y": 574,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "61 Status pill 2",
+      "x": 976,
+      "y": 566,
+      "width": 78,
+      "height": 27,
+      "fill": "#EDF2EE",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "62 Status 2",
+      "characters": "Hors ligne",
+      "x": 985,
+      "y": 574,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "63 Edit 2",
+      "characters": "✎  Modifier",
+      "x": 1196,
+      "y": 573,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "64 Delete 2",
+      "characters": "🗑",
+      "x": 1316,
+      "y": 572,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 40
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "65 Row divider 3",
+      "x": 55,
+      "y": 682,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "66 Avatar 3",
+      "x": 72,
+      "y": 632,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 17
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "67 Initials 3",
+      "characters": "YA",
+      "x": 80,
+      "y": 641,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 24
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "68 Name 3",
+      "characters": "Youssef Amrani",
+      "x": 119,
+      "y": 642,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 265
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "69 Username 3",
+      "characters": "y.amrani",
+      "x": 437,
+      "y": 643,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 205
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "70 Role pill 3",
+      "x": 715,
+      "y": 636,
+      "width": 130,
+      "height": 27,
+      "fill": "#EAF1FB",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "71 Role 3",
+      "characters": "Administrateur",
+      "x": 724,
+      "y": 644,
+      "size": 10,
+      "color": "#456C9B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "72 Status pill 3",
+      "x": 976,
+      "y": 636,
+      "width": 78,
+      "height": 27,
+      "fill": "#EDF2EE",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "73 Status 3",
+      "characters": "Hors ligne",
+      "x": 985,
+      "y": 644,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "74 Edit 3",
+      "characters": "✎  Modifier",
+      "x": 1196,
+      "y": 643,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "75 Delete 3",
+      "characters": "🗑",
+      "x": 1316,
+      "y": 642,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 40
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "76 Row divider 4",
+      "x": 55,
+      "y": 752,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "77 Avatar 4",
+      "x": 72,
+      "y": 702,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 17
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "78 Initials 4",
+      "characters": "NB",
+      "x": 80,
+      "y": 711,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 24
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "79 Name 4",
+      "characters": "Nadia Berrada",
+      "x": 119,
+      "y": 712,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 265
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "80 Username 4",
+      "characters": "n.berrada",
+      "x": 437,
+      "y": 713,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 205
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "81 Role pill 4",
+      "x": 715,
+      "y": 706,
+      "width": 76,
+      "height": 27,
+      "fill": "#EDF2EE",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "82 Role 4",
+      "characters": "Équipe",
+      "x": 724,
+      "y": 714,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "83 Status pill 4",
+      "x": 976,
+      "y": 706,
+      "width": 78,
+      "height": 27,
+      "fill": "#E2F4EA",
+      "radius": 13
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "84 Status 4",
+      "characters": "En ligne",
+      "x": 985,
+      "y": 714,
+      "size": 10,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "85 Edit 4",
+      "characters": "✎  Modifier",
+      "x": 1196,
+      "y": 713,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 110
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "86 Delete 4",
+      "characters": "🗑",
+      "x": 1316,
+      "y": 712,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 40
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "87 List footer",
+      "characters": "5 comptes affichés sur 8",
+      "x": 55,
+      "y": 774,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 300
+    }
+  ]
+}

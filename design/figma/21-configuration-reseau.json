@@ -1,0 +1,561 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "root",
+      "name": "21 · Paramètres | Configuration réseau",
+      "x": 8000,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "1 Top bar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "2 Top bar line",
+      "x": 0,
+      "y": 55,
+      "width": 1440,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "3 Brand mark",
+      "x": 18,
+      "y": 11,
+      "width": 33,
+      "height": 33,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "4 Brand initial",
+      "characters": "E",
+      "x": 28,
+      "y": 16,
+      "size": 18,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "5 Brand",
+      "characters": "EasyPOS",
+      "x": 62,
+      "y": 17,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 125
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "6 Section badge",
+      "x": 205,
+      "y": 14,
+      "width": 110,
+      "height": 28,
+      "fill": "#E2F4EA",
+      "radius": 14
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "7 Section",
+      "characters": "Paramètres",
+      "x": 219,
+      "y": 21,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "8 Store",
+      "characters": "Droguerie Générale",
+      "x": 1180,
+      "y": 20,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 220
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "9 Page title",
+      "characters": "Paramètres",
+      "x": 34,
+      "y": 92,
+      "size": 25,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 600
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "10 Backdrop",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900,
+      "fill": "#102A22B0"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "11 Dialog",
+      "x": 400,
+      "y": 151,
+      "width": 640,
+      "height": 598,
+      "fill": "#FFFFFF",
+      "radius": 16,
+      "shadow": {
+        "color": "#071D1799",
+        "blur": 40,
+        "x": 0,
+        "y": 18
+      }
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "12 Icon box",
+      "x": 431,
+      "y": 182,
+      "width": 44,
+      "height": 44,
+      "fill": "#E2F4EA",
+      "radius": 10
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "13 Icon",
+      "characters": "⌁",
+      "x": 442,
+      "y": 190,
+      "size": 23,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 25
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "14 Heading",
+      "characters": "Configuration réseau",
+      "x": 493,
+      "y": 181,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 490
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "15 Context",
+      "characters": "Choisissez le mode de fonctionnement de cette caisse.",
+      "x": 493,
+      "y": 212,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 495
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "16 Close",
+      "x": 980,
+      "y": 182,
+      "width": 30,
+      "height": 30,
+      "fill": "#EDF2EE",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "17 Close sign",
+      "characters": "×",
+      "x": 988,
+      "y": 185,
+      "size": 20,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 20
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "18 Header line",
+      "x": 400,
+      "y": 248,
+      "width": 640,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "19 Mode label",
+      "characters": "Mode de l’application",
+      "x": 431,
+      "y": 275,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 420
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "20 Mode select",
+      "x": 431,
+      "y": 299,
+      "width": 578,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "21 Mode value",
+      "characters": "Terminal réseau",
+      "x": 446,
+      "y": 314,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 470
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "22 Chevron",
+      "characters": "⌄",
+      "x": 978,
+      "y": 307,
+      "size": 20,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 18
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "23 Mode info",
+      "x": 431,
+      "y": 365,
+      "width": 578,
+      "height": 65,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "24 Mode info title",
+      "characters": "Terminal connecté au serveur",
+      "x": 447,
+      "y": 379,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "25 Mode info text",
+      "characters": "Cette caisse utilise la base de données de l’ordinateur principal.",
+      "x": 447,
+      "y": 401,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 540
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "26 Field label Adresse IP du serveur *",
+      "characters": "Adresse IP du serveur *",
+      "x": 431,
+      "y": 456,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 578
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "27 Field Adresse IP du serveur *",
+      "x": 431,
+      "y": 479,
+      "width": 578,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "28 Placeholder Adresse IP du serveur *",
+      "characters": "192.168.1.10",
+      "x": 445,
+      "y": 495,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 550
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "29 Field label Numéro de caisse *",
+      "characters": "Numéro de caisse *",
+      "x": 431,
+      "y": 547,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 270
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "30 Field Numéro de caisse *",
+      "x": 431,
+      "y": 570,
+      "width": 270,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "31 Placeholder Numéro de caisse *",
+      "characters": "2",
+      "x": 445,
+      "y": 586,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 242
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "32 Field label Identifiant matériel",
+      "characters": "Identifiant matériel",
+      "x": 719,
+      "y": 547,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 290
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "33 Field Identifiant matériel",
+      "x": 719,
+      "y": 570,
+      "width": 290,
+      "height": 46,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "34 Placeholder Identifiant matériel",
+      "characters": "Détecté automatiquement",
+      "x": 733,
+      "y": 586,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 262
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "35 Footer line",
+      "x": 400,
+      "y": 657,
+      "width": 640,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "36 Reload note",
+      "characters": "Enregistrer la configuration redémarre l’application.",
+      "x": 431,
+      "y": 692,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 355
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "37 Button Annuler",
+      "x": 774,
+      "y": 676,
+      "width": 101,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "38 Button label Annuler",
+      "characters": "Annuler",
+      "x": 782,
+      "y": 689,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 85,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "39 Button Enregistrer",
+      "x": 887,
+      "y": 676,
+      "width": 122,
+      "height": 42,
+      "fill": "#087A5C",
+      "radius": 8,
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "40 Button label Enregistrer",
+      "characters": "Enregistrer",
+      "x": 895,
+      "y": 689,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 106,
+      "align": "CENTER"
+    }
+  ]
+}

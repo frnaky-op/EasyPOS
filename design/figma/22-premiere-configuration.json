@@ -1,0 +1,644 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "setup",
+      "name": "22 · Première configuration | Boutique",
+      "x": 9600,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "1 Backdrop",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900,
+      "fill": "#102A22B0"
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "2 Dialog",
+      "x": 280,
+      "y": 53,
+      "width": 880,
+      "height": 795,
+      "fill": "#FFFFFF",
+      "radius": 16,
+      "shadow": {
+        "color": "#071D1799",
+        "blur": 40,
+        "x": 0,
+        "y": 18
+      }
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "3 Icon",
+      "x": 311,
+      "y": 83,
+      "width": 44,
+      "height": 44,
+      "fill": "#E2F4EA",
+      "radius": 10
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "4 Icon glyph",
+      "characters": "⚙",
+      "x": 323,
+      "y": 92,
+      "size": 23,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 24
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "5 Title",
+      "characters": "Configurer la boutique",
+      "x": 373,
+      "y": 82,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 590
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "6 Subtitle",
+      "characters": "Renseignez les informations nécessaires à votre première vente.",
+      "x": 373,
+      "y": 114,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 680
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "7 Header line",
+      "x": 280,
+      "y": 149,
+      "width": 880,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "8 Mode heading",
+      "characters": "Mode de l’application",
+      "x": 311,
+      "y": 171,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 340
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "9 Mode input",
+      "x": 311,
+      "y": 194,
+      "width": 818,
+      "height": 43,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "10 Mode value",
+      "characters": "Caisse autonome",
+      "x": 326,
+      "y": 208,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 630
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "11 Mode arrow",
+      "characters": "⌄",
+      "x": 1097,
+      "y": 202,
+      "size": 21,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "12 Store section",
+      "characters": "Informations de la boutique",
+      "x": 311,
+      "y": 257,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 420
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "13 Store label",
+      "characters": "Nom de la boutique *",
+      "x": 311,
+      "y": 288,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 818
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "14 Store input",
+      "x": 311,
+      "y": 310,
+      "width": 818,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "15 Store placeholder",
+      "characters": "Ex. Droguerie Générale",
+      "x": 323,
+      "y": 324,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 794
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "16 Address label",
+      "characters": "Adresse *",
+      "x": 311,
+      "y": 371,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 395
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "17 Address input",
+      "x": 311,
+      "y": 393,
+      "width": 395,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "18 Address placeholder",
+      "characters": "Rue, quartier, numéro",
+      "x": 323,
+      "y": 407,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 371
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "19 City label",
+      "characters": "Ville / complément *",
+      "x": 734,
+      "y": 371,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 395
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "20 City input",
+      "x": 734,
+      "y": 393,
+      "width": 395,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "21 City placeholder",
+      "characters": "Ex. Casablanca",
+      "x": 746,
+      "y": 407,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 371
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "22 Phone label",
+      "characters": "Téléphone",
+      "x": 311,
+      "y": 454,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 395
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "23 Phone input",
+      "x": 311,
+      "y": 476,
+      "width": 395,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "24 Phone placeholder",
+      "characters": "Ex. 05 22 00 00 00",
+      "x": 323,
+      "y": 490,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 371
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "25 Tax label",
+      "characters": "Identifiant fiscal",
+      "x": 734,
+      "y": 454,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 395
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "26 Tax input",
+      "x": 734,
+      "y": 476,
+      "width": 395,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "27 Tax placeholder",
+      "characters": "Facultatif",
+      "x": 746,
+      "y": 490,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 371
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "28 Currency label",
+      "characters": "Devise *",
+      "x": 311,
+      "y": 537,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 395
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "29 Currency input",
+      "x": 311,
+      "y": 559,
+      "width": 395,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "30 Currency placeholder",
+      "characters": "MAD",
+      "x": 323,
+      "y": 573,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 371
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "31 VAT label",
+      "characters": "TVA par défaut (%) *",
+      "x": 734,
+      "y": 537,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 395
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "32 VAT input",
+      "x": 734,
+      "y": 559,
+      "width": 395,
+      "height": 42,
+      "fill": "#FFFFFF",
+      "radius": 8,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "33 VAT placeholder",
+      "characters": "20",
+      "x": 746,
+      "y": 573,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 371
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "34 Options heading",
+      "characters": "Options de vente",
+      "x": 311,
+      "y": 626,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 210
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "35 Tax check",
+      "x": 311,
+      "y": 651,
+      "width": 17,
+      "height": 17,
+      "fill": "#087A5C",
+      "radius": 4
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "36 Tax tick",
+      "characters": "✓",
+      "x": 314,
+      "y": 653,
+      "size": 11,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 14
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "37 Tax option",
+      "characters": "Ajouter la TVA aux ventes",
+      "x": 339,
+      "y": 652,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 270
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "38 Quick check",
+      "x": 612,
+      "y": 651,
+      "width": 17,
+      "height": 17,
+      "fill": "#FFFFFF",
+      "radius": 4,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "39 Quick option",
+      "characters": "Encaissement rapide",
+      "x": 640,
+      "y": 652,
+      "size": 11,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 260
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "40 Info panel",
+      "x": 311,
+      "y": 688,
+      "width": 818,
+      "height": 48,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "41 Info text",
+      "characters": "Le logo et le pied de ticket peuvent être ajoutés ensuite dans Paramètres.",
+      "x": 326,
+      "y": 704,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 770
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "42 Footer line",
+      "x": 280,
+      "y": 755,
+      "width": 880,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "43 Required",
+      "characters": "* Champs obligatoires",
+      "x": 311,
+      "y": 793,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 220
+    },
+    {
+      "op": "rect",
+      "parent": "@setup",
+      "name": "44 Save",
+      "x": 924,
+      "y": 775,
+      "width": 205,
+      "height": 49,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@setup",
+      "name": "45 Save label",
+      "characters": "✓  Enregistrer et continuer",
+      "x": 937,
+      "y": 792,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 178,
+      "align": "CENTER"
+    }
+  ]
+}

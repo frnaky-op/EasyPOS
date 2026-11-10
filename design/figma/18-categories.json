@@ -1,0 +1,1004 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "root",
+      "name": "18 · Catégories | Liste et organisation",
+      "x": 3200,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "1 Top bar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "2 Top bar line",
+      "x": 0,
+      "y": 55,
+      "width": 1440,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "3 Brand mark",
+      "x": 18,
+      "y": 11,
+      "width": 33,
+      "height": 33,
+      "fill": "#087A5C",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "4 Brand initial",
+      "characters": "E",
+      "x": 28,
+      "y": 16,
+      "size": 18,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 20
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "5 Brand",
+      "characters": "EasyPOS",
+      "x": 62,
+      "y": 17,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 125
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "6 Section badge",
+      "x": 205,
+      "y": 14,
+      "width": 110,
+      "height": 28,
+      "fill": "#E2F4EA",
+      "radius": 14
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "7 Section",
+      "characters": "Catégories",
+      "x": 219,
+      "y": 21,
+      "size": 12,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "8 Store",
+      "characters": "Droguerie Générale",
+      "x": 1180,
+      "y": 20,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Medium"
+      },
+      "width": 220
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "9 Page title",
+      "characters": "Catégories",
+      "x": 34,
+      "y": 92,
+      "size": 25,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 650
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "10 Page description",
+      "characters": "Organisez vos produits pour les retrouver rapidement à la caisse.",
+      "x": 34,
+      "y": 131,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 780
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "11 Primary action",
+      "x": 1210,
+      "y": 91,
+      "width": 196,
+      "height": 39,
+      "fill": "#087A5C",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "12 Primary action label",
+      "characters": "+  Nouvelle catégorie",
+      "x": 1222,
+      "y": 103,
+      "size": 12,
+      "color": "#FFFFFF",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 172,
+      "align": "CENTER"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "13 Metric Catégories",
+      "x": 34,
+      "y": 169,
+      "width": 440,
+      "height": 94,
+      "fill": "#FFFFFF",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "14 Metric label Catégories",
+      "characters": "Catégories",
+      "x": 52,
+      "y": 187,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "15 Metric value Catégories",
+      "characters": "12",
+      "x": 52,
+      "y": 213,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "16 Metric Produits classés",
+      "x": 500,
+      "y": 169,
+      "width": 440,
+      "height": 94,
+      "fill": "#FFFFFF",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "17 Metric label Produits classés",
+      "characters": "Produits classés",
+      "x": 518,
+      "y": 187,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "18 Metric value Produits classés",
+      "characters": "1 284",
+      "x": 518,
+      "y": 213,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "19 Metric Sans catégorie",
+      "x": 966,
+      "y": 169,
+      "width": 440,
+      "height": 94,
+      "fill": "#FFFFFF",
+      "radius": 10,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "20 Metric label Sans catégorie",
+      "characters": "Sans catégorie",
+      "x": 984,
+      "y": 187,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 390
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "21 Metric value Sans catégorie",
+      "characters": "18",
+      "x": 984,
+      "y": 213,
+      "size": 24,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 390
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "22 Categories card",
+      "x": 34,
+      "y": 284,
+      "width": 1372,
+      "height": 518,
+      "fill": "#FFFFFF",
+      "radius": 11,
+      "stroke": "#DDE8E1",
+      "strokeWeight": 1
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "23 List heading",
+      "characters": "Liste des catégories",
+      "x": 55,
+      "y": 307,
+      "size": 17,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 380
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "24 Search",
+      "x": 999,
+      "y": 299,
+      "width": 383,
+      "height": 40,
+      "fill": "#F4F7F5",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "25 Search label",
+      "characters": "⌕  Rechercher une catégorie",
+      "x": 1015,
+      "y": 312,
+      "size": 12,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 345
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "26 Table head",
+      "x": 55,
+      "y": 360,
+      "width": 1327,
+      "height": 43,
+      "fill": "#F4F7F5",
+      "radius": 6
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "27 Category column",
+      "characters": "CATÉGORIE",
+      "x": 72,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 300
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "28 Product count column",
+      "characters": "PRODUITS",
+      "x": 861,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "29 Action column",
+      "characters": "ACTIONS",
+      "x": 1188,
+      "y": 375,
+      "size": 10,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 150
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "30 Row divider 0",
+      "x": 55,
+      "y": 461,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "31 Category icon 0",
+      "x": 72,
+      "y": 419,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "32 Icon 0",
+      "characters": "#",
+      "x": 83,
+      "y": 427,
+      "size": 17,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 18
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "33 Category 0",
+      "characters": "Plomberie",
+      "x": 121,
+      "y": 429,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 360
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "34 Count 0",
+      "characters": "286 produits",
+      "x": 861,
+      "y": 429,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "35 Edit 0",
+      "characters": "✎  Modifier",
+      "x": 1188,
+      "y": 429,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "36 Delete 0",
+      "characters": "🗑",
+      "x": 1311,
+      "y": 429,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 35
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "37 Row divider 1",
+      "x": 55,
+      "y": 520,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "38 Category icon 1",
+      "x": 72,
+      "y": 478,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "39 Icon 1",
+      "characters": "#",
+      "x": 83,
+      "y": 486,
+      "size": 17,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 18
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "40 Category 1",
+      "characters": "Électricité",
+      "x": 121,
+      "y": 488,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 360
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "41 Count 1",
+      "characters": "248 produits",
+      "x": 861,
+      "y": 488,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "42 Edit 1",
+      "characters": "✎  Modifier",
+      "x": 1188,
+      "y": 488,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "43 Delete 1",
+      "characters": "🗑",
+      "x": 1311,
+      "y": 488,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 35
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "44 Row divider 2",
+      "x": 55,
+      "y": 579,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "45 Category icon 2",
+      "x": 72,
+      "y": 537,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "46 Icon 2",
+      "characters": "#",
+      "x": 83,
+      "y": 545,
+      "size": 17,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 18
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "47 Category 2",
+      "characters": "Peinture",
+      "x": 121,
+      "y": 547,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 360
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "48 Count 2",
+      "characters": "192 produits",
+      "x": 861,
+      "y": 547,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "49 Edit 2",
+      "characters": "✎  Modifier",
+      "x": 1188,
+      "y": 547,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "50 Delete 2",
+      "characters": "🗑",
+      "x": 1311,
+      "y": 547,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 35
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "51 Row divider 3",
+      "x": 55,
+      "y": 638,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "52 Category icon 3",
+      "x": 72,
+      "y": 596,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "53 Icon 3",
+      "characters": "#",
+      "x": 83,
+      "y": 604,
+      "size": 17,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 18
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "54 Category 3",
+      "characters": "Quincaillerie",
+      "x": 121,
+      "y": 606,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 360
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "55 Count 3",
+      "characters": "179 produits",
+      "x": 861,
+      "y": 606,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "56 Edit 3",
+      "characters": "✎  Modifier",
+      "x": 1188,
+      "y": 606,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "57 Delete 3",
+      "characters": "🗑",
+      "x": 1311,
+      "y": 606,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 35
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "58 Row divider 4",
+      "x": 55,
+      "y": 697,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "59 Category icon 4",
+      "x": 72,
+      "y": 655,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "60 Icon 4",
+      "characters": "#",
+      "x": 83,
+      "y": 663,
+      "size": 17,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 18
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "61 Category 4",
+      "characters": "Outillage",
+      "x": 121,
+      "y": 665,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 360
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "62 Count 4",
+      "characters": "145 produits",
+      "x": 861,
+      "y": 665,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "63 Edit 4",
+      "characters": "✎  Modifier",
+      "x": 1188,
+      "y": 665,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "64 Delete 4",
+      "characters": "🗑",
+      "x": 1311,
+      "y": 665,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 35
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "65 Row divider 5",
+      "x": 55,
+      "y": 756,
+      "width": 1327,
+      "height": 1,
+      "fill": "#DDE8E1"
+    },
+    {
+      "op": "rect",
+      "parent": "@root",
+      "name": "66 Category icon 5",
+      "x": 72,
+      "y": 714,
+      "width": 34,
+      "height": 34,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "67 Icon 5",
+      "characters": "#",
+      "x": 83,
+      "y": 722,
+      "size": 17,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 18
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "68 Category 5",
+      "characters": "Sanitaire",
+      "x": 121,
+      "y": 724,
+      "size": 12,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 360
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "69 Count 5",
+      "characters": "116 produits",
+      "x": 861,
+      "y": 724,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 160
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "70 Edit 5",
+      "characters": "✎  Modifier",
+      "x": 1188,
+      "y": 724,
+      "size": 11,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 105
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "71 Delete 5",
+      "characters": "🗑",
+      "x": 1311,
+      "y": 724,
+      "size": 11,
+      "color": "#A64D45",
+      "font": {
+        "family": "Inter",
+        "style": "Bold"
+      },
+      "width": 35
+    },
+    {
+      "op": "text",
+      "parent": "@root",
+      "name": "72 List footer",
+      "characters": "6 catégories affichées sur 12",
+      "x": 55,
+      "y": 774,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 320
+    }
+  ]
+}
