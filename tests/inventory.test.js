@@ -57,9 +57,23 @@ test('paid sales reduce stock once, including held orders', async () => {
       _id: 102, order: 102, status: 0, paid: '', total: '5.00',
       date: new Date().toISOString(), user: 'Test cashier', customer: '0',
       items: [{ id: product._id, product_name: 'Test product', quantity: 3 }],
+      ref_number: 'HOLD-102',
     };
     assert.equal((await sendOrder('POST', held)).status, 200);
     assert.equal(Number((await stock()).quantity), 8);
+    assert.equal((await sendOrder('POST', {
+      _id: 106, order: 106, status: 0, paid: '', total: '5.00', ref_number: '',
+      date: new Date().toISOString(), user: 'Test cashier', customer: { id: 201, name: 'Atlas Client' },
+      items: [{ id: product._id, product_name: 'Test product', quantity: 1 }],
+    })).status, 200);
+    const pendingAll = await fetch(`${base}/pending-orders/page?pageSize=1`).then(response => response.json());
+    assert.equal(pendingAll.total, 2);
+    assert.equal(pendingAll.items.length, 1);
+    const pendingHold = await fetch(`${base}/pending-orders/page?type=hold`).then(response => response.json());
+    assert.deepEqual(pendingHold.items.map(order => order._id), [102]);
+    const pendingCustomer = await fetch(`${base}/pending-orders/page?type=customer&q=Atlas`).then(response => response.json());
+    assert.deepEqual(pendingCustomer.items.map(order => order._id), [106]);
+    assert.equal((await fetch(`${base}/pending-orders/page?pageSize=101`)).status, 400);
     const settled = { ...held, status: 1, paid: '5.00' };
     assert.equal((await sendOrder('PUT', settled)).status, 200);
     assert.equal(Number((await stock()).quantity), 5);

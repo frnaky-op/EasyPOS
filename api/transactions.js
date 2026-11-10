@@ -201,6 +201,36 @@ app.get("/all", function (req, res) {
   });
 });
 
+app.get("/pending-orders/page", function (req, res) {
+  const page = Number(req.query.page || 1);
+  const pageSize = Number(req.query.pageSize || 25);
+  const type = String(req.query.type || "all");
+  const search = String(req.query.q || "").trim();
+  if (!Number.isSafeInteger(page) || page < 1 || !Number.isSafeInteger(pageSize) ||
+      pageSize < 1 || pageSize > 100 || !["all", "hold", "customer"].includes(type) || search.length > 100) {
+    return res.status(400).json({ message: "Invalid pending order page request." });
+  }
+  const hold = { ref_number: { $ne: "" } };
+  const customer = { $and: [{ customer: { $ne: "0" } }, { ref_number: "" }] };
+  const filters = [{ status: 0 }, type === "hold" ? hold : type === "customer" ? customer : { $or: [hold, customer] }];
+  if (search) {
+    const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(escaped, "i");
+    const terms = [{ ref_number: pattern }, { "customer.name": pattern }, { customer: pattern }];
+    if (/^\d+$/.test(search)) terms.push({ order: Number(search) });
+    filters.push({ $or: terms });
+  }
+  const query = { $and: filters };
+  transactionsDB.count(query, function (countErr, total) {
+    if (countErr) return res.status(500).json({ message: "Could not count pending orders." });
+    const currentPage = Math.min(page, Math.max(1, Math.ceil(total / pageSize)));
+    transactionsDB.find(query).sort({ date: -1, _id: -1 }).skip((currentPage - 1) * pageSize).limit(pageSize).exec(function (findErr, items) {
+      if (findErr) return res.status(500).json({ message: "Could not load pending orders." });
+      res.json({ items, total, page: currentPage, pageSize });
+    });
+  });
+});
+
 /**
  * GET endpoint: Get on-hold transactions.
  *

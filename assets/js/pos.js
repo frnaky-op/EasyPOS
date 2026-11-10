@@ -1908,7 +1908,7 @@ if (auth == undefined) {
       $("#receiving_view").prop("hidden", true);
       $("#clients_view").prop("hidden", true);
       $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view").prop("hidden", true);
+      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
       $("#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
       $("#pointofsale").show();
       $("#transactions_view").show();
@@ -1922,7 +1922,7 @@ if (auth == undefined) {
       $("#receiving_view").prop("hidden", true);
       $("#clients_view").prop("hidden", true);
       $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view").prop("hidden", true);
+      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
       $("#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
       $("#transactions").show();
       $("#transactions_view").hide();
@@ -1935,7 +1935,7 @@ if (auth == undefined) {
       $("#receiving_view").prop("hidden", true);
       $("#clients_view").prop("hidden", true);
       $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view").prop("hidden", true);
+      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
       $("#stock_view").prop("hidden", false);
       $("#pointofsale,#transactions,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
       $("#appSection").text("Stock");
@@ -1948,7 +1948,7 @@ if (auth == undefined) {
       $("#stock_view").prop("hidden", true);
       $("#clients_view").prop("hidden", true);
       $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view").prop("hidden", true);
+      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
       $("#receiving_view").prop("hidden", false);
       $("#pointofsale,#transactions,#stockPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
       $("#appSection").text("Achats");
@@ -1960,7 +1960,7 @@ if (auth == undefined) {
       $("#pos_view,#transactions_view").hide();
       $("#stock_view,#receiving_view").prop("hidden", true);
       $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view").prop("hidden", true);
+      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
       $("#clients_view").prop("hidden", false);
       $("#pointofsale,#transactions,#stockPage,#receivingPage,#settings,#categoryModal,#usersModal").show();
       $("#appSection").text("Clients");
@@ -1971,7 +1971,7 @@ if (auth == undefined) {
     $("#settings").on("click", function () {
       $("#pos_view,#transactions_view").hide();
       $("#stock_view,#receiving_view,#clients_view").prop("hidden", true);
-      $("#categories_view,#users_view").prop("hidden", true);
+      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
       $("#settings_view").prop("hidden", false);
       $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#categoryModal,#usersModal").show();
       $("#appSection").text("Paramètres");
@@ -1981,7 +1981,7 @@ if (auth == undefined) {
 
     $("#categoryModal").on("click", function () {
       $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#users_view").prop("hidden", true);
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#users_view,#pending_view").prop("hidden", true);
       $("#categories_view").prop("hidden", false);
       $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#settings,#usersModal").show();
       $("#appSection").text("Catégories");
@@ -1991,7 +1991,7 @@ if (auth == undefined) {
 
     $("#usersModal").on("click", function () {
       $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view").prop("hidden", true);
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#pending_view").prop("hidden", true);
       $("#users_view").prop("hidden", false);
       $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal").show();
       $("#appSection").text("Utilisateurs");
@@ -1999,17 +1999,123 @@ if (auth == undefined) {
       loadUserList();
     });
 
-    $("#viewRefOrders").on("click", function () {
-      setTimeout(function () {
-        $("#holdOrderInput").focus();
-      }, 500);
+    let pendingType = "all";
+    let pendingPage = 1;
+    let pendingPageCount = 1;
+    let pendingItems = [];
+    let selectedPendingId = null;
+    let pendingRequestToken = 0;
+    function pendingCustomerName(order) {
+      const customer = order.customer;
+      if (!customer || customer === "0") return "Client comptoir";
+      if (typeof customer === "object") return validator.unescape(String(customer.name || "Client"));
+      try { return validator.unescape(String(JSON.parse(customer).name || "Client")); }
+      catch (_) { return validator.unescape(String(customer)); }
+    }
+    function pendingMoney(value) {
+      const symbol = settings && settings.symbol ? validator.unescape(String(settings.symbol)) : "MAD";
+      return `${moneyFormat(Number(value || 0).toFixed(2))} ${symbol}`;
+    }
+    function openPendingOrder(order, pay) {
+      const isHold = Boolean(order.ref_number);
+      const orders = isHold ? holdOrderList : customerOrderList;
+      const index = orders.findIndex(candidate => String(candidate._id) === String(order._id));
+      if (index < 0) return $("#pendingMessage").text("Cette commande a changé. Actualisez la liste.");
+      $(document).orderDetails(index, isHold ? 1 : 2);
+      $("#pointofsale").trigger("click");
+      if (pay) $("#paymentModel").modal("show");
+    }
+    function renderPendingDetails(order) {
+      const panel = $("#pendingDetails").empty();
+      if (!order) {
+        panel.append($("<strong>", { text: "Sélectionnez une commande" }), $("<p>", { text: "Ses produits et ses actions apparaîtront ici." }));
+        return;
+      }
+      panel.append($("<span>", { class: "pending-detail-kind", text: order.ref_number ? "Vente en attente" : "Commande client" }));
+      panel.append($("<h2>", { text: order.ref_number || `Commande #${order.order || order._id}` }));
+      panel.append($("<p>", { text: `${pendingCustomerName(order)} · ${moment(order.date).isValid() ? moment(order.date).format("DD/MM/YYYY HH:mm") : "Date inconnue"}` }));
+      const list = $("<div>", { class: "pending-detail-lines" });
+      (Array.isArray(order.items) ? order.items : []).forEach(item => list.append($("<div>").append(
+        $("<span>", { text: validator.unescape(String(item.product_name || "Produit")) }),
+        $("<strong>", { text: `× ${item.quantity || 0}` }),
+      )));
+      panel.append(list, $("<div>", { class: "pending-detail-total" }).append($("<span>", { text: "Total" }), $("<strong>", { text: pendingMoney(order.total) })));
+      panel.append($("<div>", { class: "pending-detail-actions" }).append(
+        $("<button>", { type: "button", class: "pending-resume" }).append($("<i>", { class: "fa fa-shopping-cart" }), " Reprendre").on("click", () => openPendingOrder(order, false)),
+        $("<button>", { type: "button", class: "pending-charge" }).append($("<i>", { class: "fa fa-money" }), " Encaisser").on("click", () => openPendingOrder(order, true)),
+        $("<button>", { type: "button", class: "pending-delete" }).append($("<i>", { class: "fa fa-trash" }), " Supprimer").on("click", () => {
+          notiflix.Confirm.show("Supprimer la commande ?", "Cette commande en attente sera supprimée.", "Supprimer", "Annuler", () => {
+            $.ajax({ url: api + "delete", type: "POST", contentType: "application/json", data: JSON.stringify({ orderId: order._id }) })
+              .done(() => { selectedPendingId = null; loadPendingPage(pendingPage); })
+              .fail(() => $("#pendingMessage").text("Suppression impossible."));
+          });
+        }),
+      ));
+    }
+    function loadPendingPage(page = pendingPage) {
+      const token = ++pendingRequestToken;
+      $("#pendingMessage").text("Chargement des commandes…");
+      return $.get(api + "pending-orders/page", { page, pageSize: 25, type: pendingType, q: $("#pendingSearch").val() || "" }, function (result) {
+        if (token !== pendingRequestToken) return;
+        pendingPage = result.page;
+        pendingPageCount = Math.max(1, Math.ceil(result.total / result.pageSize));
+        pendingItems = result.items;
+        holdOrderList = pendingItems.filter(order => Boolean(order.ref_number));
+        customerOrderList = pendingItems.filter(order => !order.ref_number);
+        const first = result.total ? (result.page - 1) * result.pageSize + 1 : 0;
+        const last = first ? first + result.items.length - 1 : 0;
+        $("#pendingPageInfo").text(`${first}–${last} sur ${result.total} commandes`);
+        $("#pendingPrevious").prop("disabled", result.page <= 1);
+        $("#pendingNext").prop("disabled", result.page >= pendingPageCount);
+        const rows = $("#pendingRows").empty();
+        if (!result.items.length) rows.append($("<tr>").append($("<td>", { colspan: 6, class: "pending-empty", text: "Aucune commande trouvée." })));
+        result.items.forEach(order => rows.append($("<tr>", { class: String(order._id) === selectedPendingId ? "selected" : "" }).append(
+          $("<td>").append($("<strong>", { text: order.ref_number || `#${order.order || order._id}` }), $("<small>", { text: order.ref_number ? "Vente en attente" : "Commande client" })),
+          $("<td>", { text: pendingCustomerName(order) }),
+          $("<td>", { text: moment(order.date).isValid() ? moment(order.date).format("DD/MM/YYYY HH:mm") : "—" }),
+          $("<td>", { text: Array.isArray(order.items) ? order.items.length : 0 }),
+          $("<td>", { class: "pending-amount", text: pendingMoney(order.total) }),
+          $("<td>").append($("<button>", { type: "button", class: "pending-view", text: "Voir →" }).on("click", function () {
+            selectedPendingId = String(order._id);
+            rows.find("tr").removeClass("selected");
+            $(this).closest("tr").addClass("selected");
+            renderPendingDetails(order);
+          })),
+        )));
+        renderPendingDetails(result.items.find(order => String(order._id) === selectedPendingId));
+        $("#pendingMessage").text("");
+      }).fail((_, status) => {
+        if (status !== "abort" && token === pendingRequestToken) $("#pendingMessage").text("Impossible de charger les commandes.");
+      });
+    }
+    let pendingSearchTimer;
+    $("#pendingSearch").on("input", function () {
+      clearTimeout(pendingSearchTimer);
+      pendingSearchTimer = setTimeout(() => loadPendingPage(1), 250);
     });
-
-    $("#viewCustomerOrders").on("click", function () {
-      setTimeout(function () {
-        $("#holdCustomerOrderInput").focus();
-      }, 500);
+    $(".pending-tabs button").on("click", function () {
+      pendingType = $(this).data("type");
+      selectedPendingId = null;
+      $(".pending-tabs button").removeClass("active");
+      $(this).addClass("active");
+      loadPendingPage(1);
     });
+    $("#pendingPrevious").on("click", () => loadPendingPage(pendingPage - 1));
+    $("#pendingNext").on("click", () => loadPendingPage(pendingPage + 1));
+    $("#pendingRefresh").on("click", () => loadPendingPage(pendingPage));
+    function showPendingPage(type) {
+      $("#pos_view,#transactions_view").hide();
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view").prop("hidden", true);
+      $("#pending_view").prop("hidden", false);
+      $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
+      $("#appSection").text("Commandes");
+      pendingType = type;
+      selectedPendingId = null;
+      $(".pending-tabs button").removeClass("active").filter(`[data-type="${type}"]`).addClass("active");
+      loadPendingPage(1);
+    }
+    $("#viewRefOrders").on("click", () => showPendingPage("hold"));
+    $("#viewCustomerOrders").on("click", () => showPendingPage("customer"));
 
     $("#newProductModal").on("click", function () {
       $("#saveProduct").get(0).reset();

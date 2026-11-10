@@ -64,8 +64,8 @@
                 <button id="newProductModal" class="p_one" data-toggle="modal" data-target="#newProduct" type="button"><i class="fa fa-plus"></i> Ajouter un produit</button>
                 <button id="categoryModal" class="p_two" type="button"><i class="fa fa-tags"></i> Catégories</button>
                 <button id="newCategoryModal" class="p_two" data-toggle="modal" data-target="#newCategory" type="button"><i class="fa fa-plus"></i> Ajouter une catégorie</button>
-                <button id="viewRefOrders" data-toggle="modal" data-target="#holdOrdersModal" type="button"><i class="fa fa-bookmark"></i> Ventes en attente</button>
-                <button id="viewCustomerOrders" data-toggle="modal" data-target="#customerModal" type="button" onclick="$(this).getCustomerOrders()"><i class="fa fa-shopping-basket"></i> Commandes</button>
+                <button id="viewRefOrders" type="button"><i class="fa fa-bookmark"></i> Ventes en attente</button>
+                <button id="viewCustomerOrders" type="button"><i class="fa fa-shopping-basket"></i> Commandes</button>
                 <button id="transactions" class="p_three" type="button"><i class="fa fa-credit-card"></i> Ventes</button>
                 <button id="clientsPage" type="button"><i class="fa fa-address-book"></i> Clients</button>
                 <button id="usersModal" class="p_four" type="button"><i class="fa fa-users"></i> Utilisateurs</button>
@@ -184,6 +184,12 @@
                     </div>
                 </div>
                 </details>
+            </div>
+            <div id="pending_view" class="pending-page" hidden>
+                <div class="pending-page-head"><div><h1>Commandes en attente</h1><p>Retrouvez une vente, reprenez son panier ou passez à l’encaissement.</p></div><button type="button" id="pendingRefresh"><i class="fa fa-refresh"></i> Actualiser</button></div>
+                <div class="pending-toolbar"><div class="pending-tabs" role="group" aria-label="Type de commande"><button type="button" id="pendingAll" class="active" data-type="all">Toutes</button><button type="button" id="pendingHold" data-type="hold">Ventes en attente</button><button type="button" id="pendingCustomer" data-type="customer">Commandes clients</button></div><label class="pending-search"><i class="fa fa-search"></i><input type="search" id="pendingSearch" placeholder="Référence, client ou numéro" aria-label="Rechercher une commande"></label></div>
+                <div class="pending-grid"><section class="pending-card"><div class="pending-table-wrap"><table><thead><tr><th>Référence</th><th>Client</th><th>Date</th><th>Articles</th><th>Total</th><th></th></tr></thead><tbody id="pendingRows"></tbody></table></div><div class="pending-pager"><span id="pendingPageInfo"></span><button type="button" id="pendingPrevious">Précédent</button><button type="button" id="pendingNext">Suivant</button></div></section><aside id="pendingDetails" class="pending-details"><strong>Sélectionnez une commande</strong><p>Ses produits et ses actions apparaîtront ici.</p></aside></div>
+                <p id="pendingMessage" role="status" aria-live="polite"></p>
             </div>
             <div id="users_view" class="users-page" hidden>
                 <div class="users-page-head"><div><h1>Utilisateurs</h1><p>Gérez les comptes et les accès à la caisse.</p></div><button type="button" id="usersAddButton"><i class="fa fa-user-plus"></i> Nouveau compte</button></div>
