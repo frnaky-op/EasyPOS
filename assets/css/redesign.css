@@ -587,6 +587,26 @@ body.login-page { min-height: 100vh; background: #f5f8f6; }
 @media (max-width: 700px) { .pending-page-head, .pending-toolbar { align-items: flex-start; flex-direction: column; } }
 
 /* Encaissement */
+#orderModal .modal-dialog { width: min(720px, calc(100vw - 32px)); margin: max(16px, calc((100vh - 708px)/2)) auto; }
+#orderModal .modal-content { overflow: hidden; border: 0; border-radius: 16px; background: white; box-shadow: 0 22px 55px #102a2250; }
+.receipt-header { display: flex; align-items: flex-start; gap: 18px; min-height: 97px; padding: 31px 31px 22px; border-bottom: 1px solid var(--pos-line); }
+.receipt-icon { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 10px; background: var(--pos-mint); color: var(--pos-green); font-size: 22px; }
+.receipt-header > div { flex: 1; min-width: 0; }
+.receipt-header h4 { margin: 0 0 5px; color: var(--pos-ink); font-size: 24px; font-weight: 700; }
+.receipt-header p { margin: 0; color: var(--pos-muted); font-size: 12px; }
+#orderModal .receipt-header .close { display: grid; place-items: center; flex: none; width: 30px; height: 30px; margin: 0; border-radius: 8px; background: #edf2ee; color: var(--pos-muted); opacity: 1; font-size: 21px; font-weight: 400; }
+.receipt-preview { display: flex; justify-content: center; height: 478px; max-height: calc(100vh - 230px); margin: 24px 30px 23px; padding: 17px; overflow-y: auto; border-radius: 10px; background: #f6f8f6; }
+.receipt-paper { align-self: flex-start; width: 334px; max-width: 100%; min-height: 443px; padding: 20px 22px; background: white; box-shadow: 0 3px 14px #17322d1f; color: var(--pos-ink); overflow-wrap: anywhere; }
+.receipt-paper > div { font-size: 11px !important; }
+.receipt-paper img { max-width: 70px; }
+.receipt-paper table { width: 100%; }
+.receipt-footer { display: flex; align-items: center; gap: 11px; min-height: 86px; padding: 20px 30px; border-top: 1px solid var(--pos-line); }
+.receipt-footer p { flex: 1; margin: 0; color: var(--pos-muted); font-size: 11px; }
+.receipt-footer button { min-height: 43px; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+.receipt-close { min-width: 95px; border: 1px solid var(--pos-line); background: white; color: var(--pos-ink); }
+.receipt-print { min-width: 121px; border: 1px solid var(--pos-green); background: var(--pos-green); color: white; }
+.receipt-print i { margin-right: 6px; }
+@media (max-width: 600px) { .receipt-header { padding: 21px; } .receipt-header h4 { font-size: 20px; } .receipt-preview { margin: 14px; padding: 12px; } .receipt-footer { flex-wrap: wrap; padding: 16px 20px; } .receipt-footer p { flex-basis: 100%; } .receipt-footer button { flex: 1; } }
 #dueModal .modal-dialog { width: min(680px, calc(100vw - 32px)); margin: max(18px, calc((100vh - 542px)/2)) auto; }
 #dueModal .modal-content { overflow: hidden; border: 0; border-radius: 16px; background: white; box-shadow: 0 22px 55px #102a2250; }
 .hold-header { display: flex; align-items: flex-start; gap: 18px; min-height: 103px; padding: 30px 31px 23px; border-bottom: 1px solid var(--pos-line); }

@@ -702,16 +702,16 @@
                 </div>
             </div>
         </div>
-        <div id="orderModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
+        <div id="orderModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="receiptTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="btn btn-sm btn-success" onclick="$(this).print()">Print</button> <br> <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <div class="receipt-header">
+                        <span class="receipt-icon" aria-hidden="true"><i class="fa fa-file-text-o"></i></span>
+                        <div><h4 id="receiptTitle">Ticket de caisse</h4><p>Vente enregistrée · prêt à imprimer</p></div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button>
                     </div>
-                    <div class="modal-body" id="viewTransaction">
-                    </div>
-                    <div class="alert alert-danger">Right-Click and Reload if you get stuck after cancelling a print.
-                    </div>
+                    <div class="receipt-preview"><div id="viewTransaction" class="receipt-paper" aria-label="Aperçu du ticket"></div></div>
+                    <div class="receipt-footer"><p>Le ticket utilise les informations définies dans Paramètres.</p><button type="button" class="receipt-close" data-dismiss="modal">Fermer</button><button type="button" class="receipt-print" onclick="$(this).print()"><i class="fa fa-print"></i> Imprimer</button></div>
                 </div>
             </div>
         </div>
