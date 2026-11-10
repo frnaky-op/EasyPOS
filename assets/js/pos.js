@@ -1800,8 +1800,9 @@ if (auth == undefined) {
     function resetCustomerForm() {
       $("#saveCustomer").get(0).reset();
       $("#customer_id").val("");
+      $("#customerEditorError").text("");
       $("#customerModalTitle").text("Nouveau client");
-      $("#saveCustomerBtn").val("Enregistrer le client");
+      $("#saveCustomerBtn").val("Enregistrer");
     }
     function openCustomerEditor(customer) {
       $("#customer_id").val(customer._id);
@@ -1810,9 +1811,10 @@ if (auth == undefined) {
       $("#emailAddress").val(customer.email || "");
       $("#userAddress").val(customer.address || "");
       $("#customerCity").val(customer.city || "");
-      $("#customerType").val(customer.type || "");
+      $(`input[name="customerType"][value="${customer.type === "professional" ? "professional" : "individual"}"]`).prop("checked", true);
+      $("#customerEditorError").text("");
       $("#customerModalTitle").text("Modifier le client");
-      $("#saveCustomerBtn").val("Enregistrer les modifications");
+      $("#saveCustomerBtn").val("Enregistrer");
       $("#newCustomer").modal("show");
     }
     $("#newCustomerModal").on("click", resetCustomerForm);
@@ -1854,11 +1856,14 @@ if (auth == undefined) {
         email: $("#emailAddress").val(),
         address: $("#userAddress").val(),
         city: $("#customerCity").val(),
-        type: $("#customerType").val(),
+        type: $('input[name="customerType"]:checked').val() || "individual",
       };
 
       const requestType = customerId != "" ? "PUT" : "POST";
-      const successMessage = customerId != "" ? "Customer updated successfully!" : "Customer added successfully!";
+      const successMessage = customerId != "" ? "Client modifié." : "Client ajouté.";
+
+      $("#customerEditorError").text("");
+      $("#saveCustomerBtn").prop("disabled", true);
 
       $.ajax({
         url: api + "customers/customer",
@@ -1870,9 +1875,9 @@ if (auth == undefined) {
         success: function (data) {
           $("#newCustomer").modal("hide");
           notiflix.Report.success(
-            "Success",
+            "Enregistré",
             successMessage,
-            "Ok",
+            "OK",
           );
           loadCustomers();
           loadClientsPage();
@@ -1889,14 +1894,10 @@ if (auth == undefined) {
               .trigger("chosen:updated");
           }, 100);
         },
-        error: function (data) {
-          $("#newCustomer").modal("hide");
-          notiflix.Report.failure(
-            "Error",
-            "Something went wrong please try again",
-            "Ok",
-          );
+        error: function (response) {
+          $("#customerEditorError").text(response.responseJSON?.message || "Impossible d’enregistrer le client. Réessayez.");
         },
+        complete: function () { $("#saveCustomerBtn").prop("disabled", false); },
       });
     });
 

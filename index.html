@@ -362,46 +362,24 @@
                 </div>
             </div>
         </div>
-        <div id="newCustomer" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="customerModalTitle">New Customer
-                        </h4>
+        <div id="newCustomer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="customerModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document"><div class="modal-content">
+                <div class="customer-editor-header"><span class="customer-editor-icon" aria-hidden="true"><i class="fa fa-user-plus"></i></span><div><h4 id="customerModalTitle">Nouveau client</h4><p>Ajoutez ses coordonnées pour le retrouver lors des ventes.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
+                <form id="saveCustomer">
+                    <input type="hidden" id="customer_id" name="_id">
+                    <div class="customer-editor-body"><h5>Informations du client</h5>
+                        <div class="customer-editor-grid">
+                            <div class="customer-editor-field full"><label for="userName">Nom complet *</label><input type="text" required name="name" id="userName" class="form-control" placeholder="Ex. Mohamed El Amrani" autocomplete="name"></div>
+                            <div class="customer-editor-field"><label for="phoneNumber">Téléphone</label><input type="tel" name="phone" id="phoneNumber" class="form-control" placeholder="Ex. 06 00 00 00 00" autocomplete="tel"></div>
+                            <div class="customer-editor-field"><label for="emailAddress">Adresse e-mail</label><input type="email" name="email" id="emailAddress" class="form-control" placeholder="Ex. client@email.com" autocomplete="email"></div>
+                            <div class="customer-editor-field"><label for="userAddress">Adresse</label><input type="text" name="address" id="userAddress" class="form-control" placeholder="Rue, quartier, numéro" autocomplete="street-address"></div>
+                            <div class="customer-editor-field"><label for="customerCity">Ville</label><input type="text" name="city" id="customerCity" class="form-control" placeholder="Ex. Casablanca" autocomplete="address-level2"></div>
+                            <fieldset class="customer-editor-type full"><legend>Type de client</legend><label><input type="radio" name="customerType" value="individual" checked><span><i class="fa fa-circle-o"></i> Particulier</span></label><label><input type="radio" name="customerType" value="professional"><span><i class="fa fa-circle-o"></i> Professionnel</span></label></fieldset>
+                        </div><p id="customerEditorError" class="customer-editor-error" role="alert"></p>
                     </div>
-                    <div class="modal-body">
-                        <form id="saveCustomer" data-parsley-validate>
-                            <input type="hidden" id="customer_id" name="_id">
-                            <div class="form-group">
-                                <label for="userName">Customer Name*</label>
-                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Enter name" class="form-control" id="userName">
-                            </div>
-                            <div class="form-group">
-                                <label for="userName">Customer Phone</label>
-                                <input type="text" name="phone" parsley-trigger="change" placeholder="Enter Phone number" class="form-control" id="phoneNumber">
-                            </div>
-                            <div class="form-group">
-                                <label for="userName">Customer Email</label>
-                                <input type="email" name="email" parsley-trigger="change" placeholder="Enter email address" class="form-control" id="emailAddress">
-                            </div>
-                            <div class="form-group">
-                                <label for="userName">Customer Address</label>
-                                <input type="text" name="address" parsley-trigger="change" placeholder="Enter address" class="form-control" id="userAddress">
-                            </div>
-                            <div class="form-group">
-                                <label for="customerCity">Ville</label>
-                                <input type="text" name="city" placeholder="Ville" class="form-control" id="customerCity">
-                            </div>
-                            <div class="form-group">
-                                <label for="customerType">Type de client</label>
-                                <select name="type" id="customerType" class="form-control"><option value="">Non précisé</option><option value="individual">Particulier</option><option value="professional">Professionnel</option></select>
-                            </div>
-                            <input id="saveCustomerBtn" type="submit" value="Save Customer" class="btn btn-primary btn-block waves-effect waves-light">
-                        </form>
-                    </div>
-                </div>
-            </div>
+                    <div class="customer-editor-footer"><span>* Champ obligatoire</span><button type="button" class="customer-editor-cancel" data-dismiss="modal">Annuler</button><input id="saveCustomerBtn" type="submit" value="Enregistrer" class="customer-editor-save"></div>
+                </form>
+            </div></div>
         </div>
         <div id="newProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newProductTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg">
