@@ -2,6 +2,7 @@ const jsPDF = require("jspdf");
 const html2canvas = require("html2canvas");
 const JsBarcode = require("jsbarcode");
 const { barcodeValue, createBarcodeSheet } = require("./barcode-sheet");
+const { parsePaymentAmount, paymentChange } = require("./payment-amount");
 const macaddress = require("macaddress");
 const notiflix = require("notiflix");
 const validator = require("validator");
@@ -1257,7 +1258,7 @@ if (auth == undefined) {
     $("#payButton").on("click", function () {
       if (cart.length != 0) {
         if (settings && settings.quick_billing) {
-          const payableAmount = $("#payablePrice").val().replace(/,/g, "");
+          const payableAmount = parsePaymentAmount($("#payablePrice").val()).toFixed(2);
           $("#payment").val(payableAmount);
           $("#paymentText").val(moneyFormat(payableAmount));
           $("#payment").trigger("input");
@@ -1298,12 +1299,11 @@ if (auth == undefined) {
       let discount = $("#inputDiscount").val();
       let customer = JSON.parse($("#customer").val());
       let date = moment(currentTime).format("YYYY-MM-DD HH:mm:ss");
-      let paymentAmount = $("#payment").val().replace(",", "");
-      let changeAmount = $("#change").text().replace(",", "");
+      let paymentAmount = $("#payment").val().replace(/,/g, "");
+      let changeAmount = Number($("#change").data("raw") || 0);
       let paid =
         $("#payment").val() == "" ? "" : parseFloat(paymentAmount).toFixed(2);
-      let change =
-        $("#change").text() == "" ? "" : parseFloat(changeAmount).toFixed(2);
+      let change = paid === "" ? "" : changeAmount.toFixed(2);
       let refNumber = $("#refNumber").val();
       let orderNumber = holdOrder;
       let type = "";
@@ -1519,7 +1519,7 @@ if (auth == undefined) {
       });
 
       $("#refNumber").val("");
-      $("#change").text("");
+      $("#change").text("").removeData("raw");
       $("#payment,#paymentText").val("");
     };
 
@@ -1884,14 +1884,25 @@ if (auth == undefined) {
 
     $("#cardInfo").hide();
 
+    $("#paymentModel").on("show.bs.modal", function () {
+      const symbol = settings && settings.symbol ? validator.unescape(String(settings.symbol)) : "MAD";
+      $("#paymentOrderRef").text(holdOrder ? `#${holdOrder}` : "nouvelle");
+      $("#paymentCustomerName").text($("#customer option:selected").text() || "Client comptoir");
+      $("#paymentItemCount").text(`${cart.length} produit${cart.length === 1 ? "" : "s"}`);
+      $("#paymentSubtotalDisplay").text($("#price").text() || `0,00 ${symbol}`);
+      $("#paymentTotalDisplay").text($("#gross_price").text() || `0,00 ${symbol}`);
+    });
+
     $("#payment").on("input", function () {
       $(this).calculateChange();
     });
     $("#confirmPayment").on("click", function () {
-      if ($("#payment").val() == "") {
+      const result = paymentChange($("#payablePrice").val(), $("#payment").val());
+      const exactCard = $("#card").hasClass("active") && Math.round(parsePaymentAmount($("#payablePrice").val()) * 100) !== Math.round(parsePaymentAmount($("#payment").val()) * 100);
+      if (!result.valid || exactCard) {
         notiflix.Report.warning(
-          "Nope!",
-          "Please enter the amount that was paid!",
+          "Montant insuffisant",
+          "Saisissez un montant valide couvrant le total de la vente.",
           "Ok",
         );
       } else {

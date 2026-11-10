@@ -365,115 +365,52 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
         <!--  Modal content for the above example -->
-        <div id="paymentModel" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div id="paymentModel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="paymentTitle" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="myLargeModalLabel">Payment</h4>
+                    <div class="modal-header payment-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button>
+                        <h4 class="modal-title" id="paymentTitle">Encaissement</h4>
+                        <p>Vente <span id="paymentOrderRef"></span> · <span id="paymentCustomerName"></span></p>
                     </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="list-group">
-                                    <a href="javascript:void(0)" data-payment-method="Cash" data-payment-type="1" class="list-group-item active">
-                                        Cash
-                                    </a>
-                                    <a href="javascript:void(0)" data-payment-method="Card" data-payment-type="3" class="list-group-item">Card</a>
-                                </div>
+                    <div class="modal-body payment-body">
+                        <aside class="payment-summary-panel">
+                            <h5>Résumé de la vente</h5>
+                            <div class="payment-summary-row"><span>Articles</span><strong id="paymentItemCount">0 produit</strong></div>
+                            <div class="payment-summary-row"><span>Sous-total</span><strong id="paymentSubtotalDisplay">0,00 MAD</strong></div>
+                            <div class="payment-due"><span>Total à payer</span><strong id="paymentTotalDisplay">0,00 MAD</strong></div>
+                            <h5 class="payment-method-heading">Moyen de paiement</h5>
+                            <div class="list-group payment-methods" role="group" aria-label="Moyen de paiement">
+                                <button id="cash" type="button" data-payment-method="Cash" data-payment-type="1" class="list-group-item active"><i class="fa fa-circle"></i> Espèces</button>
+                                <button id="card" type="button" data-payment-method="Card" data-payment-type="3" class="list-group-item"><i class="fa fa-credit-card"></i> Carte</button>
                             </div>
-                            <div class="col-md-8">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon3">Price <span id="price_curr"></span></span>
-                                    <input id="payablePrice" readonly type="text" class="form-control" aria-describedby="basic-addon3">
-                                </div>
-                                <br>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon3">Payment <span id="payment_curr"></span> </span>
-                                    <input type="text" placeholder="0.0" class="form-control" id="paymentText" aria-describedby="basic-addon3" readonly>
-                                    <input type="hidden" class="form-control" id="payment" aria-describedby="basic-addon3">
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <button data-val="1" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">1</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="2" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">2</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="3" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">3</button>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <button data-val="4" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">4</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="5" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">5</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="6" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">6</button>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <button data-val="7" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">7</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="8" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">8</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="9" data-isdue="false" class="btn btn-success btn-outline-success btn-lg btn-block keypad-btn">9</button>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <button data-val="del" class="btn btn-danger btn-lg btn-block keypad-btn">⌫</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="0" data-isdue="false" class="btn btn-success btn-lg btn-block keypad-btn">0</button>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button data-val="." data-isdue="false" class="btn btn-warning btn-lg btn-block">.</button>
-                                            </div>
-                                            <div class="col-md-3"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button data-val="ac" data-isdue="false" class="btn btn-danger btn-block btn-lg keypad-btn">AC</button>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="input-group" id="cardInfo">
-                                    <span class="input-group-addon" id="basic-addon3">Card Info </span>
-                                    <input type="text" class="form-control" id="paymentInfo" aria-describedby="basic-addon3">
-                                </div>
+                            <div id="cardInfo" class="payment-card-info"><label for="paymentInfo">Référence de carte (facultatif)</label><input type="text" id="paymentInfo" class="form-control" maxlength="80" placeholder="Référence du terminal"></div>
+                            <div class="payment-method-hint" id="paymentMethodHint">Saisir le montant reçu pour calculer la monnaie à rendre.</div>
+                            <p class="payment-verify">Vérifiez le total avant de confirmer la vente.</p>
+                        </aside>
+                        <section class="payment-entry" aria-label="Saisie du paiement">
+                            <label for="paymentText">Montant reçu</label>
+                            <div class="payment-amount-field"><input id="paymentText" type="text" inputmode="decimal" autocomplete="off" aria-describedby="payment_curr" placeholder="0,00"><span id="payment_curr">MAD</span></div>
+                            <input id="payment" type="hidden"><input id="payablePrice" type="hidden" readonly><span id="price_curr" hidden></span>
+                            <span class="payment-quick-heading">Montants rapides</span>
+                            <div class="payment-quick-row"><button type="button" class="payment-quick exact" data-amount="exact">Exact</button><button type="button" class="payment-quick" data-amount="300">300</button><button type="button" class="payment-quick" data-amount="500">500</button><button type="button" class="payment-quick" data-amount="1000">1 000</button></div>
+                            <div class="payment-keypad" aria-label="Clavier numérique">
+                                <button type="button" data-val="1" data-isdue="false" class="keypad-btn">1</button><button type="button" data-val="2" data-isdue="false" class="keypad-btn">2</button><button type="button" data-val="3" data-isdue="false" class="keypad-btn">3</button>
+                                <button type="button" data-val="4" data-isdue="false" class="keypad-btn">4</button><button type="button" data-val="5" data-isdue="false" class="keypad-btn">5</button><button type="button" data-val="6" data-isdue="false" class="keypad-btn">6</button>
+                                <button type="button" data-val="7" data-isdue="false" class="keypad-btn">7</button><button type="button" data-val="8" data-isdue="false" class="keypad-btn">8</button><button type="button" data-val="9" data-isdue="false" class="keypad-btn">9</button>
+                                <button type="button" data-val="del" data-isdue="false" class="keypad-btn payment-backspace" aria-label="Effacer le dernier chiffre"><i class="fa fa-long-arrow-left"></i></button><button type="button" data-val="0" data-isdue="false" class="keypad-btn">0</button><button type="button" data-val="." data-isdue="false" class="keypad-btn">.</button>
                             </div>
-                        </div>
+                            <button type="button" data-val="ac" data-isdue="false" class="keypad-btn payment-clear">Effacer le montant</button>
+                        </section>
                     </div>
-                    <div class="modal-footer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="btn btn-primary btn-block btn-lg waves-effect waves-light">Change <span id="change_curr"></span><span id="change"></span> </div>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" id="confirmPayment" class="btn btn-success btn-block btn-lg waves-effect waves-light">Confirm
-                                Payment</button>
-                            </div>
-                        </div>
+                    <div class="modal-footer payment-footer">
+                        <div class="payment-change"><span>Monnaie à rendre</span><strong><span id="change">0,00</span> <span id="change_curr">MAD</span></strong></div>
+                        <button type="button" class="payment-cancel" data-dismiss="modal">Annuler</button>
+                        <button type="button" id="confirmPayment" class="payment-confirm"><i class="fa fa-check"></i> Confirmer la vente</button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                </div>
+            </div>
+        </div>
         <div id="newCustomer" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
