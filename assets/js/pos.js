@@ -26,6 +26,7 @@ let posPage = 1;
 let posTotal = 0;
 let listPage = 1;
 let listTotal = 0;
+let listPageSize = 7;
 let allCategories = [];
 let categoryProductCounts = {};
 let categoryProductTotal = 0;
@@ -1829,6 +1830,7 @@ if (auth == undefined) {
     };
     function showAppPage(page) {
       activePage = page;
+      document.body.classList.toggle("catalogue-open", page === "catalogue");
       $("#pos_view,#transactions_view").hide();
       $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view,#Products,#productDetails").prop("hidden", true);
       const view = $(pageViews[page]);
@@ -2371,9 +2373,12 @@ if (auth == undefined) {
 
     function loadProductList(page = listPage) {
       if (loadProductList.request) loadProductList.request.abort();
+      const tableHeight = $(".catalogue-table-wrap").innerHeight();
+      if (tableHeight > 100) listPageSize = Math.max(5, Math.min(20, Math.floor((tableHeight - 44) / 48)));
+      const pageSize = listPageSize;
       loadProductList.request = $.get(api + "inventory/products/page", {
         page,
-        pageSize: 12,
+        pageSize,
         q: $("#productListSearch").val() || "",
         category: $("#productListCategory").val() || "0",
       }, function (result) {
@@ -2381,8 +2386,8 @@ if (auth == undefined) {
       listedProducts = products;
       listPage = result.page;
       listTotal = result.total;
-      const pageCount = Math.max(1, Math.ceil(listTotal / 12));
-      const first = listTotal ? (listPage - 1) * 12 + 1 : 0;
+      const pageCount = Math.max(1, Math.ceil(listTotal / pageSize));
+      const first = listTotal ? (listPage - 1) * pageSize + 1 : 0;
       const last = first ? first + products.length - 1 : 0;
       $("#productListPageInfo").text(`${first}–${last} sur ${listTotal} produits · page ${listPage} / ${pageCount}`);
       $("#productListPrevious").prop("disabled", listPage <= 1);
@@ -2473,6 +2478,19 @@ if (auth == undefined) {
       listSearchTimer = setTimeout(() => loadProductList(1), 250);
     });
     $("#productListCategory").on("change", () => loadProductList(1));
+    $("#catalogueImportDetails").on("toggle", () => {
+      if (activePage === "catalogue") loadProductList(1);
+    });
+    let catalogueResizeTimer;
+    $(window).on("resize", function () {
+      if (activePage !== "catalogue") return;
+      clearTimeout(catalogueResizeTimer);
+      catalogueResizeTimer = setTimeout(() => {
+        const tableHeight = $(".catalogue-table-wrap").innerHeight();
+        const nextSize = Math.max(5, Math.min(20, Math.floor((tableHeight - 44) / 48)));
+        if (tableHeight > 100 && nextSize !== listPageSize) loadProductList(1);
+      }, 180);
+    });
     $("#productListPrevious").on("click", () => loadProductList(listPage - 1));
     $("#productListNext").on("click", () => loadProductList(listPage + 1));
 

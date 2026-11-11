@@ -141,9 +141,13 @@ body { background: var(--pos-bg); color: var(--pos-ink); }
 
 /* Full catalogue and product fiche pages */
 .catalogue-page[hidden], .product-details-page[hidden] { display: none !important; }
-#Products:not([hidden]), #productDetails:not([hidden]) { display: block !important; }
+#Products:not([hidden]) { display: flex !important; }
+#productDetails:not([hidden]) { display: block !important; }
 .catalogue-page, .product-details-page { padding: 8px 18px 18px; }
 .catalogue-page-inner, .product-details-page-inner { width: 100%; }
+.catalogue-page { height: calc(100vh - 88px); min-height: 0; overflow: hidden; }
+.catalogue-page-inner, .catalogue-page-content { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+body.catalogue-open { overflow: hidden; }
 .catalogue-breadcrumb { margin: 0 0 7px; color: var(--pos-muted); font-size: 12px; }
 .catalogue-intro { margin: 0 0 8px; }
 .catalogue-intro h1, .product-details-top h1 { margin: 0 0 4px; color: var(--pos-ink); font-size: 25px; font-weight: 700; }
@@ -159,7 +163,7 @@ body { background: var(--pos-bg); color: var(--pos-ink); }
 #productListSelectionCount { flex: 0 0 auto; padding: 11px 13px; border-radius: 8px; background: var(--pos-mint); color: var(--pos-green); font-weight: 700; }
 #productListClearSelection, #exportSelectedBarcodes { min-height: 40px; padding: 8px 13px; border-radius: 8px; white-space: nowrap; }
 .catalogue-controls .product-selection-toolbar #exportSelectedBarcodes { margin-left: 0; }
-.catalogue-table-wrap { height: calc(100vh - 278px); min-height: 350px; overflow: auto; border: 1px solid var(--pos-line); border-radius: 11px 11px 0 0; background: white; }
+.catalogue-table-wrap { flex: 1; min-height: 0; overflow: auto; border: 1px solid var(--pos-line); border-radius: 11px 11px 0 0; background: white; }
 #productList { min-width: 880px; }
 #productList th { padding: 11px 12px; border: 0; background: #eef4f0; }
 #productList td { height: 45px; padding: 5px 12px; font-size: 11px; }
@@ -208,6 +212,7 @@ body { background: var(--pos-bg); color: var(--pos-ink); }
 .product-details-stock > div strong { color: var(--pos-green); font-size: 14px; }
 @media (max-width: 1100px) { .catalogue-controls { grid-template-columns: minmax(180px,1fr) 210px; } .catalogue-controls .product-selection-toolbar { grid-column: 1 / -1; justify-content: flex-end; } }
 @media (max-width: 760px) { .catalogue-controls { grid-template-columns: 1fr; } .catalogue-controls .product-selection-toolbar { grid-column: 1; flex-wrap: wrap; justify-content: flex-start; } .product-details-grid { grid-template-columns: 1fr; } .product-details-photo { min-height: 350px; } .product-details-photo img { height: 240px; } .product-details-facts .product-fiche-facts { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (max-height: 620px) { body.catalogue-open { overflow: auto; } .catalogue-page { height: auto; overflow: visible; } .catalogue-table-wrap { flex: none; height: 300px; } }
 
 /* Product editor */
 #newProduct .modal-dialog { width: min(740px, calc(100vw - 30px)); }
