@@ -469,6 +469,7 @@ body { background: var(--pos-bg); color: var(--pos-ink); }
 .client-details > strong { color: var(--pos-ink); font-size: 14px; }
 .client-details .client-detail-title { margin: 0 0 15px; color: var(--pos-ink); font-size: 17px; font-weight: 700; }
 .client-details > p { margin: 5px 0 0; color: var(--pos-muted); font-size: 11px; }
+.client-history-loading { padding: 14px 0; color: var(--pos-muted); font-size: 11px; }
 .client-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .client-detail-head h2 { margin: 0; color: var(--pos-ink); font-size: 18px; font-weight: 700; }
 .client-detail-head p { margin: 5px 0 0; color: var(--pos-muted); font-size: 11px; }

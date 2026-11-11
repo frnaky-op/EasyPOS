@@ -3,7 +3,7 @@ const sections = [
     { key: "pos", id: "pointofsale", label: "Caisse", icon: "shopping-cart" },
     { key: "sales", id: "transactions", label: "Ventes", icon: "credit-card", permission: "perm_transactions" },
     { key: "orders", id: "viewCustomerOrders", label: "Commandes", icon: "shopping-basket" },
-    { key: "clients", id: "clientsPage", label: "Clients", icon: "address-book" },
+    { key: "clients", id: "clientsPage", label: "Clients", icon: "user" },
   ] },
   { title: "Catalogue & stock", items: [
     { key: "catalogue", id: "productModal", label: "Catalogue", icon: "th-large", permission: "perm_products" },

@@ -782,9 +782,23 @@ if (auth == undefined) {
     function openClientDetails(client, page = 1) {
       selectedClient = client;
       $("#clientsRows tr").removeClass("selected").filter(function () { return this.dataset.clientId === String(client._id); }).addClass("selected");
-      const panel = $("#clientDetails").empty().append($("<p>", { class: "clients-empty", text: "Chargement des achats…" }));
-      $.get(api + "sales/customer/" + client._id, { page, pageSize: 5 }, function (history) {
+      const panel = $("#clientDetails").empty().append(
+        $("<h2>", { class: "client-detail-title", text: "Fiche client" }),
+        $("<div>", { class: "client-detail-head" }).append(
+          $("<div>").append($("<h2>", { text: validator.unescape(String(client.name || "Client")) }),
+            $("<p>", { text: [client.phone, client.city].filter(Boolean).join(" · ") || "Coordonnées non renseignées" })),
+        ),
+        $("<p>", { class: "client-history-loading", text: "Chargement des achats…" }),
+      );
+      const showHistoryError = message => {
+        const status = panel.find(".client-history-loading");
+        if (status.length) status.text(message);
+        else panel.append($("<p>", { class: "client-history-loading", text: message }));
+      };
+      $.ajax({ url: api + "sales/customer/" + client._id, data: { page, pageSize: 5 }, timeout: 12000 }).done(function (history) {
         if (!selectedClient || String(selectedClient._id) !== String(client._id)) return;
+        try {
+        if (!history || !Array.isArray(history.items) || !Array.isArray(history.topProducts)) throw new Error("Invalid customer history response");
         const symbol = settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD";
         const money = value => `${moneyFormat(Number(value || 0).toFixed(2))} ${symbol}`;
         const heading = $("<div>", { class: "client-detail-head" }).append(
@@ -819,7 +833,15 @@ if (auth == undefined) {
           $("<span>", { text: `${history.page} / ${pages}` }),
           $("<button>", { type: "button", text: "Suivant", disabled: history.page >= pages }).on("click", () => openClientDetails(client, history.page + 1)),
         ));
-      }).fail(() => panel.text("Impossible de charger les achats de ce client."));
+        } catch (error) {
+          console.error("Could not render customer history:", error);
+          showHistoryError("Historique des achats indisponible. Réessayez en sélectionnant ce client.");
+        }
+      }).fail(() => {
+        if (selectedClient && String(selectedClient._id) === String(client._id)) {
+          showHistoryError("Impossible de charger les achats de ce client. Réessayez en le sélectionnant.");
+        }
+      });
     }
     let clientsSearchTimer;
     $("#clientsSearch").on("input", function () {
