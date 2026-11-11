@@ -65,8 +65,7 @@ function createBarcodeSheet(products, { jsPDFClass, JsBarcode, document }) {
     pdf.text(code, x + cellWidth / 2, y + 33, { align: "center" });
   });
 
-  pdf.save("product-barcodes.pdf");
-  return { pageCount, productCount: products.length };
+  return { pageCount, productCount: products.length, data: pdf.output("arraybuffer") };
 }
 
 module.exports = { barcodeValue, createBarcodeSheet, PER_PAGE };

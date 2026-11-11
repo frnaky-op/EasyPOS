@@ -2317,17 +2317,29 @@ if (auth == undefined) {
       updateBarcodeSelection();
     });
 
-    $("#exportSelectedBarcodes").on("click", function () {
+    $("#exportSelectedBarcodes").on("click", async function () {
+      $(this).prop("disabled", true);
       try {
         const products = Array.from(selectedBarcodeProducts.values()).map(product => ({
           ...product,
           name: validator.unescape(String(product.name || "")),
           barcode: validator.unescape(String(product.barcode || "")),
         }));
-        createBarcodeSheet(products, { jsPDFClass: jsPDF.jsPDF || jsPDF, JsBarcode, document });
+        const { data } = createBarcodeSheet(products, { jsPDFClass: jsPDF.jsPDF || jsPDF, JsBarcode, document });
+        const { canceled, filePath } = await remote.dialog.showSaveDialog(remote.getCurrentWindow(), {
+          title: "Exporter les codes-barres PDF",
+          defaultPath: path.join(app.getPath("downloads"), "codes-barres-produits.pdf"),
+          buttonLabel: "Enregistrer",
+          filters: [{ name: "Document PDF", extensions: ["pdf"] }],
+        });
+        if (canceled || !filePath) return;
+        await fs.promises.writeFile(filePath, Buffer.from(data));
+        notiflix.Report.success("Codes-barres exportés", `PDF enregistré : ${$("<div>").text(filePath).html()}`, "OK");
       } catch (error) {
         console.error("Barcode PDF export failed:", error);
-        notiflix.Notify.failure(error.message || "Could not export barcodes.");
+        notiflix.Report.failure("Export impossible", error.message || "Impossible d'exporter les codes-barres.", "OK");
+      } finally {
+        updateBarcodeSelection();
       }
     });
 
