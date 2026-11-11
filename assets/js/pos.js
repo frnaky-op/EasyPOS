@@ -739,13 +739,14 @@ if (auth == undefined) {
     let clientsRequest;
     let clientsRenderToken = 0;
     function clientDate(value) {
+      if (!value) return "—";
       const date = new Date(value);
       return Number.isNaN(date.getTime()) ? "—" : date.toLocaleDateString("fr-MA", { timeZone: "Africa/Casablanca" });
     }
     function loadClientsPage(page = clientsPageNumber) {
       if (clientsRequest) clientsRequest.abort();
       const token = ++clientsRenderToken;
-      clientsRequest = $.get(api + "customers/page", { page, pageSize: 25, q: $("#clientsSearch").val() || "", type: clientsFilter }, function (result) {
+      clientsRequest = $.get(api + "customers/page", { page, pageSize: 10, q: $("#clientsSearch").val() || "", type: clientsFilter }, function (result) {
         if (token !== clientsRenderToken) return;
         clientsPageNumber = result.page;
         clientsPageCount = Math.max(1, Math.ceil(result.total / result.pageSize));
@@ -755,36 +756,32 @@ if (auth == undefined) {
         $("#clientsPrevious").prop("disabled", result.page <= 1);
         $("#clientsNext").prop("disabled", result.page >= clientsPageCount);
         const rows = $("#clientsRows").empty();
-        if (!result.items.length) rows.append($("<tr>").append($("<td>", { colspan: 6, class: "clients-empty", text: "Aucun client trouvé." })));
+        if (!result.items.length) rows.append($("<tr>").append($("<td>", { colspan: 4, class: "clients-empty", text: "Aucun client trouvé." })));
         result.items.forEach(client => {
-          const lastPurchase = $("<td>", { class: "client-last-purchase", text: "—" });
-          const row = $("<tr>").append(
+          const row = $("<tr>", { tabindex: 0, class: String(selectedClient?._id) === String(client._id) ? "selected" : "" }).attr("data-client-id", String(client._id)).append(
             $("<td>", { text: validator.unescape(String(client.name || "—")) }),
             $("<td>", { text: client.phone || "—" }),
             $("<td>", { text: client.city || "—" }),
             $("<td>", { text: client.type === "professional" ? "Professionnel" : client.type === "individual" ? "Particulier" : "—" }),
-            lastPurchase,
-            $("<td>").append($("<button>", { type: "button", class: "client-view-button", text: "Voir →" }).on("click", () => openClientDetails(client))),
           );
+          row.on("click", () => openClientDetails(client)).on("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openClientDetails(client); }
+          });
           rows.append(row);
         });
-        const ids = result.items.map(client => client._id).filter(id => Number.isSafeInteger(Number(id)));
-        if (ids.length) $.ajax({
-          url: api + "sales/customers/latest", type: "POST", contentType: "application/json",
-          data: JSON.stringify({ ids }),
-          success: latest => {
-            if (token !== clientsRenderToken) return;
-            rows.find("tr").each(function (index) {
-              if (result.items[index]) $(this).find(".client-last-purchase").text(clientDate(latest[String(result.items[index]._id)]));
-            });
-          },
-        });
+        const selectedOnPage = result.items.find(client => String(client._id) === String(selectedClient?._id));
+        if (!selectedOnPage && result.items.length) openClientDetails(result.items[0]);
+        if (!result.items.length) {
+          selectedClient = null;
+          $("#clientDetails").empty().append($("<p>", { class: "clients-empty", text: "Sélectionnez un client pour voir ses achats." }));
+        }
       }).fail((_, status) => {
-        if (status !== "abort") $("#clientsRows").empty().append($("<tr>").append($("<td>", { colspan: 6, class: "clients-empty", text: "Impossible de charger les clients." })));
+        if (status !== "abort") $("#clientsRows").empty().append($("<tr>").append($("<td>", { colspan: 4, class: "clients-empty", text: "Impossible de charger les clients." })));
       });
     }
     function openClientDetails(client, page = 1) {
       selectedClient = client;
+      $("#clientsRows tr").removeClass("selected").filter(function () { return this.dataset.clientId === String(client._id); }).addClass("selected");
       const panel = $("#clientDetails").empty().append($("<p>", { class: "clients-empty", text: "Chargement des achats…" }));
       $.get(api + "sales/customer/" + client._id, { page, pageSize: 5 }, function (history) {
         if (!selectedClient || String(selectedClient._id) !== String(client._id)) return;
@@ -792,8 +789,13 @@ if (auth == undefined) {
         const money = value => `${moneyFormat(Number(value || 0).toFixed(2))} ${symbol}`;
         const heading = $("<div>", { class: "client-detail-head" }).append(
           $("<div>").append($("<h2>", { text: validator.unescape(String(client.name || "Client")) }),
-            $("<p>", { text: [client.phone, client.email, client.city, client.address].filter(Boolean).join(" · ") || "Aucune coordonnée supplémentaire" })),
+            $("<p>", { text: [client.type === "professional" ? "Professionnel" : "Particulier", client.city].filter(Boolean).join(" · ") })),
           $("<button>", { type: "button", text: "Modifier" }).on("click", () => openCustomerEditor(client)),
+        );
+        const contact = $("<div>", { class: "client-detail-contact" }).append(
+          $("<div>").append($("<span>", { text: "Téléphone" }), $("<strong>", { text: client.phone || "—" })),
+          $("<div>").append($("<span>", { text: "Adresse" }), $("<strong>", { text: [client.address, client.city].filter(Boolean).join(", ") || "—" })),
+          $("<div>").append($("<span>", { text: "Dernier achat" }), $("<strong>", { text: clientDate(history.lastPurchase) })),
         );
         const stats = $("<div>", { class: "client-detail-stats" }).append(
           $("<div>").append($("<span>", { text: "Achats payés" }), $("<strong>", { text: history.total })),
@@ -810,7 +812,7 @@ if (auth == undefined) {
         )));
         const top = $("<div>", { class: "client-detail-top" }).append($("<h3>", { text: "Produits fréquents" }));
         top.append($("<p>", { text: history.topProducts.length ? history.topProducts.map(product => `${validator.unescape(String(product.name))} (${product.quantity})`).join(" · ") : "Aucun produit à afficher." }));
-        panel.append(heading, stats, orders, top);
+        panel.empty().append($("<h2>", { class: "client-detail-title", text: "Fiche client" }), heading, contact, stats, orders, top);
         const pages = Math.max(1, Math.ceil(history.total / history.pageSize));
         if (pages > 1) panel.append($("<div>", { class: "client-detail-pager" }).append(
           $("<button>", { type: "button", text: "Précédent", disabled: history.page <= 1 }).on("click", () => openClientDetails(client, history.page - 1)),
@@ -895,6 +897,7 @@ if (auth == undefined) {
     $("#settingsRestore").on("click", () => ipcRenderer.send("settings-restore"));
     $("#settingsImportCatalog").on("click", function () {
       $("#productModal").trigger("click");
+      $("#catalogueImportDetails").prop("open", true);
       setTimeout(() => $("#catalogPackage").trigger("focus"), 350);
     });
     $("#settingsAdvanced").on("click", function () {
@@ -907,12 +910,14 @@ if (auth == undefined) {
       return $.get(api + "categories/all", function (data) {
         allCategories = data;
         renderCategoriesPage();
-        $("#category,#categories").empty().append($("<option>", { value: "0", text: "Toutes les catégories" }));
+        const catalogueCategory = $("#productListCategory").val() || "0";
+        $("#category,#categories,#productListCategory").empty().append($("<option>", { value: "0", text: "Toutes les catégories" }));
         allCategories.forEach((category) => {
-          $("#category,#categories").append(
+          $("#category,#categories,#productListCategory").append(
             $("<option>", { value: category._id, text: validator.unescape(String(category.name)) }),
           );
         });
+        $("#productListCategory").val(catalogueCategory);
         renderPosCategoryPills();
       });
     }
@@ -1794,27 +1799,22 @@ if (auth == undefined) {
     });
 
     let activePage = "pos";
-    $("#Products").on("show.bs.modal", function () {
-      setActiveNavigation(navigation.get(0), "catalogue");
-      $("#appSection").text("Catalogue");
-    }).on("hidden.bs.modal", function () {
-      setActiveNavigation(navigation.get(0), activePage);
-      $("#appSection").text(pageLabel(activePage));
-    });
     const pageViews = {
       pos: "#pos_view", sales: "#transactions_view", stock: "#stock_view",
       receiving: "#receiving_view", clients: "#clients_view", settings: "#settings_view",
       categories: "#categories_view", users: "#users_view", orders: "#pending_view",
+      catalogue: "#Products", product: "#productDetails",
     };
     function showAppPage(page) {
       activePage = page;
       $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view").prop("hidden", true);
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view,#Products,#productDetails").prop("hidden", true);
       const view = $(pageViews[page]);
       if (page === "pos" || page === "sales") view.show();
       else view.prop("hidden", false);
-      setActiveNavigation(navigation.get(0), page);
-      $("#appSection").text(pageLabel(page));
+      setActiveNavigation(navigation.get(0), page === "product" ? "catalogue" : page);
+      $("#appSection").text(pageLabel(page === "product" ? "catalogue" : page));
+      window.scrollTo(0, 0);
     }
 
     navigation.on("click", "#transactions", function () {
@@ -1951,8 +1951,7 @@ if (auth == undefined) {
     $("#catalogueAddProduct").on("click", function () {
       $("#saveProduct").get(0).reset();
       $("#current_img").text("");
-      $("#Products").one("hidden.bs.modal", () => $("#newProduct").modal("show"));
-      $("#Products").modal("hide");
+      $("#newProduct").modal("show");
     });
 
     $("#saveProduct").submit(function (e) {
@@ -2059,8 +2058,6 @@ if (auth == undefined) {
     });
 
     $.fn.editProduct = function (index) {
-      $("#Products").modal("hide");
-
       $("#category option")
         .filter(function () {
           return $(this).val() == listedProducts[index].category;
@@ -2214,6 +2211,7 @@ if (auth == undefined) {
     };
 
     navigation.on("click", "#productModal", function () {
+      showAppPage("catalogue");
       loadProductList();
     });
 
@@ -2262,7 +2260,7 @@ if (auth == undefined) {
 
     function updateBarcodeSelection() {
       const total = selectedBarcodeProducts.size;
-      $("#productListSelectionCount").text(`${total} selected`);
+      $("#productListSelectionCount").text(`${total} sélectionné${total === 1 ? "" : "s"}`);
       $("#exportSelectedBarcodes").prop("disabled", total === 0);
       const selectedOnPage = listedProducts.filter(product => selectedBarcodeProducts.has(String(product._id))).length;
       const pageCheckbox = $("#productListSelectPage");
@@ -2307,19 +2305,26 @@ if (auth == undefined) {
       }
     });
 
+    let detailProductId = null;
     $("#product_list").on("click", ".product-fiche-button", function () {
       const product = listedProducts.find(item => String(item._id) === String(this.dataset.productId));
       if (!product) return;
+      detailProductId = String(product._id);
       const category = allCategories.find(item => String(item._id) === String(product.category));
       const imagePath = product.img && checkFileExists(img_path + product.img)
         ? img_path + product.img : default_item_img;
       $("#productDetailsName").text(validator.unescape(String(product.name || "")));
-      $("#productDetailsCategory").text(category ? validator.unescape(String(category.name)) : "Sans catégorie");
+      $("#productDetailsPhotoName").text(validator.unescape(String(product.name || "")));
+      $("#productDetailsSubtitle").text(validator.unescape(String(product.description || product.reference || "")));
+      $("#productDetailsCategory,#productDetailsCategoryFact").text(category ? validator.unescape(String(category.name)) : "Sans catégorie");
       $("#productDetailsSupplier").text(product.supplier ? validator.unescape(String(product.supplier)) : "Fournisseur non renseigné");
+      $("#productDetailsReference").text(validator.unescape(String(product.reference || product.barcode || product._id)));
       $("#productDetailsImage").attr("src", imagePath);
-      $("#productDetailsPrice").text(`${product.price || 0} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}`);
-      $("#productDetailsStock").text(product.stock == 1 ? product.quantity : "Non suivi");
+      $("#productDetailsPrice").text(`${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}`);
+      $("#productDetailsStock").text(product.stock == 1 ? `${product.quantity} unités` : "Non suivi");
+      $("#productDetailsStockSummary").text(product.stock == 1 ? `${product.quantity} unités disponibles` : "Stock non suivi");
       $("#productDetailsMinimum").text(product.minStock || "-");
+      $("#productDetailsStockMinimum").text(product.minStock || "-");
       $("#productDetailsExpiry").text(product.expirationDate || "-");
       try {
         const code = barcodeValue({ ...product, barcode: validator.unescape(String(product.barcode || "")) });
@@ -2332,27 +2337,32 @@ if (auth == undefined) {
         $("#productDetailsBarcode").empty();
         $("#productDetailsCode").text("Code-barres indisponible");
       }
-      $("#Products").one("hidden.bs.modal", () => $("#productDetails").modal("show"));
-      $("#Products").modal("hide");
+      showAppPage("product");
     });
 
-    $("#productDetails").on("hidden.bs.modal", function () {
-      $("#Products").modal("show");
+    $("#productDetailsBack").on("click", () => showAppPage("catalogue"));
+    $("#productDetailsEdit").on("click", function () {
+      const index = listedProducts.findIndex(product => String(product._id) === detailProductId);
+      if (index >= 0) $(this).editProduct(index);
+      else $("#productDetailsBack").trigger("click");
     });
 
     function loadProductList(page = listPage) {
       if (loadProductList.request) loadProductList.request.abort();
       loadProductList.request = $.get(api + "inventory/products/page", {
         page,
-        pageSize: 25,
+        pageSize: 12,
         q: $("#productListSearch").val() || "",
+        category: $("#productListCategory").val() || "0",
       }, function (result) {
       const products = result.items;
       listedProducts = products;
       listPage = result.page;
       listTotal = result.total;
-      const pageCount = Math.max(1, Math.ceil(listTotal / 25));
-      $("#productListPageInfo").text(`Page ${listPage} / ${pageCount} · ${listTotal} produits`);
+      const pageCount = Math.max(1, Math.ceil(listTotal / 12));
+      const first = listTotal ? (listPage - 1) * 12 + 1 : 0;
+      const last = first ? first + products.length - 1 : 0;
+      $("#productListPageInfo").text(`${first}–${last} sur ${listTotal} produits · page ${listPage} / ${pageCount}`);
       $("#productListPrevious").prop("disabled", listPage <= 1);
       $("#productListNext").prop("disabled", listPage >= pageCount);
       updateBarcodeSelection();
@@ -2413,39 +2423,24 @@ if (auth == undefined) {
           : default_item_img;
         }
         
-        //render product list
+        // Render the compact catalogue row shown in the shared Figma layout.
         const safeName = $("<div>").text(validator.unescape(String(product.name || ""))).html();
-        const safeSupplier = $("<div>").text(validator.unescape(String(product.supplier || ""))).html();
-        const safeCategory = category.length > 0 ? $("<div>").text(category[0].name).html() : "";
+        const safeCategory = category.length > 0 ? $("<div>").text(validator.unescape(String(category[0].name))).html() : "Sans catégorie";
+        const safeCode = $("<div>").text(validator.unescape(String(product.barcode || product._id))).html();
+        const safeReference = $("<div>").text(validator.unescape(String(product.reference || product.supplier || ""))).html();
         const checked = selectedBarcodeProducts.has(String(product._id)) ? "checked" : "";
         product_list +=
           `<tr>
-            <td><input type="checkbox" class="product-select" value="${product._id}" aria-label="Select ${safeName}" ${checked}></td>
-            <td><img id="productBarcode-${product._id}" alt="Barcode"></td>
-            <td><img style="max-height: 50px; max-width: 50px; border: 1px solid #ddd;" src="${product_img}" alt="${safeName}"></td>
-            <td>${safeName}
-            ${product.expiryAlert}</td>
-            <td>${settings && settings.symbol ? validator.unescape(settings.symbol) : ""}${product.price}</td>
-            <td>${product.stock == 1 ? product.quantity : "N/A"}
-            ${product.stockAlert}
-            </td>
-            <td>${product.expirationDate}</td>
+            <td><input type="checkbox" class="product-select" value="${product._id}" aria-label="Sélectionner ${safeName}" ${checked}></td>
+            <td><div class="catalogue-product-cell"><img src="${product_img}" alt=""><span><strong>${safeName}</strong><small>${safeReference}</small></span></div></td>
             <td>${safeCategory}</td>
-            <td>${safeSupplier}</td>
-            <td class="nobr"><span class="btn-group"><button type="button" class="btn btn-default btn-sm product-fiche-button" data-product-id="${product._id}"><i class="fa fa-info-circle"></i> Fiche</button><button onClick="$(this).editProduct(${index})" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button><button onClick="$(this).deleteProduct(${
-              product._id
-            })" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></span></td></tr>`;
+            <td>${safeCode}</td>
+            <td>${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}</td>
+            <td class="catalogue-stock-cell">${product.stock == 1 ? product.quantity : "Non suivi"}${product.stockAlert}</td>
+            <td class="nobr"><span class="btn-group"><button type="button" class="btn btn-default btn-sm product-fiche-button" data-product-id="${product._id}">Fiche</button><button type="button" onClick="$(this).editProduct(${index})" class="btn btn-warning btn-sm" aria-label="Modifier ${safeName}"><i class="fa fa-edit"></i></button><button type="button" onClick="$(this).deleteProduct(${product._id})" class="btn btn-danger btn-sm" aria-label="Supprimer ${safeName}"><i class="fa fa-trash"></i></button></span></td></tr>`;
 
       });
       $("#product_list").html(product_list);
-      products.forEach((product) => {
-        const bcode = product.barcode || product._id;
-        $("#productBarcode-" + product._id).JsBarcode(bcode, {
-          width: 2,
-          height: 25,
-          fontSize: 14,
-        });
-      });
       });
       return loadProductList.request;
     }
@@ -2455,6 +2450,7 @@ if (auth == undefined) {
       clearTimeout(listSearchTimer);
       listSearchTimer = setTimeout(() => loadProductList(1), 250);
     });
+    $("#productListCategory").on("change", () => loadProductList(1));
     $("#productListPrevious").on("click", () => loadProductList(listPage - 1));
     $("#productListNext").on("click", () => loadProductList(listPage + 1));
 

@@ -6,7 +6,7 @@ const sections = [
     { key: "clients", id: "clientsPage", label: "Clients", icon: "address-book" },
   ] },
   { title: "Catalogue & stock", items: [
-    { key: "catalogue", id: "productModal", label: "Catalogue", icon: "th-large", permission: "perm_products", modal: "#Products" },
+    { key: "catalogue", id: "productModal", label: "Catalogue", icon: "th-large", permission: "perm_products" },
     { key: "stock", id: "stockPage", label: "Stock", icon: "cubes", permission: "perm_products" },
     { key: "receiving", id: "receivingPage", label: "Achats", icon: "truck", permission: "perm_products" },
     { key: "categories", id: "categoryModal", label: "Catégories", icon: "tags", permission: "perm_categories" },

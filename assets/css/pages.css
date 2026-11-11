@@ -71,8 +71,6 @@ margin-right: 30px;
 #newCustomer,
 #newProduct,
 #newCategory,
-#Products,
-#productDetails,
 #userModal,
 #orderModal,
 #settingsModal,
@@ -157,22 +155,6 @@ overflow-y:scroll
  
 #productList {
   width: 100%;
-}
-
-#Products .modal-dialog {
-  width: min(calc(100vw - 32px), 1600px);
-  margin: 16px auto;
-}
-
-#Products .modal-content {
-  height: calc(100vh - 32px);
-  display: flex;
-  flex-direction: column;
-}
-
-#Products .modal-body {
-  flex: 1;
-  overflow: auto;
 }
 
 .product-selection-toolbar {

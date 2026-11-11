@@ -7,7 +7,7 @@ test("the shared menu has one unique destination for each page", () => {
   assert.equal(items.length, 10);
   assert.equal(new Set(items.map(item => item.key)).size, items.length);
   assert.equal(new Set(items.map(item => item.id)).size, items.length);
-  assert.deepEqual(items.filter(item => item.modal).map(item => item.key), ["catalogue"]);
+  assert.deepEqual(items.filter(item => item.modal).map(item => item.key), []);
 });
 
 test("the shared menu applies account permissions to every protected destination", () => {

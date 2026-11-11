@@ -217,9 +217,9 @@
                 <div class="clients-page-head"><div><h1>Clients</h1><p>Retrouvez les coordonnées et les achats de vos clients réguliers.</p></div><button type="button" id="clientsAddButton"><i class="fa fa-plus"></i> Nouveau client</button></div>
                 <div class="clients-card">
                     <div class="clients-toolbar"><label class="clients-search"><i class="fa fa-search"></i><input type="search" id="clientsSearch" placeholder="Rechercher par nom, téléphone, ville ou email" aria-label="Rechercher des clients"></label><div class="clients-filters"><button type="button" id="clientsAllFilter" class="active">Tous</button><button type="button" id="clientsProfessionalFilter">Professionnels</button></div></div>
-                    <div class="clients-table-wrap"><table><thead><tr><th>Client</th><th>Téléphone</th><th>Ville</th><th>Type</th><th>Dernier achat</th><th>Action</th></tr></thead><tbody id="clientsRows"></tbody></table></div>
+                    <div class="clients-list-panel"><h2>Répertoire</h2><div class="clients-table-wrap"><table><thead><tr><th>Client</th><th>Téléphone</th><th>Ville</th><th>Type</th></tr></thead><tbody id="clientsRows"></tbody></table></div>
+                    <div class="clients-pager"><span id="clientsPageInfo"></span><button type="button" id="clientsPrevious">Précédent</button><button type="button" id="clientsNext">Suivant</button></div></div>
                     <section id="clientDetails" class="client-details"><strong>Sélectionnez un client pour voir ses achats</strong><p>Coordonnées, factures et produits fréquemment achetés.</p></section>
-                    <div class="clients-pager"><span id="clientsPageInfo"></span><button type="button" id="clientsPrevious">Précédent</button><button type="button" id="clientsNext">Suivant</button></div>
                 </div>
             </div>
             <div id="stock_view" class="stock-page" hidden>
@@ -458,15 +458,12 @@
                 </form>
             </div></div>
         </div>
-        <div id="Products" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="catalogueTitle" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title" id="catalogueTitle">Catalogue produits</h4>
-                    </div>
-                    <div class="modal-body" id="all_products">
-                        <div class="catalogue-intro"><div><strong>Catalogue</strong><p>Retrouvez les produits, leurs stocks et leurs codes-barres.</p></div><button type="button" id="catalogueAddProduct" class="btn catalogue-add-button"><i class="fa fa-plus"></i> Nouveau produit</button></div>
+        <div id="Products" class="catalogue-page" hidden>
+            <div class="catalogue-page-inner">
+                <div class="catalogue-page-content" id="all_products">
+                        <div class="catalogue-breadcrumb">Catalogue / Tous les produits</div>
+                        <div class="catalogue-intro"><div><h1 id="catalogueTitle">Tous les produits</h1><p>Rechercher, consulter une fiche et sélectionner les codes-barres à imprimer.</p></div><button type="button" id="catalogueAddProduct" class="btn catalogue-add-button"><i class="fa fa-plus"></i> Ajouter un produit</button></div>
+                        <details id="catalogueImportDetails" class="catalogue-import-details"><summary>Importer un catalogue ZIP</summary>
                         <form id="importCatalogForm" enctype="multipart/form-data" class="catalogue-import-form">
                             <label for="catalogPackage"><i class="fa fa-file-archive-o"></i> Importer un catalogue ZIP</label>
                             <input id="catalogPackage" name="package" type="file" accept=".zip,application/zip" required>
@@ -474,26 +471,24 @@
                             <p class="help-block">Stock initial : 100. Prix de vente initial : 0. Vérifiez les fiches avant la vente.</p>
                             <div id="importCatalogStatus" role="status" aria-live="polite"></div>
                         </form>
-                        <div class="catalogue-search"><i class="fa fa-search"></i><input id="productListSearch" type="search" class="form-control" placeholder="Rechercher par nom, code-barres ou fournisseur" aria-label="Rechercher des produits"></div>
+                        </details>
+                        <div class="catalogue-controls"><div class="catalogue-search"><i class="fa fa-search"></i><input id="productListSearch" type="search" class="form-control" placeholder="Nom, code-barres ou fournisseur" aria-label="Rechercher des produits"></div>
+                        <select id="productListCategory" aria-label="Filtrer par catégorie"><option value="0">Toutes catégories</option></select>
                         <div class="product-selection-toolbar">
-                            <label><input id="productListSelectPage" type="checkbox"> Sélectionner la page</label>
                             <span id="productListSelectionCount" aria-live="polite">0 sélectionné(s)</span>
                             <button type="button" id="productListClearSelection" class="btn btn-default btn-sm">Effacer la sélection</button>
                             <button type="button" id="exportSelectedBarcodes" class="btn btn-success btn-sm" disabled><i class="fa fa-barcode"></i> Exporter les codes-barres PDF</button>
-                        </div>
+                        </div></div>
                         <div class="catalogue-table-wrap">
                         <table class="table table-bordered" id="productList">
                             <thead>
                                 <tr>
-                                    <th aria-label="Sélectionner le produit"></th>
-                                    <th>Code-barres</th>
-                                    <th>Image</th>
+                                    <th><input id="productListSelectPage" type="checkbox" aria-label="Sélectionner la page"></th>
                                     <th>Produit</th>
+                                    <th>Catégorie</th>
+                                    <th>Code-barres</th>
                                     <th>Prix</th>
                                     <th>Stock</th>
-                                    <th>Expiration</th>
-                                    <th>Catégorie</th>
-                                    <th>Fournisseur</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -509,34 +504,17 @@
                 </div>
             </div>
         </div>
-        <div id="productDetails" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="productDetailsTitle" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                        <h4 class="modal-title" id="productDetailsTitle">Fiche produit</h4>
-                    </div>
-                    <div class="modal-body product-fiche">
-                        <div class="product-fiche-head">
-                            <img id="productDetailsImage" alt="Product image">
-                            <div>
-                                <h3 id="productDetailsName"></h3>
-                                <p id="productDetailsCategory"></p>
-                                <p id="productDetailsSupplier"></p>
-                            </div>
-                        </div>
-                        <div class="product-fiche-barcode">
-                            <svg id="productDetailsBarcode" aria-label="Product barcode"></svg>
-                            <div id="productDetailsCode"></div>
-                        </div>
-                        <dl class="product-fiche-facts">
-                            <div><dt>Prix</dt><dd id="productDetailsPrice"></dd></div>
-                            <div><dt>Stock</dt><dd id="productDetailsStock"></dd></div>
-                            <div><dt>Stock minimum</dt><dd id="productDetailsMinimum"></dd></div>
-                            <div><dt>Date d'expiration</dt><dd id="productDetailsExpiry"></dd></div>
-                        </dl>
+        <div id="productDetails" class="product-details-page" hidden>
+            <div class="product-details-page-inner">
+                <div class="product-details-top"><div><button type="button" id="productDetailsBack" class="product-details-back"><i class="fa fa-arrow-left"></i> Catalogue</button><h1 id="productDetailsTitle">Fiche produit</h1><p>Toutes les informations utiles pour identifier et vendre ce produit.</p></div><button type="button" id="productDetailsEdit"><i class="fa fa-pencil"></i> Modifier le produit</button></div>
+                <div class="product-details-grid">
+                    <section class="product-details-photo"><img id="productDetailsImage" alt="Photo du produit"><span id="productDetailsCategory"></span><strong id="productDetailsPhotoName"></strong><small>Photo utilisée dans la grille de caisse</small></section>
+                    <div class="product-details-main">
+                        <section class="product-details-facts"><h2 id="productDetailsName"></h2><p id="productDetailsSubtitle"></p><dl class="product-fiche-facts"><div><dt>Fournisseur</dt><dd id="productDetailsSupplier"></dd></div><div><dt>Catégorie</dt><dd id="productDetailsCategoryFact"></dd></div><div><dt>Référence</dt><dd id="productDetailsReference"></dd></div><div><dt>Prix de vente</dt><dd id="productDetailsPrice"></dd></div><div><dt>Quantité</dt><dd id="productDetailsStock"></dd></div><div><dt>Stock minimum</dt><dd id="productDetailsMinimum"></dd></div></dl></section>
+                        <section class="product-fiche-barcode"><h2><i class="fa fa-barcode"></i> Code-barres pour la caisse</h2><p>Scanner le code ci-dessous ou l'imprimer sur une feuille de référence.</p><svg id="productDetailsBarcode" aria-label="Code-barres du produit"></svg><div id="productDetailsCode"></div></section>
                     </div>
                 </div>
+                <section class="product-details-stock"><h2><i class="fa fa-list"></i> Suivi du stock</h2><div><strong id="productDetailsStockSummary"></strong><span>Seuil minimum : <b id="productDetailsStockMinimum"></b></span><span>Date d'expiration : <b id="productDetailsExpiry"></b></span></div></section>
             </div>
         </div>
         <div id="userModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userEditorTitle" aria-hidden="true">
