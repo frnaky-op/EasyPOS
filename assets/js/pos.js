@@ -1838,6 +1838,7 @@ if (auth == undefined) {
       else view.prop("hidden", false);
       setActiveNavigation(navigation.get(0), page === "product" ? "catalogue" : page);
       $("#appSection").text(pageLabel(page === "product" ? "catalogue" : page));
+      $("#appCaisseShortcut").toggleClass("active", page === "pos").attr("aria-current", page === "pos" ? "page" : null);
       window.scrollTo(0, 0);
     }
 
@@ -1847,6 +1848,7 @@ if (auth == undefined) {
       if ($("#salesDetailedReport").prop("open")) loadTransactions();
     });
     navigation.on("click", "#pointofsale", () => showAppPage("pos"));
+    $("#appCaisseShortcut").on("click", () => showAppPage("pos"));
     navigation.on("click", "#stockPage", function () { showAppPage("stock"); loadStockPage(); });
     navigation.on("click", "#receivingPage", function () { showAppPage("receiving"); openReceivingPage(); });
     navigation.on("click", "#clientsPage", function () { showAppPage("clients"); loadClientsPage(1); });
