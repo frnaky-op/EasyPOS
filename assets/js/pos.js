@@ -3,6 +3,7 @@ const html2canvas = require("html2canvas");
 const JsBarcode = require("jsbarcode");
 const { barcodeValue, createBarcodeSheet } = require("./barcode-sheet");
 const { parsePaymentAmount, paymentChange } = require("./payment-amount");
+const { pageLabel, renderNavigation, setActiveNavigation } = require("./navigation");
 const macaddress = require("macaddress");
 const notiflix = require("notiflix");
 const validator = require("validator");
@@ -209,6 +210,7 @@ if (auth == undefined) {
   $.get(api + "users/user/" + user._id, function (data) {
     user = data;
     $("#loggedin-user").text(user.fullname);
+    $(document).trigger("easypos:user-updated");
   });
 
   const settingsRequest = $.get(api + "settings/get", function (data) {
@@ -264,6 +266,13 @@ if (auth == undefined) {
     applyPermissionVisibility();
 
     const navigation = $("#appNavigation");
+    renderNavigation(navigation.get(0), user);
+    setActiveNavigation(navigation.get(0), "pos");
+    $(document).on("easypos:user-updated", function () {
+      const active = navigation.find("button.active").data("page") || "pos";
+      renderNavigation(navigation.get(0), user);
+      setActiveNavigation(navigation.get(0), active);
+    });
     function closeNavigation() {
       navigation.prop("hidden", true);
       $("#appMenuToggle").attr("aria-expanded", "false").attr("aria-label", "Open navigation");
@@ -275,7 +284,6 @@ if (auth == undefined) {
     });
     navigation.on("click", "button", function () {
       closeNavigation();
-      applyPermissionVisibility();
     });
     $(document).on("keydown", function (event) {
       if (event.key === "Escape") closeNavigation();
@@ -890,7 +898,7 @@ if (auth == undefined) {
       setTimeout(() => $("#catalogPackage").trigger("focus"), 350);
     });
     $("#settingsAdvanced").on("click", function () {
-      $("#settings").triggerHandler("click");
+      $("#settings").trigger("click");
       applyPermissionVisibility();
       $("#settingsModal").modal("show");
     });
@@ -1785,105 +1793,42 @@ if (auth == undefined) {
       }
     });
 
-    $("#transactions").on("click", function () {
+    let activePage = "pos";
+    $("#Products").on("show.bs.modal", function () {
+      setActiveNavigation(navigation.get(0), "catalogue");
+      $("#appSection").text("Catalogue");
+    }).on("hidden.bs.modal", function () {
+      setActiveNavigation(navigation.get(0), activePage);
+      $("#appSection").text(pageLabel(activePage));
+    });
+    const pageViews = {
+      pos: "#pos_view", sales: "#transactions_view", stock: "#stock_view",
+      receiving: "#receiving_view", clients: "#clients_view", settings: "#settings_view",
+      categories: "#categories_view", users: "#users_view", orders: "#pending_view",
+    };
+    function showAppPage(page) {
+      activePage = page;
+      $("#pos_view,#transactions_view").hide();
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view").prop("hidden", true);
+      const view = $(pageViews[page]);
+      if (page === "pos" || page === "sales") view.show();
+      else view.prop("hidden", false);
+      setActiveNavigation(navigation.get(0), page);
+      $("#appSection").text(pageLabel(page));
+    }
+
+    navigation.on("click", "#transactions", function () {
+      showAppPage("sales");
       loadSalesDashboard();
       if ($("#salesDetailedReport").prop("open")) loadTransactions();
-
-      $("#pos_view").hide();
-      $("#stock_view").prop("hidden", true);
-      $("#receiving_view").prop("hidden", true);
-      $("#clients_view").prop("hidden", true);
-      $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
-      $("#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
-      $("#pointofsale").show();
-      $("#transactions_view").show();
-      $("#appSection").text("Ventes");
-      $(this).hide();
     });
-
-    $("#pointofsale").on("click", function () {
-      $("#pos_view").show();
-      $("#stock_view").prop("hidden", true);
-      $("#receiving_view").prop("hidden", true);
-      $("#clients_view").prop("hidden", true);
-      $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
-      $("#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
-      $("#transactions").show();
-      $("#transactions_view").hide();
-      $("#appSection").text("Caisse");
-      $(this).hide();
-    });
-
-    $("#stockPage").on("click", function () {
-      $("#pos_view,#transactions_view").hide();
-      $("#receiving_view").prop("hidden", true);
-      $("#clients_view").prop("hidden", true);
-      $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
-      $("#stock_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
-      $("#appSection").text("Stock");
-      $(this).hide();
-      loadStockPage();
-    });
-
-    $("#receivingPage").on("click", function () {
-      $("#pos_view,#transactions_view").hide();
-      $("#stock_view").prop("hidden", true);
-      $("#clients_view").prop("hidden", true);
-      $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
-      $("#receiving_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#stockPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
-      $("#appSection").text("Achats");
-      $(this).hide();
-      openReceivingPage();
-    });
-
-    $("#clientsPage").on("click", function () {
-      $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view").prop("hidden", true);
-      $("#settings_view").prop("hidden", true);
-      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
-      $("#clients_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#stockPage,#receivingPage,#settings,#categoryModal,#usersModal").show();
-      $("#appSection").text("Clients");
-      $(this).hide();
-      loadClientsPage(1);
-    });
-
-    $("#settings").on("click", function () {
-      $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view").prop("hidden", true);
-      $("#categories_view,#users_view,#pending_view").prop("hidden", true);
-      $("#settings_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#categoryModal,#usersModal").show();
-      $("#appSection").text("Paramètres");
-      $(this).hide();
-      fillSettingsPage();
-    });
-
-    $("#categoryModal").on("click", function () {
-      $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#users_view,#pending_view").prop("hidden", true);
-      $("#categories_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#settings,#usersModal").show();
-      $("#appSection").text("Catégories");
-      $(this).hide();
-      openCategoriesPage();
-    });
-
-    $("#usersModal").on("click", function () {
-      $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#pending_view").prop("hidden", true);
-      $("#users_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal").show();
-      $("#appSection").text("Utilisateurs");
-      $(this).hide();
-      loadUserList();
-    });
+    navigation.on("click", "#pointofsale", () => showAppPage("pos"));
+    navigation.on("click", "#stockPage", function () { showAppPage("stock"); loadStockPage(); });
+    navigation.on("click", "#receivingPage", function () { showAppPage("receiving"); openReceivingPage(); });
+    navigation.on("click", "#clientsPage", function () { showAppPage("clients"); loadClientsPage(1); });
+    navigation.on("click", "#settings", function () { showAppPage("settings"); fillSettingsPage(); });
+    navigation.on("click", "#categoryModal", function () { showAppPage("categories"); openCategoriesPage(); });
+    navigation.on("click", "#usersModal", function () { showAppPage("users"); loadUserList(); });
 
     let pendingType = "all";
     let pendingPage = 1;
@@ -1990,18 +1935,13 @@ if (auth == undefined) {
     $("#pendingNext").on("click", () => loadPendingPage(pendingPage + 1));
     $("#pendingRefresh").on("click", () => loadPendingPage(pendingPage));
     function showPendingPage(type) {
-      $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view").prop("hidden", true);
-      $("#pending_view").prop("hidden", false);
-      $("#pointofsale,#transactions,#stockPage,#receivingPage,#clientsPage,#settings,#categoryModal,#usersModal").show();
-      $("#appSection").text("Commandes");
+      showAppPage("orders");
       pendingType = type;
       selectedPendingId = null;
       $(".pending-tabs button").removeClass("active").filter(`[data-type="${type}"]`).addClass("active");
       loadPendingPage(1);
     }
-    $("#viewRefOrders").on("click", () => showPendingPage("hold"));
-    $("#viewCustomerOrders").on("click", () => showPendingPage("customer"));
+    navigation.on("click", "#viewCustomerOrders", () => showPendingPage("all"));
 
     $("#newProductModal").on("click", function () {
       $("#saveProduct").get(0).reset();
@@ -2273,7 +2213,7 @@ if (auth == undefined) {
       );
     };
 
-    $("#productModal").on("click", function () {
+    navigation.on("click", "#productModal", function () {
       loadProductList();
     });
 
@@ -2318,7 +2258,7 @@ if (auth == undefined) {
       });
     }
     $("#usersSearch").on("input", renderUsersPage);
-    $("#usersAddButton").on("click", () => $("#add-user").trigger("click"));
+    $("#usersAddButton").on("click", openNewUserEditor);
 
     function updateBarcodeSelection() {
       const total = selectedBarcodeProducts.size;
@@ -2645,9 +2585,9 @@ if (auth == undefined) {
       }
     });
 
-    $("#add-user").on("click", function () {
+    function openNewUserEditor() {
       ownUserEdit = false;
-      if (platform.app != "Network Point of Sale Terminal") {
+      if (!platform || platform.app != "Network Point of Sale Terminal") {
         $(".perms").show();
       }
 
@@ -2657,9 +2597,9 @@ if (auth == undefined) {
       $("#userPasswordHint").text("*");
       $("#userEditorTitle").text("Nouveau compte");
       $("#userModal").modal("show");
-    });
+    }
 
-    $("#settings").on("click", function () {
+    navigation.on("click", "#settings", function () {
       $("#app").val((platform && platform.app) || (settings && validator.unescape(String(settings.app))) || "Standalone Point of Sale");
       $("#networkSettingsError,#storeSettingsError").text("");
       if (platform) {

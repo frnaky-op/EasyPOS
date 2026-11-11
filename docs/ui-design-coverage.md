@@ -27,5 +27,6 @@ Figma file: **Untitled**, page: **PharmaSpot**. The page has one design system f
 | Add/edit user and own account | 20 · `542:1379` | `#userModal` |
 | Network configuration | 21 · `542:1431` | `#settingsModal` terminal mode |
 | First-run store setup | 22 · `542:1472` | `#settingsModal` standalone mode |
+| Shared navigation | 23 · `544:1518` | `#appNavigation`, mounted once for every page |
 
-The old Users, Categories, held orders, and customer orders list dialogs had no active navigation entry point and were removed. Pending orders are served by `GET /pending-orders/page` with search and pagination. The seven frames added in the final audit have local operation JSON and exported PNG previews in `design/figma/`.
+The old Users, Categories, held orders, and customer orders list dialogs had no active navigation entry point and were removed. Pending orders are served by `GET /pending-orders/page` with search and pagination. The shared navigation is generated from one route definition, remains collapsed by default, and marks the current page. Its Figma operation JSON and PNG preview are in `design/figma/`.

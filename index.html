@@ -56,22 +56,11 @@
                 <button type="button" title="My Profile" class="app-user-button" id="cashier"><i class="fa fa-user"></i> <span id="loggedin-user"></span></button>
                 <button id="log-out" type="button" class="app-logout" title="Log out"><i class="fa fa-sign-out"></i></button>
             </header>
-            <nav id="appNavigation" class="app-navigation" aria-label="Main navigation" hidden>
-                <button id="pointofsale" type="button"><i class="fa fa-shopping-cart"></i> Caisse</button>
-                <button id="productModal" class="p_one" data-toggle="modal" data-target="#Products" type="button"><i class="fa fa-th-large"></i> Catalogue</button>
-                <button id="stockPage" class="p_one" type="button"><i class="fa fa-cubes"></i> Stock</button>
-                <button id="receivingPage" class="p_one" type="button"><i class="fa fa-truck"></i> Achats</button>
-                <button id="newProductModal" class="p_one" data-toggle="modal" data-target="#newProduct" type="button"><i class="fa fa-plus"></i> Ajouter un produit</button>
-                <button id="categoryModal" class="p_two" type="button"><i class="fa fa-tags"></i> Catégories</button>
-                <button id="newCategoryModal" class="p_two" data-toggle="modal" data-target="#newCategory" type="button"><i class="fa fa-plus"></i> Ajouter une catégorie</button>
-                <button id="viewRefOrders" type="button"><i class="fa fa-bookmark"></i> Ventes en attente</button>
-                <button id="viewCustomerOrders" type="button"><i class="fa fa-shopping-basket"></i> Commandes</button>
-                <button id="transactions" class="p_three" type="button"><i class="fa fa-credit-card"></i> Ventes</button>
-                <button id="clientsPage" type="button"><i class="fa fa-address-book"></i> Clients</button>
-                <button id="usersModal" class="p_four" type="button"><i class="fa fa-users"></i> Utilisateurs</button>
-                <button id="add-user" class="p_four" type="button"><i class="fa fa-user-plus"></i> Ajouter un utilisateur</button>
-                <button id="settings" class="p_five" type="button"><i class="fa fa-cog"></i> Paramètres</button>
-            </nav>
+            <nav id="appNavigation" class="app-navigation" aria-label="Navigation principale" hidden></nav>
+            <div hidden aria-hidden="true">
+                <button id="newProductModal" type="button" data-toggle="modal" data-target="#newProduct"></button>
+                <button id="newCategoryModal" type="button" data-toggle="modal" data-target="#newCategory"></button>
+            </div>
             <div id="transactions_view">
                 <div class="sales-dashboard">
                     <div class="sales-page-head"><div><h1>Ventes &amp; rapports</h1><p>Suivez les encaissements, les produits vendus et les transactions récentes.</p></div><button type="button" id="salesExportCsv"><i class="fa fa-download"></i> Exporter CSV (7 jours)</button></div>

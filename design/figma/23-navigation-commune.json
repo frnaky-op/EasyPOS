@@ -1,0 +1,381 @@
+{
+  "ops": [
+    {
+      "op": "frame",
+      "ref": "navigation",
+      "name": "23 · Navigation commune | Toutes les pages",
+      "x": 11200,
+      "y": 3300,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F6F8F6",
+      "clip": true
+    },
+    {
+      "op": "rect",
+      "parent": "@navigation",
+      "name": "Topbar",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 56,
+      "fill": "#FFFFFF",
+      "radius": 0
+    },
+    {
+      "op": "rect",
+      "parent": "@navigation",
+      "name": "Menu button",
+      "x": 18,
+      "y": 9,
+      "width": 38,
+      "height": 38,
+      "fill": "#E2F4EA",
+      "radius": 9
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Menu icon",
+      "characters": "☰",
+      "x": 28,
+      "y": 18,
+      "size": 19,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Brand",
+      "characters": "EasyPOS",
+      "x": 91,
+      "y": 17,
+      "size": 19,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Section",
+      "characters": "Caisse",
+      "x": 200,
+      "y": 20,
+      "size": 13,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Store",
+      "characters": "Droguerie Générale",
+      "x": 1200,
+      "y": 20,
+      "size": 13,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "rect",
+      "parent": "@navigation",
+      "name": "Menu panel",
+      "x": 18,
+      "y": 58,
+      "width": 282,
+      "height": 570,
+      "fill": "#FFFFFF",
+      "radius": 12
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Menu title",
+      "characters": "NAVIGATION",
+      "x": 36,
+      "y": 77,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "VENTE heading",
+      "characters": "VENTE",
+      "x": 36,
+      "y": 112,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "rect",
+      "parent": "@navigation",
+      "name": "Active Caisse",
+      "x": 28,
+      "y": 135,
+      "width": 262,
+      "height": 39,
+      "fill": "#E2F4EA",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "VENTE Caisse",
+      "characters": "Caisse",
+      "x": 55,
+      "y": 144,
+      "size": 14,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "VENTE Ventes",
+      "characters": "Ventes",
+      "x": 55,
+      "y": 184,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "VENTE Commandes",
+      "characters": "Commandes",
+      "x": 55,
+      "y": 224,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "VENTE Clients",
+      "characters": "Clients",
+      "x": 55,
+      "y": 264,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "CATALOGUE & STOCK heading",
+      "characters": "CATALOGUE & STOCK",
+      "x": 36,
+      "y": 311,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "CATALOGUE & STOCK Catalogue",
+      "characters": "Catalogue",
+      "x": 55,
+      "y": 343,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "CATALOGUE & STOCK Stock",
+      "characters": "Stock",
+      "x": 55,
+      "y": 383,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "CATALOGUE & STOCK Achats",
+      "characters": "Achats",
+      "x": 55,
+      "y": 423,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "CATALOGUE & STOCK Catégories",
+      "characters": "Catégories",
+      "x": 55,
+      "y": 463,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "ADMINISTRATION heading",
+      "characters": "ADMINISTRATION",
+      "x": 36,
+      "y": 510,
+      "size": 11,
+      "color": "#6B807B",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "ADMINISTRATION Utilisateurs",
+      "characters": "Utilisateurs",
+      "x": 55,
+      "y": 542,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "ADMINISTRATION Paramètres",
+      "characters": "Paramètres",
+      "x": 55,
+      "y": 582,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "rect",
+      "parent": "@navigation",
+      "name": "Sample product card",
+      "x": 326,
+      "y": 180,
+      "width": 190,
+      "height": 180,
+      "fill": "#FFFFFF",
+      "radius": 10
+    },
+    {
+      "op": "rect",
+      "parent": "@navigation",
+      "name": "Sample product image",
+      "x": 339,
+      "y": 193,
+      "width": 164,
+      "height": 100,
+      "fill": "#EAF2ED",
+      "radius": 8
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Sample product name",
+      "characters": "Perceuse sans fil",
+      "x": 340,
+      "y": 305,
+      "size": 14,
+      "color": "#17322D",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    },
+    {
+      "op": "text",
+      "parent": "@navigation",
+      "name": "Sample product price",
+      "characters": "790 MAD",
+      "x": 340,
+      "y": 333,
+      "size": 13,
+      "color": "#087A5C",
+      "font": {
+        "family": "Inter",
+        "style": "Regular"
+      },
+      "width": 330
+    }
+  ]
+}
