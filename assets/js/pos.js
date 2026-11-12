@@ -2,6 +2,7 @@ const jsPDF = require("jspdf");
 const html2canvas = require("html2canvas");
 const JsBarcode = require("jsbarcode");
 const { barcodeValue, createBarcodeSheet } = require("./barcode-sheet");
+const { saleTerminal } = require("./sale-terminal");
 const { parsePaymentAmount, paymentChange } = require("./payment-amount");
 const { pageLabel, renderNavigation, setActiveNavigation } = require("./navigation");
 const macaddress = require("macaddress");
@@ -1343,6 +1344,13 @@ if (auth == undefined) {
     }
 
     $.fn.submitDueOrder = function (status) {
+      let terminal;
+      try {
+        terminal = saleTerminal(platform, settings);
+      } catch (error) {
+        notiflix.Report.failure("Configuration de la caisse", error.message, "OK");
+        return;
+      }
       let items = "";
       let payment = 0;
       paymentType = $('.list-group-item.active').data('payment-type');
@@ -1423,8 +1431,6 @@ if (auth == undefined) {
           return;
         }
       }
-
-      $(".loading").show();
 
       if (holdOrder != 0) {
         orderNumber = holdOrder;
@@ -1543,12 +1549,13 @@ if (auth == undefined) {
         paid: paid,
         change: change,
         _id: orderNumber,
-        till: platform.till,
-        mac: platform.mac,
+        till: terminal.till,
+        mac: terminal.mac,
         user: user.fullname,
         user_id: user._id,
       };
 
+      $(".loading").show();
       $.ajax({
         url: api + "new",
         type: method,
