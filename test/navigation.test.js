@@ -6,7 +6,7 @@ const { sections, allowed } = require("../assets/js/navigation");
 
 test("the shared menu has one unique destination for each page", () => {
   const items = sections.flatMap(section => section.items);
-  assert.equal(items.length, 10);
+  assert.equal(items.length, 11);
   assert.equal(new Set(items.map(item => item.key)).size, items.length);
   assert.equal(new Set(items.map(item => item.id)).size, items.length);
   assert.deepEqual(items.filter(item => item.modal).map(item => item.key), []);

@@ -9,6 +9,7 @@ const sections = [
     { key: "catalogue", id: "productModal", label: "Catalogue", icon: "th-large", permission: "perm_products" },
     { key: "stock", id: "stockPage", label: "Stock", icon: "cubes", permission: "perm_products" },
     { key: "receiving", id: "receivingPage", label: "Achats", icon: "truck", permission: "perm_products" },
+    { key: "suppliers", id: "suppliersPage", label: "Fournisseurs", icon: "industry", permission: "perm_products" },
     { key: "categories", id: "categoryModal", label: "Catégories", icon: "tags", permission: "perm_categories" },
   ] },
   { title: "Administration", items: [

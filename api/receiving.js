@@ -8,6 +8,7 @@ module.exports = function registerReceivingRoutes(app, inventoryDB, movementsDB,
     autoload: true,
   });
   receiptsDB.ensureIndex({ fieldName: 'receiptKey', unique: true });
+  app.receiptsDB = receiptsDB;
 
   app.post('/receiving', function (req, res) {
     const supplier = String(req.body.supplier || '').trim();

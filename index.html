@@ -58,6 +58,7 @@
                 <button id="log-out" type="button" class="app-logout" title="Log out"><i class="fa fa-sign-out"></i></button>
             </header>
             <nav id="appNavigation" class="app-navigation" aria-label="Navigation principale" hidden></nav>
+            <datalist id="supplierSuggestions"></datalist>
             <div hidden aria-hidden="true">
                 <button id="newProductModal" type="button"></button>
                 <button id="newCategoryModal" type="button" data-toggle="modal" data-target="#newCategory"></button>
@@ -170,6 +171,17 @@
                     <section id="clientDetails" class="client-details"><strong>Sélectionnez un client pour voir ses achats</strong><p>Coordonnées, factures et produits fréquemment achetés.</p></section>
                 </div>
             </div>
+            <div id="suppliers_view" class="suppliers-page" hidden>
+                <div class="suppliers-page-head"><div><h1>Fournisseurs</h1><p>Retrouvez vos fournisseurs et leurs coordonnées pour les produits et les réceptions.</p></div><button type="button" id="suppliersAddButton"><i class="fa fa-plus"></i> Nouveau fournisseur</button></div>
+                <div class="suppliers-page-grid">
+                    <section class="suppliers-list-panel"><h2>Répertoire des fournisseurs</h2><label class="suppliers-search"><i class="fa fa-search"></i><input id="suppliersSearch" type="search" placeholder="Rechercher un fournisseur, téléphone ou e-mail" aria-label="Rechercher des fournisseurs"></label>
+                        <div class="suppliers-table-wrap"><table><thead><tr><th>Fournisseur</th><th>Téléphone</th><th>Produits</th><th>Actions</th></tr></thead><tbody id="suppliersRows"></tbody></table></div>
+                        <div class="suppliers-pager"><span id="suppliersPageInfo"></span><button type="button" id="suppliersPrevious">Précédent</button><button type="button" id="suppliersNext">Suivant</button></div>
+                        <p id="suppliersMessage" role="status" aria-live="polite"></p>
+                    </section>
+                    <aside id="supplierDetails" class="supplier-details"><h2>Fiche fournisseur</h2><p>Sélectionnez un fournisseur pour consulter ses coordonnées.</p></aside>
+                </div>
+            </div>
             <div id="stock_view" class="stock-page" hidden>
                 <div class="stock-page-head"><div><h1>Stock</h1><p>Suivez les quantités et corrigez les écarts d'inventaire.</p></div><div class="stock-page-actions"><button type="button" id="stockCountButton"><i class="fa fa-list-ol"></i> Nouvel inventaire</button><button type="button" id="stockAdjustButton"><i class="fa fa-plus"></i> Ajustement</button></div></div>
                 <div class="stock-stats"><div><span>Valeur au prix de vente</span><strong id="stockValue">—</strong></div><div><span>Produits à réapprovisionner</span><strong id="stockLowCount">—</strong></div><div><span>Produits en rupture</span><strong id="stockOutCount">—</strong></div></div>
@@ -182,7 +194,7 @@
                         <div class="receiving-page-actions"><button type="button" id="receivingSaveDraft">Enregistrer brouillon</button><button type="submit" id="receivingPost"><i class="fa fa-check"></i> Valider la réception</button></div>
                     </div>
                     <section class="receiving-supplier-card">
-                        <div class="receiving-field"><label for="receivingSupplier">Fournisseur *</label><input id="receivingSupplier" type="text" maxlength="120" placeholder="Nom du fournisseur" required></div>
+                        <div class="receiving-field"><div class="supplier-field-label"><label for="receivingSupplier">Fournisseur *</label><button type="button" id="receivingAddSupplier"><i class="fa fa-plus"></i> Ajouter</button></div><input id="receivingSupplier" type="text" maxlength="120" list="supplierSuggestions" placeholder="Choisir ou saisir un fournisseur" required></div>
                         <div class="receiving-field"><label for="receivingReference">N° facture / BL *</label><input id="receivingReference" type="text" maxlength="80" placeholder="Référence du document" required></div>
                         <div class="receiving-field"><label for="receivingDate">Date de réception *</label><input id="receivingDate" type="date" required></div>
                         <span class="receiving-draft-badge" id="receivingState">Nouvelle réception</span>
@@ -348,7 +360,7 @@
                             <div class="product-editor-field full"><label for="productName">Nom du produit *</label><input type="text" required name="name" id="productName" class="form-control" placeholder="Ex. Perceuse Bosch GSR 120LI"></div>
                             <div class="product-editor-field"><label for="barcode">Code-barres *</label><div class="product-input-icon"><input type="text" required name="barcode" id="barcode" class="form-control" placeholder="Scanner ou saisir le code"><i class="fa fa-barcode" aria-hidden="true"></i></div></div>
                             <div class="product-editor-field"><label for="category">Catégorie *</label><select name="category" required class="form-control" id="category"></select></div>
-                            <div class="product-editor-field full"><div class="product-field-heading"><label for="supplier">Fournisseur</label><button type="button" id="productSupplierFocus"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</button></div><input type="text" name="supplier" id="supplier" class="form-control" placeholder="Ex. Bosch Maroc"></div>
+                            <div class="product-editor-field full"><div class="product-field-heading"><label for="supplier">Fournisseur</label><button type="button" id="productSupplierFocus"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</button></div><input type="text" name="supplier" id="supplier" class="form-control" list="supplierSuggestions" placeholder="Choisir ou saisir un fournisseur"></div>
                         </div>
                         <div class="product-editor-tip"><i class="fa fa-info-circle" aria-hidden="true"></i><div><strong>Conseil pour la recherche</strong><p>Utiliser un nom court et unique. Le code-barres facilite la vente à la caisse.</p></div></div>
                         <span class="product-required-note">* Champs obligatoires</span>
@@ -381,6 +393,21 @@
                 <footer class="product-editor-footer"><span>Le produit apparaîtra dans le catalogue après enregistrement.</span><div class="product-editor-actions"><button type="button" id="productEditorCancel">Annuler</button><button type="submit" id="createAndContinue" data-continue="true"><i class="fa fa-plus" aria-hidden="true"></i> Créer et continuer</button><button type="submit" id="submitProduct"><i class="fa fa-check" aria-hidden="true"></i> Enregistrer</button></div></footer>
             </form>
         </section>
+        <div id="supplierEditor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="supplierEditorTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document"><div class="modal-content">
+                <form id="supplierEditorForm">
+                    <div class="supplier-editor-header"><span class="supplier-editor-icon"><i class="fa fa-industry" aria-hidden="true"></i></span><div><h4 id="supplierEditorTitle">Nouveau fournisseur</h4><p>Coordonnées accessibles depuis les produits et les achats.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
+                    <div class="supplier-editor-body"><input id="supplierEditorId" type="hidden"><div class="supplier-editor-fields">
+                        <div class="supplier-editor-field full"><label for="supplierEditorName">Nom du fournisseur *</label><input id="supplierEditorName" type="text" maxlength="120" required placeholder="Ex. Araplast"></div>
+                        <div class="supplier-editor-field"><label for="supplierEditorPhone">Téléphone</label><input id="supplierEditorPhone" type="tel" maxlength="40" placeholder="Ex. 05 22 00 00 00"></div>
+                        <div class="supplier-editor-field"><label for="supplierEditorEmail">E-mail</label><input id="supplierEditorEmail" type="email" maxlength="120" placeholder="Ex. contact@fournisseur.ma"></div>
+                        <div class="supplier-editor-field full"><label for="supplierEditorAddress">Adresse</label><input id="supplierEditorAddress" type="text" maxlength="200" placeholder="Ville et adresse"></div>
+                        <div class="supplier-editor-field full"><label for="supplierEditorNote">Note</label><textarea id="supplierEditorNote" maxlength="500" rows="3" placeholder="Informations utiles"></textarea></div>
+                    </div><p id="supplierEditorError" role="alert"></p></div>
+                    <div class="supplier-editor-footer"><span>* Champ obligatoire</span><button type="button" data-dismiss="modal">Annuler</button><button type="submit" id="supplierEditorSave"><i class="fa fa-check"></i> Enregistrer</button></div>
+                </form>
+            </div></div>
+        </div>
         <div id="newCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle" aria-hidden="true">
             <div class="modal-dialog" role="document"><div class="modal-content">
                 <div class="category-editor-header"><span class="category-editor-icon" aria-hidden="true"><i class="fa fa-tags"></i></span><div><h4 id="newCategoryTitle">Nouvelle catégorie</h4><p>Organisez vos produits pour les retrouver rapidement.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>

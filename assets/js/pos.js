@@ -662,6 +662,7 @@ if (auth == undefined) {
           notiflix.Report.success("Réception enregistrée", `Le stock a été mis à jour pour ${receipt.lines} référence${receipt.lines === 1 ? "" : "s"}.`, "OK");
           loadProducts();
           loadProductList();
+          loadSuppliers();
         },
         error: function (response) {
           $("#receivingMessage").text("");
@@ -1829,14 +1830,14 @@ if (auth == undefined) {
     const pageViews = {
       pos: "#pos_view", sales: "#transactions_view", stock: "#stock_view",
       receiving: "#receiving_view", clients: "#clients_view", settings: "#settings_view",
-      categories: "#categories_view", users: "#users_view", orders: "#pending_view",
+      categories: "#categories_view", suppliers: "#suppliers_view", users: "#users_view", orders: "#pending_view",
       catalogue: "#Products", product: "#productDetails", productEditor: "#newProduct",
     };
     function showAppPage(page) {
       activePage = page;
       document.body.classList.toggle("catalogue-open", page === "catalogue");
       $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view,#Products,#productDetails,#newProduct").prop("hidden", true);
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#suppliers_view,#users_view,#pending_view,#Products,#productDetails,#newProduct").prop("hidden", true);
       const view = $(pageViews[page]);
       if (page === "pos" || page === "sales") view.show();
       else view.prop("hidden", false);
@@ -1973,6 +1974,156 @@ if (auth == undefined) {
     }
     navigation.on("click", "#viewCustomerOrders", () => showPendingPage("all"));
 
+    let allSuppliers = [];
+    let suppliersPageNumber = 1;
+    let selectedSupplierName = "";
+    let supplierEditorTarget = "";
+    const supplierKey = value => String(value || "").trim().toLocaleLowerCase();
+
+    function renderSupplierDetails(supplier) {
+      const panel = $("#supplierDetails").empty().append($("<h2>", { text: "Fiche fournisseur" }));
+      if (!supplier) {
+        panel.append($("<p>", { text: "Sélectionnez un fournisseur pour consulter ses coordonnées." }));
+        return;
+      }
+      panel.append($("<div>", { class: "supplier-details-name", text: supplier.name }));
+      const facts = $("<dl>");
+      for (const [label, value] of [
+        ["Téléphone", supplier.phone], ["E-mail", supplier.email], ["Adresse", supplier.address],
+      ]) {
+        facts.append($("<div>").append($("<dt>", { text: label }), $("<dd>", { text: value || "—" })));
+      }
+      panel.append(facts);
+      const summary = $("<div>", { class: "supplier-details-note" }).append(
+        $("<strong>", { text: `${supplier.productCount || 0} produit(s) · ${supplier.receiptCount || 0} réception(s)` }),
+        $("<p>", { text: "Le nom reste fixe quand des produits ou des réceptions l'utilisent." }),
+      );
+      if (supplier.note) summary.append($("<p>", { text: supplier.note }));
+      panel.append(summary, $("<button>", { type: "button", class: "supplier-details-edit", text: "Modifier la fiche" })
+        .on("click", () => openSupplierEditor(supplier, "directory")));
+    }
+
+    function renderSuppliers() {
+      const query = supplierKey($("#suppliersSearch").val());
+      const matching = allSuppliers.filter(supplier =>
+        [supplier.name, supplier.phone, supplier.email].some(value => supplierKey(value).includes(query)));
+      const pageSize = 12;
+      const pageCount = Math.max(1, Math.ceil(matching.length / pageSize));
+      suppliersPageNumber = Math.min(Math.max(1, suppliersPageNumber), pageCount);
+      const visible = matching.slice((suppliersPageNumber - 1) * pageSize, suppliersPageNumber * pageSize);
+      if (!visible.some(supplier => supplierKey(supplier.name) === selectedSupplierName)) {
+        selectedSupplierName = visible.length ? supplierKey(visible[0].name) : "";
+      }
+      const rows = $("#suppliersRows").empty();
+      for (const supplier of visible) {
+        const selected = supplierKey(supplier.name) === selectedSupplierName;
+        const actions = $("<div>", { class: "suppliers-row-actions" }).append(
+          $("<button>", { type: "button", text: "Modifier" }).on("click", event => {
+            event.stopPropagation();
+            openSupplierEditor(supplier, "directory");
+          }),
+          $("<button>", {
+            type: "button", title: "Supprimer", "aria-label": `Supprimer ${supplier.name}`,
+            disabled: !supplier._id || supplier.productCount > 0 || supplier.receiptCount > 0,
+          }).append($("<i>", { class: "fa fa-trash" })).on("click", event => {
+            event.stopPropagation();
+            deleteSupplier(supplier);
+          }),
+        );
+        const row = $("<tr>", { tabindex: 0, class: selected ? "selected" : "" }).append(
+          $("<td>").append($("<strong>", { text: supplier.name })),
+          $("<td>", { text: supplier.phone || "—" }),
+          $("<td>", { text: `${supplier.productCount || 0} produit(s)` }),
+          $("<td>").append(actions),
+        );
+        row.on("click keydown", event => {
+          if (event.type === "keydown" && !["Enter", " "].includes(event.key)) return;
+          selectedSupplierName = supplierKey(supplier.name);
+          renderSuppliers();
+        });
+        rows.append(row);
+      }
+      if (!visible.length) rows.append($("<tr>").append($("<td>", {
+        colspan: 4, text: "Aucun fournisseur trouvé.",
+      })));
+      $("#suppliersPageInfo").text(matching.length
+        ? `${(suppliersPageNumber - 1) * pageSize + 1}–${Math.min(suppliersPageNumber * pageSize, matching.length)} sur ${matching.length} fournisseurs`
+        : "0 fournisseur");
+      $("#suppliersPrevious").prop("disabled", suppliersPageNumber <= 1);
+      $("#suppliersNext").prop("disabled", suppliersPageNumber >= pageCount);
+      renderSupplierDetails(matching.find(supplier => supplierKey(supplier.name) === selectedSupplierName));
+    }
+
+    function loadSuppliers() {
+      return $.get(api + "suppliers/all").done(function (suppliers) {
+        allSuppliers = suppliers;
+        const options = $("#supplierSuggestions").empty();
+        suppliers.forEach(supplier => options.append($("<option>", { value: supplier.name })));
+        $("#suppliersMessage").text("");
+        renderSuppliers();
+      }).fail(() => $("#suppliersMessage").text("Impossible de charger les fournisseurs."));
+    }
+
+    function openSupplierEditor(supplier, target) {
+      supplierEditorTarget = target;
+      $("#supplierEditorForm").get(0).reset();
+      $("#supplierEditorError").text("");
+      $("#supplierEditorId").val(supplier?._id || "");
+      for (const field of ["Name", "Phone", "Email", "Address", "Note"]) {
+        $("#supplierEditor" + field).val(supplier?.[field.toLowerCase()] || "");
+      }
+      $("#supplierEditorName").prop("readOnly", Boolean(supplier?.productCount || supplier?.receiptCount));
+      $("#supplierEditorTitle").text(supplier?._id ? "Modifier le fournisseur" : "Nouveau fournisseur");
+      $("#supplierEditor").modal("show");
+    }
+
+    function deleteSupplier(supplier) {
+      notiflix.Confirm.show("Supprimer le fournisseur", `Supprimer ${supplier.name} du répertoire ?`,
+        "Supprimer", "Annuler", () => {
+          $.ajax({ url: api + "suppliers/supplier/" + supplier._id, type: "DELETE" })
+            .done(() => {
+              selectedSupplierName = "";
+              loadSuppliers();
+              notiflix.Notify.success("Fournisseur supprimé.");
+            })
+            .fail(response => notiflix.Report.failure("Suppression impossible",
+              response.responseJSON?.error || "Réessayez.", "OK"));
+        });
+    }
+
+    navigation.on("click", "#suppliersPage", function () { showAppPage("suppliers"); loadSuppliers(); });
+    $("#suppliersAddButton").on("click", () => openSupplierEditor(null, "directory"));
+    $("#suppliersSearch").on("input", function () { suppliersPageNumber = 1; renderSuppliers(); });
+    $("#suppliersPrevious").on("click", function () { suppliersPageNumber--; renderSuppliers(); });
+    $("#suppliersNext").on("click", function () { suppliersPageNumber++; renderSuppliers(); });
+    $("#productSupplierFocus,#receivingAddSupplier").on("click", function () {
+      const target = this.id === "productSupplierFocus" ? "product" : "receiving";
+      const name = $(target === "product" ? "#supplier" : "#receivingSupplier").val().trim();
+      openSupplierEditor(allSuppliers.find(item => supplierKey(item.name) === supplierKey(name)) || (name ? { name } : null), target);
+    });
+    $("#supplierEditorForm").on("submit", function (event) {
+      event.preventDefault();
+      const id = $("#supplierEditorId").val();
+      const values = {};
+      for (const field of ["Name", "Phone", "Email", "Address", "Note"]) {
+        values[field.toLowerCase()] = $("#supplierEditor" + field).val().trim();
+      }
+      const button = $("#supplierEditorSave").prop("disabled", true);
+      $.ajax({
+        url: api + "suppliers/supplier" + (id ? "/" + encodeURIComponent(id) : ""),
+        type: id ? "PUT" : "POST", contentType: "application/json", data: JSON.stringify(values),
+      }).done(function () {
+        if (supplierEditorTarget === "product") $("#supplier").val(values.name);
+        if (supplierEditorTarget === "receiving") $("#receivingSupplier").val(values.name);
+        selectedSupplierName = supplierKey(values.name);
+        $("#supplierEditor").modal("hide");
+        loadSuppliers();
+        notiflix.Notify.success("Fournisseur enregistré.");
+      }).fail(response => $("#supplierEditorError").text(response.responseJSON?.error || "Enregistrement impossible. Réessayez."))
+        .always(() => button.prop("disabled", false));
+    });
+    loadSuppliers();
+
     let productPreviewUrl = null;
 
     function resetProductEditor() {
@@ -2004,7 +2155,6 @@ if (auth == undefined) {
 
     $("#newProductModal,#catalogueAddProduct").on("click", openNewProductEditor);
     $("#productEditorBack,#productEditorCancel").on("click", () => showAppPage("catalogue"));
-    $("#productSupplierFocus").on("click", () => $("#supplier").trigger("focus"));
     $("#quantity").on("input", function () { $("#productStockPreview").text($(this).val() || "0"); });
     $("#stock").on("change", function () { $("#productStockNote").prop("hidden", this.checked); });
     $("#category").on("change", function () { this.setCustomValidity(""); });
@@ -2052,6 +2202,7 @@ if (auth == undefined) {
         success: function () {
           loadProducts();
           loadProductList();
+          loadSuppliers();
           notiflix.Notify.success(isEdit ? "Produit modifié." : "Produit enregistré.");
           if (keepEditing) {
             resetProductEditor();

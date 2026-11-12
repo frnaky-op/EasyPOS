@@ -47,6 +47,7 @@ let inventoryDB = new Datastore({
     filename: dbPath,
     autoload: true,
 });
+app.inventoryDB = inventoryDB;
 
 inventoryDB.ensureIndex({ fieldName: "_id", unique: true });
 const stockMovementsDB = require('./stock')(app, inventoryDB, appData, appName);

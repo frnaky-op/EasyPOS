@@ -37,7 +37,9 @@ express.get("/", function (req, res) {
     res.send("POS Server Online.");
 });
 
-express.use("/api/inventory", require("./api/inventory"));
+const inventoryApi = require("./api/inventory");
+express.use("/api/inventory", inventoryApi);
+express.use("/api/suppliers", require("./api/suppliers")(inventoryApi.inventoryDB, inventoryApi.receiptsDB));
 express.use("/api/customers", require("./api/customers"));
 express.use("/api/categories", require("./api/categories"));
 express.use("/api/settings", require("./api/settings"));
