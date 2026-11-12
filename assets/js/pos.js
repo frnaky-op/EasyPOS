@@ -2707,6 +2707,9 @@ function loadTransactions() {
   let users = [];
   let transaction_list = "";
   let query = `by-date?start=${start_date}&end=${end_date}&user=${by_user}&status=${by_status}&till=${by_till}`;
+  const symbol = validator.unescape(String(settings && settings.symbol || "MAD"));
+  const safeText = value => $("<div>").text(validator.unescape(String(value ?? ""))).html();
+  const amount = value => `${safeText(moneyFormat(Number(value || 0).toFixed(2)))} ${safeText(symbol)}`;
 
   $.get(api + query, function (transactions) {
     if ($.fn.DataTable.isDataTable("#transactionList")) $("#transactionList").DataTable().destroy();
@@ -2723,39 +2726,34 @@ function loadTransactions() {
         }
 
         transaction_list += `<tr>
-                                <td>${trans.order}</td>
+                                <td>${safeText(trans.order)}</td>
                                 <td class="nobr">${moment(trans.date).format(
-                                  "DD-MMM-YYYY HH:mm:ss",
+                                  "DD/MM/YYYY HH:mm",
                                 )}</td>
-                                <td>${
-                                  validator.unescape(settings.symbol) + moneyFormat(trans.total)
-                                }</td>
+                                <td>${amount(trans.total)}</td>
                                 <td>${
                                   trans.paid == ""
                                     ? ""
-                                    : validator.unescape(settings.symbol) + moneyFormat(trans.paid)
+                                    : amount(trans.paid)
                                 }</td>
                                 <td>${
                                   trans.change
-                                    ? validator.unescape(settings.symbol) +
-                                      moneyFormat(
-                                        Math.abs(trans.change).toFixed(2),
-                                      )
+                                    ? amount(Math.abs(trans.change))
                                     : ""
                                 }</td>
                                 <td>${
                                   trans.paid == ""
                                     ? ""
-                                    : trans.payment_type
+                                    : safeText(String(trans.payment_type).toLowerCase() === "cash" ? "Espèces" : trans.payment_type)
                                 }</td>
-                                <td>${trans.till}</td>
-                                <td>${trans.user}</td>
+                                <td>${safeText(trans.till)}</td>
+                                <td>${safeText(trans.user)}</td>
                                 <td>${
                                   trans.paid == ""
-                                    ? '<button class="btn btn-dark"><i class="fa fa-search-plus"></i></button>'
+                                    ? '<button type="button" class="sales-view-button" disabled title="Vente en attente" aria-label="Détails indisponibles pour cette vente"><i class="fa fa-search-plus" aria-hidden="true"></i></button>'
                                     : '<button onClick="$(this).viewTransaction(' +
                                       index +
-                                      ')" class="btn btn-info"><i class="fa fa-search-plus"></i></button></td>'
+                                      ')" type="button" class="sales-view-button" title="Voir la vente" aria-label="Voir la vente"><i class="fa fa-search-plus" aria-hidden="true"></i></button></td>'
                                 }</tr>
                     `;
 
@@ -2774,17 +2772,26 @@ function loadTransactions() {
       info: true,
       ordering: true,
       paging: true,
-      dom: "Bfrtip",
-      buttons: ["csv", "excel", "pdf"],
+      pageLength: 10,
+      scrollX: true,
+      dom: '<"sales-history-tools"Bf>rt<"sales-history-footer"ip>',
+      buttons: [
+        { extend: "csv", text: '<i class="fa fa-file-text-o" aria-hidden="true"></i> CSV', className: "sales-export-button", exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] } },
+        { extend: "pdf", text: '<i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF', className: "sales-export-button", exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] } },
+      ],
       language: {
         emptyTable: "Aucune vente pour ces filtres.",
-        search: "Rechercher :",
+        search: "",
+        searchPlaceholder: "Rechercher une vente",
         info: "Affichage de _START_ à _END_ sur _TOTAL_ ventes",
         infoEmpty: "Aucune vente",
+        infoFiltered: "(filtrées parmi _MAX_ ventes)",
+        zeroRecords: "Aucune vente ne correspond à cette recherche.",
         lengthMenu: "Afficher _MENU_ ventes",
         paginate: { previous: "Précédent", next: "Suivant" },
       },
     });
+    $("#transactionList_filter input").attr("aria-label", "Rechercher une vente");
   }).fail(() => $("#salesDashboardMessage").text("Impossible de charger l'historique des ventes."));
 }
 
@@ -2987,6 +2994,13 @@ $("#reportrange").on("apply.daterangepicker", function (ev, picker) {
   end_date = picker.endDate.toDate().toJSON();
 
   loadTransactions();
+});
+
+$("#reportrange").on("keydown", function (event) {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    $(this).trigger("click");
+  }
 });
 
 function authenticate() {
