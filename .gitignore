@@ -3,6 +3,7 @@ notes.txt
 package.*.json
 TODO
 out/
+dist/
 .gitignore
 LICENSE
 coverage

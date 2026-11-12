@@ -101,6 +101,25 @@ const {
 setContentSecurityPolicy();
 
 $(function () {
+  ipcRenderer.on("update:status", (_event, update) => {
+    $("#settingsAppVersion").text(update.version || "—");
+    const labels = {
+      idle: "Prêt à rechercher une nouvelle version.",
+      development: "Les mises à jour sont disponibles dans l'application installée.",
+      checking: "Recherche d'une mise à jour…",
+      downloading: `Téléchargement de la version ${update.availableVersion || "nouvelle"} : ${update.percent || 0} %`,
+      current: "Vous utilisez la dernière version publiée.",
+      ready: `La version ${update.availableVersion} est prête à installer.`,
+      error: "Vérification impossible. Réessayez plus tard.",
+    };
+    $("#settingsUpdateStatus").text(labels[update.phase] || labels.idle);
+    $("#settingsCheckUpdate").prop("disabled", ["development", "checking", "downloading", "ready"].includes(update.phase));
+    $("#settingsInstallUpdate").prop("hidden", update.phase !== "ready");
+    if (update.phase === "ready") notiflix.Notify.success(`EasyPOS ${update.availableVersion} est prêt à installer dans Paramètres.`);
+  });
+  $("#settingsCheckUpdate").on("click", () => ipcRenderer.send("update:check"));
+  $("#settingsInstallUpdate").on("click", () => ipcRenderer.send("update:install"));
+  ipcRenderer.send("update:get-status");
   function cb(start, end) {
     $("#reportrange span").text(start.format("DD/MM/YYYY") + " au " + end.format("DD/MM/YYYY"));
   }

@@ -1,7 +1,7 @@
 {
   "name": "PharmaSpot",
   "productName": "EasyPOS",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "Open-source point of sale for hardware and general retail shops",
   "author": "Patterns Digital Limited",
   "credits": "electronjs.org",
@@ -11,8 +11,40 @@
   "build": {
     "appId": "com.easypos.desktop",
     "directories": {
-      "buildResources": "assets"
-    }
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "start.js",
+      "updates.js",
+      "server.js",
+      "renderer.js",
+      "index.html",
+      "app.config.js",
+      "api/**/*",
+      "assets/**/*",
+      "installers/setupEvents.js",
+      "package.json",
+      "!assets/dist/**/*",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/images/icon.ico",
+      "artifactName": "EasyPOS-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "frnaky-op",
+        "repo": "EasyPOS",
+        "releaseType": "release"
+      }
+    ]
   },
   "dependencies": {
     "@electron/remote": "^2.0.9",
@@ -94,7 +126,8 @@
   },
   "scripts": {
     "electron": "cross-env NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
-    "electron-build": "electron-builder",
+    "electron-build": "electron-builder --win nsis --publish never",
+    "release:win": "electron-builder --win nsis --publish always",
     "package-win": "electron-packager . EasyPOS --overwrite --asar=false --platform=win32 --arch=x64 --icon=assets/images/icon.ico --prune=true --out=release-builds --version-string.ProductName=\"EasyPOS\"",
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -125,6 +158,7 @@
     "browser-sync": "^3.0.3",
     "cross-env": "^7.0.3",
     "electron": "^43.8.1",
+    "electron-builder": "^26.18.0",
     "electron-is-dev": "^2.0.0",
     "electron-log": "^4.4.8",
     "electron-reloader": "^1.2.3",

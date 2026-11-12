@@ -10,10 +10,12 @@ const path = require("path");
 const contextMenu = require("electron-context-menu");
 let { Menu, template } = require("./assets/js/native_menu/menu");
 const menuController = require('./assets/js/native_menu/menuController.js');
+const { registerUpdates } = require("./updates");
 const isPackaged = app.isPackaged;
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 let mainWindow;
+let updates;
 
 //stop app from launching multiple times during these squirrel spawning events
 if (require('electron-squirrel-startup')) app.quit();
@@ -37,6 +39,7 @@ function createWindow() {
     mainWindow.show();
 
     mainWindow.loadURL(`file://${path.join(__dirname, "index.html")}`);
+    mainWindow.webContents.once("did-finish-load", () => updates.check());
 
     mainWindow.on("closed", () => {
         mainWindow = null;
@@ -49,6 +52,7 @@ app.on("browser-window-created", (_, window) => {
 });
 
 app.whenReady().then(() => {
+    updates = registerUpdates(app, ipcMain, () => mainWindow);
     createWindow();
 });
 
@@ -86,10 +90,6 @@ ipcMain.on("settings-backup", () => {
 
 ipcMain.on("settings-restore", () => {
     menuController.restoreBackupDialog(menuController.dbFolderPath, menuController.uploadsFolderPath);
-});
-
-ipcMain.on("restart-app", () => {
-    autoUpdater.quitAndInstall();
 });
 
 //Context menu
