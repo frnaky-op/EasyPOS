@@ -639,7 +639,7 @@ if (auth == undefined) {
           !Number.isSafeInteger(Number(line.quantity)) || Number(line.quantity) < 1 ||
           line.unitCost === "" || !Number.isFinite(Number(line.unitCost)) || Number(line.unitCost) < 0) ||
           new Set(ids).size !== ids.length) {
-        $("#receivingMessage").text("Vérifiez les produits, les quantités, les coûts et les lignes en double.");
+        notiflix.Report.warning("Réception à vérifier", "Vérifiez les produits, les quantités, les coûts et les lignes en double.", "OK");
         return;
       }
       const button = $("#receivingPost").prop("disabled", true);
@@ -658,11 +658,16 @@ if (auth == undefined) {
           $("#receivingLines").empty();
           addReceivingLine();
           $("#receivingState").text("Nouvelle réception");
-          $("#receivingMessage").text(`Réception enregistrée : ${receipt.lines} référence(s).`);
+          $("#receivingMessage").text("");
+          notiflix.Report.success("Réception enregistrée", `Le stock a été mis à jour pour ${receipt.lines} référence${receipt.lines === 1 ? "" : "s"}.`, "OK");
           loadProducts();
           loadProductList();
         },
-        error: response => $("#receivingMessage").text((response.responseJSON || {}).error || "Réception impossible."),
+        error: function (response) {
+          $("#receivingMessage").text("");
+          const message = (response.responseJSON || {}).error || "Impossible d'enregistrer la réception.";
+          notiflix.Report.failure("Réception impossible", $("<div>").text(message).html(), "OK");
+        },
         complete: () => button.prop("disabled", false),
       });
     });
