@@ -32,9 +32,7 @@ let allCategories = [];
 let categoryProductCounts = {};
 let categoryProductTotal = 0;
 let allTransactions = [];
-let sold = [];
 let state = [];
-let sold_items = [];
 let item;
 let auth;
 let holdOrder = 0;
@@ -104,9 +102,7 @@ setContentSecurityPolicy();
 
 $(function () {
   function cb(start, end) {
-    $("#reportrange span").html(
-      start.format("MMMM D, YYYY") + "  -  " + end.format("MMMM D, YYYY"),
-    );
+    $("#reportrange span").text(start.format("DD/MM/YYYY") + " au " + end.format("DD/MM/YYYY"));
   }
 
   $("#reportrange").daterangepicker(
@@ -114,6 +110,7 @@ $(function () {
       startDate: start,
       endDate: end,
       autoApply: true,
+      locale: { format: "DD/MM/YYYY", separator: " au ", applyLabel: "Appliquer", cancelLabel: "Annuler" },
       timePicker: true,
       timePicker24Hour: true,
       timePickerIncrement: 10,
@@ -704,24 +701,9 @@ if (auth == undefined) {
           ));
         });
 
-        const rows = $("#salesRecentRows").empty();
-        if (!report.recent.length) rows.append($("<tr>").append($("<td>", { colspan: 6, class: "sales-empty", text: "Aucune transaction enregistrée." })));
-        report.recent.forEach(transaction => {
-          const date = new Date(transaction.date);
-          const customer = transaction.customer && typeof transaction.customer === "object"
-            ? transaction.customer.name : transaction.customer;
-          rows.append($("<tr>").append(
-            $("<td>", { text: Number.isNaN(date.getTime()) ? "—" : date.toLocaleString("fr-MA", { timeZone: "Africa/Casablanca", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) }),
-            $("<td>", { text: transaction.order || transaction._id }),
-            $("<td>", { text: validator.unescape(String(transaction.user || "—")) }),
-            $("<td>", { text: customer && customer !== "0" ? validator.unescape(String(customer)) : "Client comptoir" }),
-            $("<td>", { text: formatAmount(transaction.total) }),
-            $("<td>").append($("<span>", { class: Number(transaction.status) === 1 ? "sales-status paid" : "sales-status pending", text: Number(transaction.status) === 1 ? "Payée" : "En attente" })),
-          ));
-        });
       }).fail(() => $("#salesDashboardMessage").text("Impossible de charger le rapport des ventes."));
     }
-    $("#salesRefresh").on("click", loadSalesDashboard);
+    $("#salesRefresh").on("click", function () { loadSalesDashboard(); loadTransactions(); });
     $("#salesExportCsv").on("click", function () {
       const link = document.createElement("a");
       link.href = api + "sales/export";
@@ -729,9 +711,6 @@ if (auth == undefined) {
       document.body.appendChild(link);
       link.click();
       link.remove();
-    });
-    $("#salesDetailedReport").on("toggle", function () {
-      if (this.open) loadTransactions();
     });
 
     let clientsPageNumber = 1;
@@ -1852,7 +1831,7 @@ if (auth == undefined) {
     navigation.on("click", "#transactions", function () {
       showAppPage("sales");
       loadSalesDashboard();
-      if ($("#salesDetailedReport").prop("open")) loadTransactions();
+      loadTransactions();
     });
     navigation.on("click", "#pointofsale", () => showAppPage("pos"));
     $("#appCaisseShortcut").on("click", () => showAppPage("pos"));
@@ -2707,32 +2686,15 @@ $.fn.print = function () {
 function loadTransactions() {
   let tills = [];
   let users = [];
-  let sales = 0;
-  let transact = 0;
-  let unique = 0;
-
-  sold_items = [];
-  sold = [];
-
-  let counter = 0;
   let transaction_list = "";
   let query = `by-date?start=${start_date}&end=${end_date}&user=${by_user}&status=${by_status}&till=${by_till}`;
 
   $.get(api + query, function (transactions) {
+    if ($.fn.DataTable.isDataTable("#transactionList")) $("#transactionList").DataTable().destroy();
+    $("#transaction_list").empty();
+    allTransactions = [...transactions];
     if (transactions.length > 0) {
-      $("#transaction_list").empty();
-      $("#transactionList").DataTable().destroy();
-
-      allTransactions = [...transactions];
-
       transactions.forEach((trans, index) => {
-        sales += parseFloat(trans.total);
-        transact++;
-
-        trans.items.forEach((item) => {
-          sold_items.push(item);
-        });
-
         if (!tills.includes(trans.till)) {
           tills.push(trans.till);
         }
@@ -2741,7 +2703,6 @@ function loadTransactions() {
           users.push(trans.user_id);
         }
 
-        counter++;
         transaction_list += `<tr>
                                 <td>${trans.order}</td>
                                 <td class="nobr">${moment(trans.date).format(
@@ -2779,129 +2740,50 @@ function loadTransactions() {
                                 }</tr>
                     `;
 
-        if (counter == transactions.length) {
-          $("#total_sales .counter").text(
-            validator.unescape(settings.symbol) + moneyFormat(parseFloat(sales).toFixed(2)),
-          );
-          $("#total_transactions .counter").text(transact);
-
-          const result = {};
-
-          for (const { product_name, price, quantity, id } of sold_items) {
-            if (!result[product_name]) {
-              result[product_name] = {
-                id: id,
-                qty: 0,
-                total: 0,
-              };
-            }
-
-            const lineQty = parseFloat(quantity) || 0;
-            const linePrice = parseFloat(price) || 0;
-
-            result[product_name].qty += lineQty;
-            result[product_name].total += lineQty * linePrice;
-          }
-
-          for (item in result) {
-            sold.push({
-              id: result[item].id,
-              product: item,
-              qty: result[item].qty,
-              total: result[item].total,
-            });
-          }
-
-          loadSoldProducts();
-
-          if (by_user == 0 && by_till == 0) {
-            userFilter(users);
-            tillFilter(tills);
-          }
-
-          $("#transaction_list").html(transaction_list);
-          $("#transactionList").DataTable({
-            order: [[1, "desc"]],
-            autoWidth: false,
-            info: true,
-            JQueryUI: true,
-            ordering: true,
-            paging: true,
-            dom: "Bfrtip",
-            buttons: ["csv", "excel", "pdf"],
-          });
-        }
       });
-    } else {
-      notiflix.Report.warning(
-        "No data!",
-        "No transactions available within the selected criteria",
-        "Ok",
-      );
     }
-  });
-}
-
-function sortDesc(a, b) {
-  if (a.qty > b.qty) {
-    return -1;
-  }
-  if (a.qty < b.qty) {
-    return 1;
-  }
-  return 0;
-}
-
-function loadSoldProducts() {
-  sold.sort(sortDesc);
-  $("#product_sales").empty();
-  $.ajax({
-    url: api + "inventory/products/stocks",
-    type: "POST",
-    contentType: "application/json",
-    data: JSON.stringify({ ids: sold.map(item => item.id) }),
-    success: function (stockRows) {
-      const stockById = new Map(stockRows.map(product => [String(product._id), product]));
-      let items = 0;
-      let soldList = "";
-      sold.forEach((item) => {
-        items += Number(item.qty);
-        const product = stockById.get(String(item.id));
-        soldList += `<tr>
-            <td>${item.product}</td>
-            <td>${item.qty}</td>
-            <td>${product ? (product.stock == 1 ? product.quantity : "N/A") : ""}</td>
-            <td>${
-              validator.unescape(settings.symbol) +
-              moneyFormat(parseFloat(item.total || 0).toFixed(2))
-            }</td>
-            </tr>`;
-      });
-      $("#total_items .counter").text(items);
-      $("#total_products .counter").text(sold.length);
-      $("#product_sales").html(soldList);
-    },
-  });
+    if (by_user == 0 && by_till == 0 && transactions.length) {
+      userFilter(users);
+      tillFilter(tills);
+    }
+    if (!$("#users option").length) userFilter([]);
+    if (!$("#tills option").length) tillFilter([]);
+    $("#transaction_list").html(transaction_list);
+    $("#transactionList").DataTable({
+      order: [[1, "desc"]],
+      autoWidth: false,
+      info: true,
+      ordering: true,
+      paging: true,
+      dom: "Bfrtip",
+      buttons: ["csv", "excel", "pdf"],
+      language: {
+        emptyTable: "Aucune vente pour ces filtres.",
+        search: "Rechercher :",
+        info: "Affichage de _START_ à _END_ sur _TOTAL_ ventes",
+        infoEmpty: "Aucune vente",
+        lengthMenu: "Afficher _MENU_ ventes",
+        paginate: { previous: "Précédent", next: "Suivant" },
+      },
+    });
+  }).fail(() => $("#salesDashboardMessage").text("Impossible de charger l'historique des ventes."));
 }
 
 function userFilter(users) {
   $("#users").empty();
-  $("#users").append(`<option value="0">All</option>`);
+  $("#users").append($("<option>", { value: "0", text: "Tous" }));
 
-  users.forEach((user) => {
-    let u = allUsers.filter(function (usr) {
-      return usr._id == user;
-    });
-
-    $("#users").append(`<option value="${user}">${u[0].fullname}</option>`);
+  users.forEach((userId) => {
+    const account = allUsers.find(account => String(account._id) === String(userId));
+    $("#users").append($("<option>", { value: userId, text: account ? validator.unescape(String(account.fullname)) : `#${userId}` }));
   });
 }
 
 function tillFilter(tills) {
   $("#tills").empty();
-  $("#tills").append(`<option value="0">All</option>`);
+  $("#tills").append($("<option>", { value: "0", text: "Toutes" }));
   tills.forEach((till) => {
-    $("#tills").append(`<option value="${till}">${till}</option>`);
+    $("#tills").append($("<option>", { value: till, text: till }));
   });
 }
 
