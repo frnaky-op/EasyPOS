@@ -34,7 +34,7 @@ Maintainers: see [RELEASING.md](RELEASING.md) for versioning and publishing step
 
 ## Website
 
-The French landing page is in [`website/`](website/). It uses a temporary text mark until the final EasyPOS logo is supplied. Its download links point to GitHub Releases.
+The [French landing page](https://frnaky-op.github.io/EasyPOS/) is maintained in [`website/`](website/). It uses a temporary text mark until the final EasyPOS logo is supplied. Its download links point to GitHub Releases.
 
 ## Catalogue data
 
