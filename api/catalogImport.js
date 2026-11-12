@@ -68,6 +68,8 @@ module.exports = function registerCatalogImport(app, inventoryDB, generateUnique
                         throw new Error('Invalid or duplicate product in catalogue package.');
                     }
                     money(product.selling_price_mad);
+                    if (product.price_basis && !['sample', 'manual'].includes(product.price_basis)) throw new Error('Invalid price basis in package.');
+                    if (product.review_required && !['yes', 'no'].includes(product.review_required)) throw new Error('Invalid price review flag in package.');
                     nonnegativeInteger(product.opening_quantity, 'opening quantity', '100');
                     nonnegativeInteger(product.min_stock, 'minimum stock', '1');
                     if (product.barcode && !/^\d{1,32}$/.test(String(product.barcode))) throw new Error('Invalid barcode in package.');
@@ -116,7 +118,8 @@ module.exports = function registerCatalogImport(app, inventoryDB, generateUnique
                         recordType: String(source.record_type || ''),
                         catalogueMarket: String(source.catalogue_market || ''),
                         sourcePriceMad: String(source.source_price_mad || ''),
-                        reviewRequired: money(source.selling_price_mad) === '0.00',
+                        priceBasis: source.price_basis || 'imported',
+                        reviewRequired: source.review_required === 'yes' || money(source.selling_price_mad) === '0.00',
                     };
                     await createProduct(product);
                     added++;

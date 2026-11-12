@@ -270,6 +270,8 @@ app.post("/product", function (req, res) {
         });
     } else {
         const { _id, ...editableProduct } = Product;
+        editableProduct.priceBasis = 'manual';
+        editableProduct.reviewRequired = false;
         inventoryDB.update(
             {
                 _id: parseInt(validator.escape(req.body.id)),
@@ -293,6 +295,45 @@ app.post("/product", function (req, res) {
 });
 
 require('./catalogImport')(app, inventoryDB, generateUniqueProductId, appData, appName);
+
+// Apply prices from a portable catalogue to previously imported, unpriced
+// products. A shop price entered later is never overwritten.
+app.post('/products/prices', function (req, res) {
+    const entries = req.body && req.body.prices;
+    if (!Array.isArray(entries) || entries.length < 1 || entries.length > 1000) {
+        return res.status(400).json({ error: 'Provide 1 to 1000 product prices.' });
+    }
+    const keys = new Set();
+    for (const entry of entries) {
+        if (!entry || typeof entry.source_key !== 'string' || !entry.source_key ||
+            entry.source_key.length > 500 || keys.has(entry.source_key) ||
+            !/^\d{1,9}(?:\.\d{1,2})?$/.test(String(entry.selling_price_mad)) ||
+            Number(entry.selling_price_mad) <= 0) {
+            return res.status(400).json({ error: 'Invalid or duplicate product price.' });
+        }
+        keys.add(entry.source_key);
+    }
+    let updated = 0;
+    let skipped = 0;
+    let index = 0;
+    function next() {
+        if (index === entries.length) return res.json({ updated, skipped, total: entries.length });
+        const entry = entries[index++];
+        inventoryDB.update(
+            { sourceKey: entry.source_key, price: { $in: ['0', '0.00', 0] } },
+            { $set: { price: Number(entry.selling_price_mad).toFixed(2),
+                      priceBasis: 'sample', reviewRequired: true } },
+            {},
+            function (err, count) {
+                if (err) return res.status(500).json({ error: err.message, updated, skipped });
+                if (count) updated++;
+                else skipped++;
+                next();
+            }
+        );
+    }
+    next();
+});
 
 /**
  * DELETE endpoint: Delete a product by product ID.

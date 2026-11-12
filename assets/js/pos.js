@@ -925,11 +925,21 @@ if (auth == undefined) {
       });
     }
 
+    const categoriesPageSize = 12;
+    let categoriesPage = 1;
     function renderCategoriesPage() {
       const query = String($("#categoriesSearch").val() || "").trim().toLocaleLowerCase();
       const rows = $("#categoriesRows").empty();
       const matching = allCategories.map((category, index) => ({ category, index }))
         .filter(({ category }) => validator.unescape(String(category.name || "")).toLocaleLowerCase().includes(query));
+      const pageCount = Math.max(1, Math.ceil(matching.length / categoriesPageSize));
+      categoriesPage = Math.min(Math.max(1, categoriesPage), pageCount);
+      const first = matching.length ? (categoriesPage - 1) * categoriesPageSize + 1 : 0;
+      const last = Math.min(categoriesPage * categoriesPageSize, matching.length);
+      $("#categoriesPageInfo").text(`${first}–${last} sur ${matching.length} catégories`);
+      $("#categoriesPageNumber").text(`Page ${categoriesPage} / ${pageCount}`);
+      $("#categoriesPrevious").prop("disabled", categoriesPage <= 1);
+      $("#categoriesNext").prop("disabled", categoriesPage >= pageCount);
       const assigned = allCategories.reduce((sum, category) => sum + (categoryProductCounts[String(category._id)] || 0), 0);
       $("#categoriesTotal").text(allCategories.length);
       $("#categoriesUnassigned").text(Math.max(0, categoryProductTotal - assigned));
@@ -937,7 +947,7 @@ if (auth == undefined) {
       if (!matching.length) rows.append($("<tr>").append($("<td>", {
         colspan: 3, class: "categories-empty", text: query ? "Aucune catégorie trouvée." : "Aucune catégorie enregistrée.",
       })));
-      matching.forEach(({ category, index }) => {
+      matching.slice(first ? first - 1 : 0, last).forEach(({ category, index }) => {
         const count = categoryProductCounts[String(category._id)] || 0;
         const actions = $("<div>", { class: "categories-row-actions" }).append(
           $("<button>", { type: "button", class: "categories-edit", title: "Modifier", "aria-label": `Modifier ${validator.unescape(String(category.name))}` })
@@ -966,7 +976,9 @@ if (auth == undefined) {
         })
         .fail(() => $("#categoriesMessage").text("Impossible de charger les catégories ou leurs produits."));
     }
-    $("#categoriesSearch").on("input", renderCategoriesPage);
+    $("#categoriesSearch").on("input", function () { categoriesPage = 1; renderCategoriesPage(); });
+    $("#categoriesPrevious").on("click", function () { if (categoriesPage > 1) { categoriesPage--; renderCategoriesPage(); } });
+    $("#categoriesNext").on("click", function () { categoriesPage++; renderCategoriesPage(); });
     $("#categoriesAddButton").on("click", function () {
       $("#saveCategory").get(0).reset();
       $("#category_id").val("");
@@ -2345,6 +2357,7 @@ if (auth == undefined) {
       $("#productDetailsReference").text(validator.unescape(String(product.reference || product.barcode || product._id)));
       $("#productDetailsImage").attr("src", imagePath);
       $("#productDetailsPrice").text(`${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}`);
+      $("#productDetailsPriceBasis").prop("hidden", product.priceBasis !== "sample");
       $("#productDetailsStock").text(product.stock == 1 ? `${product.quantity} unités` : "Non suivi");
       $("#productDetailsStockSummary").text(product.stock == 1 ? `${product.quantity} unités disponibles` : "Stock non suivi");
       $("#productDetailsMinimum").text(product.minStock || "-");
@@ -2456,13 +2469,14 @@ if (auth == undefined) {
         const safeCode = $("<div>").text(validator.unescape(String(product.barcode || product._id))).html();
         const safeReference = $("<div>").text(validator.unescape(String(product.reference || product.supplier || ""))).html();
         const checked = selectedBarcodeProducts.has(String(product._id)) ? "checked" : "";
+        const samplePriceLabel = product.priceBasis === "sample" ? '<small class="sample-price-label">Prix d’exemple</small>' : "";
         product_list +=
           `<tr>
             <td><input type="checkbox" class="product-select" value="${product._id}" aria-label="Sélectionner ${safeName}" ${checked}></td>
             <td><div class="catalogue-product-cell"><img src="${product_img}" alt=""><span><strong>${safeName}</strong><small>${safeReference}</small></span></div></td>
             <td>${safeCategory}</td>
             <td>${safeCode}</td>
-            <td>${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}</td>
+            <td>${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}${samplePriceLabel}</td>
             <td class="catalogue-stock-cell">${product.stock == 1 ? product.quantity : "Non suivi"}${product.stockAlert}</td>
             <td class="nobr"><span class="btn-group"><button type="button" class="btn btn-default btn-sm product-fiche-button" data-product-id="${product._id}">Fiche</button><button type="button" onClick="$(this).editProduct(${index})" class="btn btn-warning btn-sm" aria-label="Modifier ${safeName}"><i class="fa fa-edit"></i></button><button type="button" onClick="$(this).deleteProduct(${product._id})" class="btn btn-danger btn-sm" aria-label="Supprimer ${safeName}"><i class="fa fa-trash"></i></button></span></td></tr>`;
 
