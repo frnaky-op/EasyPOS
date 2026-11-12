@@ -925,6 +925,7 @@ if (auth == undefined) {
             $("<option>", { value: category._id, text: validator.unescape(String(category.name)) }),
           );
         });
+        $("#category option[value='0']").text("Choisir une catégorie");
         $("#productListCategory").val(catalogueCategory);
         renderPosCategoryPills();
       });
@@ -1829,18 +1830,18 @@ if (auth == undefined) {
       pos: "#pos_view", sales: "#transactions_view", stock: "#stock_view",
       receiving: "#receiving_view", clients: "#clients_view", settings: "#settings_view",
       categories: "#categories_view", users: "#users_view", orders: "#pending_view",
-      catalogue: "#Products", product: "#productDetails",
+      catalogue: "#Products", product: "#productDetails", productEditor: "#newProduct",
     };
     function showAppPage(page) {
       activePage = page;
       document.body.classList.toggle("catalogue-open", page === "catalogue");
       $("#pos_view,#transactions_view").hide();
-      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view,#Products,#productDetails").prop("hidden", true);
+      $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#users_view,#pending_view,#Products,#productDetails,#newProduct").prop("hidden", true);
       const view = $(pageViews[page]);
       if (page === "pos" || page === "sales") view.show();
       else view.prop("hidden", false);
-      setActiveNavigation(navigation.get(0), page === "product" ? "catalogue" : page);
-      $("#appSection").text(pageLabel(page === "product" ? "catalogue" : page));
+      setActiveNavigation(navigation.get(0), (page === "product" || page === "productEditor") ? "catalogue" : page);
+      $("#appSection").text(pageLabel((page === "product" || page === "productEditor") ? "catalogue" : page));
       $("#appCaisseShortcut").toggleClass("active", page === "pos").attr("aria-current", page === "pos" ? "page" : null);
       window.scrollTo(0, 0);
     }
@@ -1972,62 +1973,100 @@ if (auth == undefined) {
     }
     navigation.on("click", "#viewCustomerOrders", () => showPendingPage("all"));
 
-    $("#newProductModal").on("click", function () {
-      $("#saveProduct").get(0).reset();
-      $("#current_img").text("");
-    });
+    let productPreviewUrl = null;
 
-    $("#catalogueAddProduct").on("click", function () {
+    function resetProductEditor() {
       $("#saveProduct").get(0).reset();
-      $("#current_img").text("");
-      $("#newProduct").modal("show");
-    });
+      $("#product_id,#img,#remove_img").val("");
+      $("#quantity").val(100);
+      $("#minStock").val(5);
+      $("#current_img").empty().show();
+      $("#productImagePreview").prop("hidden", true).removeAttr("src");
+      $("#rmv_img").prop("hidden", true);
+      $("#imagename").val("");
+      if (productPreviewUrl) URL.revokeObjectURL(productPreviewUrl);
+      productPreviewUrl = null;
+      $("#newProductTitle").text("Ajouter un produit");
+      $("#productEditorBack span").text("Catalogue / Nouveau produit");
+      $("#productDraftBadge").text("Brouillon");
+      $("#createAndContinue").prop("hidden", false);
+      $("#category").val("0");
+      $("#category").get(0).setCustomValidity("");
+      $("#productStockPreview").text("100");
+      $("#productStockNote").prop("hidden", false);
+    }
 
+    function openNewProductEditor() {
+      resetProductEditor();
+      showAppPage("productEditor");
+      $("#productName").trigger("focus");
+    }
+
+    $("#newProductModal,#catalogueAddProduct").on("click", openNewProductEditor);
+    $("#productEditorBack,#productEditorCancel").on("click", () => showAppPage("catalogue"));
+    $("#productSupplierFocus").on("click", () => $("#supplier").trigger("focus"));
+    $("#quantity").on("input", function () { $("#productStockPreview").text($(this).val() || "0"); });
+    $("#stock").on("change", function () { $("#productStockNote").prop("hidden", this.checked); });
+    $("#category").on("change", function () { this.setCustomValidity(""); });
+    $("#productChooseImage").on("click", () => $("#imagename").trigger("click"));
+    $("#imagename").on("change", function () {
+      if (productPreviewUrl) URL.revokeObjectURL(productPreviewUrl);
+      productPreviewUrl = this.files && this.files[0] ? URL.createObjectURL(this.files[0]) : null;
+      $("#productImagePreview").attr("src", productPreviewUrl || "").prop("hidden", !productPreviewUrl);
+      if (productPreviewUrl) {
+        $("#current_img").empty();
+        $("#remove_img").val("");
+      }
+      $("#rmv_img").prop("hidden", !productPreviewUrl && !$("#img").val());
+    });
+    $("#productPhotoDrop").on("dragenter dragover", function (event) {
+      event.preventDefault();
+      $(this).addClass("dragging");
+    }).on("dragleave drop", function (event) {
+      event.preventDefault();
+      $(this).removeClass("dragging");
+      if (event.type === "drop" && event.originalEvent.dataTransfer.files.length) {
+        const file = event.originalEvent.dataTransfer.files[0];
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return;
+        const transfer = new DataTransfer();
+        transfer.items.add(file);
+        $("#imagename").get(0).files = transfer.files;
+        $("#imagename").trigger("change");
+      }
+    });
     $("#saveProduct").submit(function (e) {
       e.preventDefault();
-
+      if ($("#category").val() === "0") {
+        const category = $("#category").get(0);
+        category.setCustomValidity("Choisir une catégorie.");
+        category.reportValidity();
+        return;
+      }
+      const isEdit = Boolean($("#product_id").val());
+      const keepEditing = !isEdit && e.originalEvent?.submitter?.id === "createAndContinue";
+      const buttons = $("#submitProduct,#createAndContinue").prop("disabled", true);
       $(this).attr("action", api + "inventory/product");
       $(this).attr("method", "POST");
-
       $(this).ajaxSubmit({
         contentType: "application/json",
-        success: function (response) {
-          $("#saveProduct").get(0).reset();
-          $("#current_img").text("");
-
+        success: function () {
           loadProducts();
           loadProductList();
-          diagOptions = {
-            title: "Product Saved",
-            text: "Select an option below to continue.",
-            okButtonText: "Add another",
-            cancelButtonText: "Close",
-          };
-
-          notiflix.Confirm.show(
-            diagOptions.title,
-            diagOptions.text,
-            diagOptions.okButtonText,
-            diagOptions.cancelButtonText,
-            ()=>{},
-            () => {
-              $("#newProduct").modal("hide");
-            },
-          );
+          notiflix.Notify.success(isEdit ? "Produit modifié." : "Produit enregistré.");
+          if (keepEditing) {
+            resetProductEditor();
+            $("#productName").trigger("focus");
+          } else {
+            showAppPage("catalogue");
+          }
         },
-        //error for product
-       error: function (jqXHR,textStatus, errorThrown) {
-      console.error(jqXHR.responseJSON.message);
-      notiflix.Report.failure(
-        jqXHR.responseJSON.error,
-        jqXHR.responseJSON.message,
-        "Ok",
-      );
-      }
-
+        error: function (jqXHR) {
+          const details = jqXHR.responseJSON || {};
+          notiflix.Report.failure("Enregistrement impossible", details.message || details.error || "Réessayez.", "Ok");
+        },
+        complete: function () { buttons.prop("disabled", false); },
       });
     });
-
     $("#importCatalogForm").submit(function (e) {
       e.preventDefault();
       const button = $("#importCatalogButton");
@@ -2087,37 +2126,30 @@ if (auth == undefined) {
     });
 
     $.fn.editProduct = function (index) {
-      $("#category option")
-        .filter(function () {
-          return $(this).val() == listedProducts[index].category;
-        })
-        .prop("selected", true);
-
-      $("#productName").val(listedProducts[index].name);
-      $("#product_price").val(listedProducts[index].price);
-      $("#quantity").val(listedProducts[index].quantity);
-      $("#supplier").val(listedProducts[index].supplier || "");
-      $("#barcode").val(listedProducts[index].barcode || listedProducts[index]._id);
-      $("#expirationDate").val(listedProducts[index].expirationDate);
-      $("#minStock").val(listedProducts[index].minStock || 1);
-      $("#product_id").val(listedProducts[index]._id);
-      $("#img").val(listedProducts[index].img);
-
-      if (listedProducts[index].img != "") {
-        $("#imagename").hide();
-        $("#current_img").html(
-          `<img src="${img_path + listedProducts[index].img}" alt="">`,
-        );
-        $("#rmv_img").show();
+      resetProductEditor();
+      const product = listedProducts[index];
+      $("#category").val(product.category || "0");
+      $("#productName").val(product.name);
+      $("#product_price").val(product.price);
+      $("#quantity").val(product.quantity);
+      $("#productStockPreview").text(product.quantity ?? 0);
+      $("#supplier").val(product.supplier || "");
+      $("#barcode").val(product.barcode || product._id);
+      $("#expirationDate").val(product.expirationDate);
+      $("#minStock").val(product.minStock || 1);
+      $("#product_id").val(product._id);
+      $("#img").val(product.img || "");
+      $("#stock").prop("checked", product.stock == 0).trigger("change");
+      if (product.img) {
+        $("#current_img").html($("<img>", { src: img_path + product.img, alt: product.name }));
+        $("#rmv_img").prop("hidden", false);
       }
-
-      if (listedProducts[index].stock == 0) {
-        $("#stock").prop("checked", true);
-      }
-
-      $("#newProduct").modal("show");
+      $("#newProductTitle").text("Modifier le produit");
+      $("#productEditorBack span").text("Catalogue / Modifier le produit");
+      $("#productDraftBadge").text("Modification");
+      $("#createAndContinue").prop("hidden", true);
+      showAppPage("productEditor");
     };
-
     $("#userModal").on("hide.bs.modal", function () {
       $(".perms").hide();
       ownUserEdit = false;
@@ -2690,11 +2722,11 @@ if (auth == undefined) {
   });
 
   $("#rmv_img").on("click", function () {
-    $("#remove_img").val("1");
-    // $("#img").val('');
-    $("#current_img").hide(500);
-    $(this).hide(500);
-    $("#imagename").show(500);
+    $("#remove_img").val($("#img").val() ? "1" : "");
+    $("#imagename").val("");
+    $("#current_img").empty();
+    $("#productImagePreview").prop("hidden", true).removeAttr("src");
+    $(this).prop("hidden", true);
   });
 }
 

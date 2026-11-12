@@ -59,7 +59,7 @@
             </header>
             <nav id="appNavigation" class="app-navigation" aria-label="Navigation principale" hidden></nav>
             <div hidden aria-hidden="true">
-                <button id="newProductModal" type="button" data-toggle="modal" data-target="#newProduct"></button>
+                <button id="newProductModal" type="button"></button>
                 <button id="newCategoryModal" type="button" data-toggle="modal" data-target="#newCategory"></button>
             </div>
             <div id="transactions_view">
@@ -332,68 +332,55 @@
                 </form>
             </div></div>
         </div>
-        <div id="newProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newProductTitle" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">×</button>
-                        <h4 class="modal-title" id="newProductTitle">Fiche produit</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form id="saveProduct" encType="multipart/form-data">
-                            <input type="hidden" name="id" id="product_id">
-                            <input type="hidden" name="img" id="img">
-                            <input type="hidden" name="remove" id="remove_img">
-                            <div class="product-form-intro"><strong>Informations produit</strong><p>Renseignez les données utiles à la caisse et au stock.</p></div>
-                            <div class="product-form-grid">
-                            <div class="form-group">
-                                <label for="category">Catégorie</label>
-                                <select name="category" class="form-control" id="category"></select>
-                            </div>
-                            <div class="form-group">
-                                <label for="supplier">Fournisseur ou marque</label>
-                                <input type="text" name="supplier" placeholder="Ex. Ingelec, Bosch, Colorado" class="form-control" id="supplier">
-                            </div>
-                            <div class="form-group product-form-wide">
-                                <label for="productName">Nom du produit *</label>
-                                <input type="text" required="required" name="name" parsley-trigger="change" placeholder="Ex. Tube PPR Ø20 · 4 m" class="form-control" id="productName">
-                            </div>
-                            <div class="form-group">
-                                <label for="barcode">Code-barres / référence *</label>
-                                <input type="text" required="required" name="barcode" parsley-trigger="change" placeholder="Code EAN ou référence interne" class="form-control" id="barcode">
-                            </div>
-                            <div class="form-group">
-                                <label for="product_price">Prix de vente *</label>
-                                <input type="text" required="required" name="price" placeholder="0,00 MAD" class="form-control number-input" id="product_price">
-                            </div>
-                            <div class="form-group">
-                                <label for="expirationDate">Date d'expiration (facultatif)</label>
-                                <input type="text" name="expirationDate" parsley-trigger="change" placeholder="dd/mm/yyyy" class="form-control" id="expirationDate" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="quantity">Quantité en stock</label>
-                                <input type="number" name="quantity" value="100" placeholder="Quantité disponible" class="form-control" id="quantity" min="0">
-                            </div>
-                            <div class="form-group">
-                                <label for="minStock">Seuil de stock faible</label>
-                                <input type="number" name="minStock" placeholder="Seuil minimum" class="form-control" id="minStock" min="1">
-                            </div>
-                            <div class="form-group product-form-wide product-stock-toggle">
-                                <label><input type="checkbox" name="stock" id="stock"> Ne pas suivre le stock de ce produit</label>
-                            </div>
-                            <div class="form-group product-form-wide product-image-field">
-                                <label for="imagename">Image du produit</label>
-                                <div id="current_img"></div>
-                                <input type="file" name="imagename" id="imagename" accept="image/*">
-                                <button type="button" id="rmv_img" class="btn btn-xs btn-warning">Retirer l'image</button>
-                            </div>
-                            </div>
-                            <div class="product-form-actions"><button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button><button type="submit" id="submitProduct" class="btn btn-primary"><i class="fa fa-check"></i> Enregistrer le produit</button></div>
-                        </form>
-                    </div>
+        <section id="newProduct" class="product-editor-page" aria-labelledby="newProductTitle" hidden>
+            <form id="saveProduct" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="product_id">
+                <input type="hidden" name="img" id="img">
+                <input type="hidden" name="remove" id="remove_img">
+                <div class="product-editor-heading">
+                    <button type="button" id="productEditorBack" class="product-editor-back"><i class="fa fa-arrow-left" aria-hidden="true"></i><span>Catalogue / Nouveau produit</span></button>
+                    <div class="product-editor-title-row"><div><h1 id="newProductTitle">Ajouter un produit</h1><p>Renseigner les informations nécessaires pour la vente et le suivi du stock.</p></div><span id="productDraftBadge" class="product-draft-badge">Brouillon</span></div>
                 </div>
-            </div>
-        </div>
+                <div class="product-editor-grid">
+                    <section class="product-editor-card product-identification" aria-labelledby="productIdentificationTitle">
+                        <div class="product-editor-card-head"><i class="fa fa-th" aria-hidden="true"></i><div><h2 id="productIdentificationTitle">Identification</h2><p>Nom, classification et code pour retrouver le produit rapidement.</p></div></div>
+                        <div class="product-editor-fields">
+                            <div class="product-editor-field full"><label for="productName">Nom du produit *</label><input type="text" required name="name" id="productName" class="form-control" placeholder="Ex. Perceuse Bosch GSR 120LI"></div>
+                            <div class="product-editor-field"><label for="barcode">Code-barres *</label><div class="product-input-icon"><input type="text" required name="barcode" id="barcode" class="form-control" placeholder="Scanner ou saisir le code"><i class="fa fa-barcode" aria-hidden="true"></i></div></div>
+                            <div class="product-editor-field"><label for="category">Catégorie *</label><select name="category" required class="form-control" id="category"></select></div>
+                            <div class="product-editor-field full"><div class="product-field-heading"><label for="supplier">Fournisseur</label><button type="button" id="productSupplierFocus"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</button></div><input type="text" name="supplier" id="supplier" class="form-control" placeholder="Ex. Bosch Maroc"></div>
+                        </div>
+                        <div class="product-editor-tip"><i class="fa fa-info-circle" aria-hidden="true"></i><div><strong>Conseil pour la recherche</strong><p>Utiliser un nom court et unique. Le code-barres facilite la vente à la caisse.</p></div></div>
+                        <span class="product-required-note">* Champs obligatoires</span>
+                    </section>
+                    <section class="product-editor-card product-pricing" aria-labelledby="productPricingTitle">
+                        <div class="product-editor-card-head"><i class="fa fa-list-alt" aria-hidden="true"></i><div><h2 id="productPricingTitle">Prix et stock</h2><p>Valeurs initiales modifiables à tout moment.</p></div></div>
+                        <div class="product-editor-fields">
+                            <div class="product-editor-field full"><label for="product_price">Prix de vente *</label><div class="product-price-input"><input type="text" required name="price" id="product_price" class="form-control number-input" placeholder="0,00"><span>MAD</span></div></div>
+                            <div class="product-editor-field"><label for="quantity">Stock initial</label><input type="number" name="quantity" id="quantity" class="form-control" value="100" min="0"></div>
+                            <div class="product-editor-field"><label for="minStock">Stock minimum</label><input type="number" name="minStock" id="minStock" class="form-control" value="5" min="1"></div>
+                            <div class="product-editor-field full"><label for="expirationDate">Date d'expiration</label><input type="text" name="expirationDate" id="expirationDate" class="form-control" placeholder="JJ / MM / AAAA" readonly></div>
+                        </div>
+                        <label class="product-stock-toggle"><input type="checkbox" name="stock" id="stock"><span>Désactiver le contrôle du stock</span></label>
+                        <div id="productStockNote" class="product-stock-note"><i class="fa fa-check" aria-hidden="true"></i><div><strong>Stock initial : <span id="productStockPreview">100</span></strong><p>Une alerte s'affichera sous le stock minimum.</p></div></div>
+                    </section>
+                    <section class="product-editor-card product-photo" aria-labelledby="productPhotoTitle">
+                        <div class="product-editor-card-head"><i class="fa fa-picture-o" aria-hidden="true"></i><div><h2 id="productPhotoTitle">Photo du produit</h2><p>Visible dans la grille de caisse.</p></div></div>
+                        <div id="productPhotoDrop" class="product-photo-drop">
+                            <div class="product-photo-icon"><i class="fa fa-picture-o" aria-hidden="true"></i></div>
+                            <div id="current_img"></div><img id="productImagePreview" alt="Aperçu du produit" hidden>
+                            <strong>Déposer une photo ici</strong><span>ou sélectionner un fichier</span>
+                            <input type="file" name="imagename" id="imagename" accept="image/jpeg,image/png,image/webp">
+                            <button type="button" id="productChooseImage"><i class="fa fa-plus" aria-hidden="true"></i> Choisir une image</button>
+                        </div>
+                        <button type="button" id="rmv_img" class="product-remove-image" hidden><i class="fa fa-trash" aria-hidden="true"></i> Retirer l'image</button>
+                        <p class="product-photo-help">JPG, PNG ou WebP · image carrée conseillée</p>
+                        <div class="product-photo-tip"><i class="fa fa-dot-circle-o" aria-hidden="true"></i><div><strong>Aperçu en caisse</strong><p>Photo nette = article facile à retrouver.</p></div></div>
+                    </section>
+                </div>
+                <footer class="product-editor-footer"><span>Le produit apparaîtra dans le catalogue après enregistrement.</span><div class="product-editor-actions"><button type="button" id="productEditorCancel">Annuler</button><button type="submit" id="createAndContinue" data-continue="true"><i class="fa fa-plus" aria-hidden="true"></i> Créer et continuer</button><button type="submit" id="submitProduct"><i class="fa fa-check" aria-hidden="true"></i> Enregistrer</button></div></footer>
+            </form>
+        </section>
         <div id="newCategory" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle" aria-hidden="true">
             <div class="modal-dialog" role="document"><div class="modal-content">
                 <div class="category-editor-header"><span class="category-editor-icon" aria-hidden="true"><i class="fa fa-tags"></i></span><div><h4 id="newCategoryTitle">Nouvelle catégorie</h4><p>Organisez vos produits pour les retrouver rapidement.</p></div><button type="button" class="close" data-dismiss="modal" aria-label="Fermer">&times;</button></div>
