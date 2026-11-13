@@ -5,6 +5,8 @@ const { barcodeValue, createBarcodeSheet } = require("./barcode-sheet");
 const { saleTerminal } = require("./sale-terminal");
 const { parsePaymentAmount, paymentChange } = require("./payment-amount");
 const { pageLabel, renderNavigation, setActiveNavigation } = require("./navigation");
+const { initI18n, t, tf, getLanguage } = require("./i18n");
+const { applyTheme } = require("./theme");
 const macaddress = require("macaddress");
 const notiflix = require("notiflix");
 const validator = require("validator");
@@ -13,6 +15,9 @@ const _ = require("lodash");
 let fs = require("fs");
 let path = require("path");
 let moment = require("moment");
+require("moment/locale/fr");
+require("moment/locale/ar");
+moment.locale("en");
 let { ipcRenderer } = require("electron");
 let Store = require("electron-store");
 const remote = require("@electron/remote");
@@ -43,6 +48,12 @@ let receipt = "";
 let totalVat = 0;
 let subTotal = 0;
 let method = "";
+function localizedPaymentType(value) {
+  const normalized = String(value || "").toLowerCase();
+  if (normalized === "cash" || normalized === "espèces") return t("Cash");
+  if (normalized === "card" || normalized === "carte") return t("Card");
+  return value || "";
+}
 let order_index = 0;
 let user_index = 0;
 let product_index = 0;
@@ -101,27 +112,55 @@ const {
 setContentSecurityPolicy();
 
 $(function () {
+  const selectedTheme = applyTheme(document, storage.get("theme", "classic"));
+  const updateThemeOptions = theme => {
+    $("#themeOptions .theme-option").each(function () {
+      $(this).attr("aria-pressed", String(this.dataset.theme === theme));
+    });
+  };
+  updateThemeOptions(selectedTheme);
+  $("#themeOptions").on("click", ".theme-option", function () {
+    const theme = applyTheme(document, this.dataset.theme);
+    storage.set("theme", theme);
+    updateThemeOptions(theme);
+  });
+  const savedLanguage = storage.get("language", "fr");
+  initI18n(document, savedLanguage);
+  ipcRenderer.send("language-changed", getLanguage());
+  $(".app-language-select").val(getLanguage()).on("change", function () {
+    const selected = this.value;
+    const switchLanguage = () => {
+      storage.set("language", selected);
+      ipcRenderer.send("language-changed", selected);
+      ipcRenderer.send("app-reload");
+    };
+    if (cart.length) {
+      notiflix.Confirm.show(t("Changer de langue ?"), t("La vente en cours sera effacée lors du rechargement."),
+        t("Continuer"), t("Annuler"), switchLanguage,
+        () => $(".app-language-select").val(getLanguage()));
+    } else switchLanguage();
+  });
   ipcRenderer.on("update:status", (_event, update) => {
     $("#settingsAppVersion").text(update.version || "—");
     const labels = {
       idle: "Prêt à rechercher une nouvelle version.",
       development: "Les mises à jour sont disponibles dans l'application installée.",
       checking: "Recherche d'une mise à jour…",
-      downloading: `Téléchargement de la version ${update.availableVersion || "nouvelle"} : ${update.percent || 0} %`,
+      downloading: tf("Téléchargement de la version {version} : {percent} %", { version: update.availableVersion || t("nouvelle"), percent: update.percent || 0 }),
       current: "Vous utilisez la dernière version publiée.",
-      ready: `La version ${update.availableVersion} est prête à installer.`,
+      ready: tf("La version {version} est prête à installer.", { version: update.availableVersion }),
       error: "Vérification impossible. Réessayez plus tard.",
     };
     $("#settingsUpdateStatus").text(labels[update.phase] || labels.idle);
     $("#settingsCheckUpdate").prop("disabled", ["development", "checking", "downloading", "ready"].includes(update.phase));
     $("#settingsInstallUpdate").prop("hidden", update.phase !== "ready");
-    if (update.phase === "ready") notiflix.Notify.success(`EasyPOS ${update.availableVersion} est prêt à installer dans Paramètres.`);
+    if (update.phase === "ready") notiflix.Notify.success(tf("EasyPOS {version} est prêt à installer dans Paramètres.", { version: update.availableVersion }));
   });
   $("#settingsCheckUpdate").on("click", () => ipcRenderer.send("update:check"));
   $("#settingsInstallUpdate").on("click", () => ipcRenderer.send("update:install"));
   ipcRenderer.send("update:get-status");
   function cb(start, end) {
-    $("#reportrange span").text(start.format("DD/MM/YYYY") + " au " + end.format("DD/MM/YYYY"));
+    $("#reportrange span").text(start.format("DD/MM/YYYY") + " " + t("au") + " " + end.format("DD/MM/YYYY"));
   }
 
   $("#reportrange").daterangepicker(
@@ -129,29 +168,32 @@ $(function () {
       startDate: start,
       endDate: end,
       autoApply: true,
-      locale: { format: "DD/MM/YYYY", separator: " au ", applyLabel: "Appliquer", cancelLabel: "Annuler" },
+      locale: {
+        format: "DD/MM/YYYY", separator: ` ${t("au")} `, applyLabel: t("Appliquer"), cancelLabel: t("Annuler"),
+        daysOfWeek: moment.localeData(getLanguage()).weekdaysMin(), monthNames: moment.localeData(getLanguage()).months(),
+        firstDay: moment.localeData(getLanguage()).firstDayOfWeek(),
+      },
       timePicker: true,
       timePicker24Hour: true,
       timePickerIncrement: 10,
       timePickerSeconds: true,
       // minDate: '',
       ranges: {
-        Today: [moment().startOf("day"), moment()],
-        Yesterday: [
+        [t("Today")]: [moment().startOf("day"), moment()],
+        [t("Yesterday")]: [
           moment().subtract(1, "days").startOf("day"),
           moment().subtract(1, "days").endOf("day"),
         ],
-        "Last 7 Days": [
+        [t("Last 7 Days")]: [
           moment().subtract(6, "days").startOf("day"),
           moment().endOf("day"),
         ],
-        "Last 30 Days": [
+        [t("Last 30 Days")]: [
           moment().subtract(29, "days").startOf("day"),
           moment().endOf("day"),
         ],
-        "This Month": [moment().startOf("month"), moment().endOf("month")],
-        "This Month": [moment().startOf("month"), moment()],
-        "Last Month": [
+        [t("This Month")]: [moment().startOf("month"), moment()],
+        [t("Last Month")]: [
           moment().subtract(1, "month").startOf("month"),
           moment().subtract(1, "month").endOf("month"),
         ],
@@ -323,6 +365,7 @@ if (auth == undefined) {
         const button = $("<button>", {
           type: "button", text: validator.unescape(String(category.name)),
           class: categoryId === selected ? "active" : "",
+          ...(categoryId === "0" ? {} : { translate: "no" }),
         });
         button.attr("data-category-id", categoryId);
         holder.append(button);
@@ -345,8 +388,8 @@ if (auth == undefined) {
         posPage = result.page;
         posTotal = result.total;
         const pageCount = Math.max(1, Math.ceil(posTotal / 25));
-        $("#posPageInfo").text(`${data.length} sur ${posTotal} produits · page ${posPage} / ${pageCount}`);
-        $("#posVisibleCount").text(`${data.length} produits visibles · ${posTotal} au total`);
+        $("#posPageInfo").text(tf("{shown} sur {total} produits · page {page} / {pages}", { shown: data.length, total: posTotal, page: posPage, pages: pageCount }));
+        $("#posVisibleCount").text(tf("{shown} produits visibles · {total} au total", { shown: data.length, total: posTotal }));
         $("#posPrevious").prop("disabled", posPage <= 1);
         $("#posNext").prop("disabled", posPage >= pageCount);
         allProducts = [...data];
@@ -373,10 +416,10 @@ if (auth == undefined) {
             $("<span>", { class: `pos-stock-badge ${tracked && stockStatus < 1 ? "low" : ""}`, text: expired ? "Exp." : stockLabel }),
           );
           card.append(photo,
-            $("<span>", { class: "pos-product-name", text: name }),
-            $("<span>", { class: "pos-product-detail", text: item.barcode || item._id }),
+            $("<span>", { class: "pos-product-name", text: name, translate: "no" }),
+            $("<span>", { class: "pos-product-detail", text: item.barcode || item._id, translate: "no" }),
             $("<span>", { class: "pos-product-foot" }).append(
-              $("<span>", { text: categoryName }), $("<strong>", { text: priceLabel }),
+              $("<span>", { text: categoryName, translate: "no" }), $("<strong>", { text: priceLabel }),
             ));
           grid.append(card);
         });
@@ -411,7 +454,7 @@ if (auth == undefined) {
             $("<span>", { class: product.quantity <= 0 ? "stock-low-dot out" : "stock-low-dot" }),
             $("<div>").append(
               $("<strong>", { text: validator.unescape(String(product.name || "Produit")) }),
-              $("<small>", { text: `${product.quantity} en stock · seuil ${product.minStock}` }),
+              $("<small>", { text: tf("{quantity} en stock · seuil {minimum}", { quantity: product.quantity, minimum: product.minStock }) }),
             ),
           ));
         });
@@ -422,7 +465,7 @@ if (auth == undefined) {
       $.get(api + "inventory/stock/movements", { page, pageSize: 10 }, function (data) {
         stockMovementPage = data.page;
         stockMovementPages = Math.max(1, Math.ceil(data.total / data.pageSize));
-        $("#stockMovementPageInfo").text(`Page ${data.page} / ${stockMovementPages}`);
+        $("#stockMovementPageInfo").text(tf("Page {page} / {pages}", { page: data.page, pages: stockMovementPages }));
         $("#stockMovementPrevious").prop("disabled", data.page <= 1);
         $("#stockMovementNext").prop("disabled", data.page >= stockMovementPages);
         const rows = $("#stockMovementRows").empty();
@@ -485,12 +528,12 @@ if (auth == undefined) {
           data.items.filter(product => Number(product.stock) === 1).forEach(product => {
             const button = $("<button>", { type: "button" }).append(
               $("<strong>", { text: validator.unescape(String(product.name || "Produit")) }),
-              $("<small>", { text: `${product.barcode || product._id} · stock ${product.quantity}` }),
+              $("<small>", { text: tf("{barcode} · stock {quantity}", { barcode: product.barcode || product._id, quantity: product.quantity }) }),
             );
             button.on("click", function () {
               $("#stockProductId").val(product._id);
               $("#stockProductSearch").val(validator.unescape(String(product.name || "")));
-              $("#stockCurrentQuantity").text(`Stock actuel : ${product.quantity}`);
+              $("#stockCurrentQuantity").text(tf("Stock actuel : {quantity}", { quantity: product.quantity }));
               results.empty();
               $("#stockAdjustAmount").trigger("focus");
             });
@@ -542,7 +585,7 @@ if (auth == undefined) {
         if (product && quantity > 0) units += quantity;
         if (product && quantity > 0 && unitCost >= 0) cost += quantity * unitCost;
       });
-      $("#receivingLineCount").text(`${references} référence${references === 1 ? "" : "s"} · ${units} unité${units === 1 ? "" : "s"} reçue${units === 1 ? "" : "s"}`);
+      $("#receivingLineCount").text(tf(references === 1 && units === 1 ? "{count} référence · {units} unité reçue" : "{count} références · {units} unités reçues", { count: references, units }));
       const symbol = settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD";
       $("#receivingTotal").text(`${moneyFormat(cost.toFixed(2))} ${symbol}`);
     }
@@ -587,7 +630,7 @@ if (auth == undefined) {
             products.forEach(product => {
               const option = $("<button>", { type: "button" }).append(
                 $("<strong>", { text: validator.unescape(String(product.name || "Produit")) }),
-                $("<small>", { text: `${product.barcode || product._id} · stock ${product.quantity}` }),
+                $("<small>", { text: tf("{barcode} · stock {quantity}", { barcode: product.barcode || product._id, quantity: product.quantity }) }),
               );
               option.on("click", () => { selectReceivingProduct(row, product); quantity.trigger("focus"); });
               results.append(option);
@@ -678,7 +721,7 @@ if (auth == undefined) {
           addReceivingLine();
           $("#receivingState").text("Nouvelle réception");
           $("#receivingMessage").text("");
-          notiflix.Report.success("Réception enregistrée", `Le stock a été mis à jour pour ${receipt.lines} référence${receipt.lines === 1 ? "" : "s"}.`, "OK");
+          notiflix.Report.success(t("Réception enregistrée"), tf(receipt.lines === 1 ? "Le stock a été mis à jour pour {count} référence." : "Le stock a été mis à jour pour {count} références.", { count: receipt.lines }), "OK");
           loadProducts();
           loadProductList();
           loadSuppliers();
@@ -712,7 +755,7 @@ if (auth == undefined) {
             $("<span>", { text: label }),
           ));
         });
-        chart.attr("aria-label", "Ventes des sept derniers jours : " + report.daily.map(day => `${day.date}, ${formatAmount(day.amount)}`).join("; "));
+        chart.attr("aria-label", tf("Ventes des sept derniers jours : {summary}", { summary: report.daily.map(day => `${day.date}, ${formatAmount(day.amount)}`).join("; ") }));
 
         const top = $("#salesTopProducts").empty();
         if (!report.topProducts.length) top.append($("<p>", { class: "sales-empty", text: "Aucune vente sur les 7 derniers jours." }));
@@ -721,7 +764,7 @@ if (auth == undefined) {
             $("<span>", { class: "sales-top-rank", text: index + 1 }),
             $("<div>").append(
               $("<strong>", { text: validator.unescape(String(product.name || "Produit")) }),
-              $("<small>", { text: `${product.quantity} unité${product.quantity === 1 ? "" : "s"}` }),
+              $("<small>", { text: tf(product.quantity === 1 ? "{count} unité" : "{count} unités", { count: product.quantity }) }),
             ),
           ));
         });
@@ -758,7 +801,7 @@ if (auth == undefined) {
         clientsPageCount = Math.max(1, Math.ceil(result.total / result.pageSize));
         const first = result.total ? (result.page - 1) * result.pageSize + 1 : 0;
         const last = first ? first + result.items.length - 1 : 0;
-        $("#clientsPageInfo").text(`${first}–${last} sur ${result.total} clients`);
+        $("#clientsPageInfo").text(tf("{first}–{last} sur {total} clients", { first, last, total: result.total }));
         $("#clientsPrevious").prop("disabled", result.page <= 1);
         $("#clientsNext").prop("disabled", result.page >= clientsPageCount);
         const rows = $("#clientsRows").empty();
@@ -827,7 +870,7 @@ if (auth == undefined) {
         history.items.forEach(order => orders.append($("<div>", { class: "client-order-row" }).append(
           $("<strong>", { text: order.order || order._id }),
           $("<span>", { text: clientDate(order.date) }),
-          $("<span>", { text: `${order.itemCount} article${order.itemCount === 1 ? "" : "s"}` }),
+          $("<span>", { text: tf(order.itemCount === 1 ? "{count} article" : "{count} articles", { count: order.itemCount }) }),
           $("<strong>", { text: money(order.total) }),
         )));
         const top = $("<div>", { class: "client-detail-top" }).append($("<h3>", { text: "Produits fréquents" }));
@@ -880,14 +923,14 @@ if (auth == undefined) {
       $("#settingsPageFooter").val(value("footer"));
       $("#settingsPageChargeTax").prop("checked", Boolean(settings.charge_tax));
       $("#settingsPageQuickBilling").prop("checked", Boolean(settings.quick_billing));
-      $("#settingsPageLogoName").text(settings.img ? `Logo actuel : ${settings.img}` : "Aucun logo enregistré");
+      $("#settingsPageLogoName").text(settings.img ? tf("Logo actuel : {file}", { file: settings.img }) : t("Aucun logo enregistré"));
       $("#settingsPageLogo").val("");
       $.get(api + "users/all", function (users) {
-        $("#settingsUserCount").text(`${users.length} compte${users.length === 1 ? "" : "s"}`);
+        $("#settingsUserCount").text(tf(users.length === 1 ? "{count} compte" : "{count} comptes", { count: users.length }));
         const roles = $("#settingsUserRoles").empty();
         const admins = users.filter(account => Number(account.perm_settings) === 1).length;
-        roles.append($("<span>", { text: `${admins} administrateur${admins === 1 ? "" : "s"}` }));
-        roles.append($("<span>", { text: `${users.length - admins} autre${users.length - admins === 1 ? "" : "s"} compte${users.length - admins === 1 ? "" : "s"}` }));
+        roles.append($("<span>", { text: tf(admins === 1 ? "{count} administrateur" : "{count} administrateurs", { count: admins }) }));
+        roles.append($("<span>", { text: tf("{count} autres comptes", { count: users.length - admins }) }));
       }).fail(() => $("#settingsUserCount").text("Comptes indisponibles"));
     }
     $("#settingsPageForm").on("submit", function (event) {
@@ -942,7 +985,7 @@ if (auth == undefined) {
         $("#category,#categories,#productListCategory").empty().append($("<option>", { value: "0", text: "Toutes les catégories" }));
         allCategories.forEach((category) => {
           $("#category,#categories,#productListCategory").append(
-            $("<option>", { value: category._id, text: validator.unescape(String(category.name)) }),
+            $("<option>", { value: category._id, text: validator.unescape(String(category.name)), translate: "no" }),
           );
         });
         $("#category option[value='0']").text("Choisir une catégorie");
@@ -962,8 +1005,8 @@ if (auth == undefined) {
       categoriesPage = Math.min(Math.max(1, categoriesPage), pageCount);
       const first = matching.length ? (categoriesPage - 1) * categoriesPageSize + 1 : 0;
       const last = Math.min(categoriesPage * categoriesPageSize, matching.length);
-      $("#categoriesPageInfo").text(`${first}–${last} sur ${matching.length} catégories`);
-      $("#categoriesPageNumber").text(`Page ${categoriesPage} / ${pageCount}`);
+      $("#categoriesPageInfo").text(tf("{first}–{last} sur {total} catégories", { first, last, total: matching.length }));
+      $("#categoriesPageNumber").text(tf("Page {page} / {pages}", { page: categoriesPage, pages: pageCount }));
       $("#categoriesPrevious").prop("disabled", categoriesPage <= 1);
       $("#categoriesNext").prop("disabled", categoriesPage >= pageCount);
       const assigned = allCategories.reduce((sum, category) => sum + (categoryProductCounts[String(category._id)] || 0), 0);
@@ -976,16 +1019,16 @@ if (auth == undefined) {
       matching.slice(first ? first - 1 : 0, last).forEach(({ category, index }) => {
         const count = categoryProductCounts[String(category._id)] || 0;
         const actions = $("<div>", { class: "categories-row-actions" }).append(
-          $("<button>", { type: "button", class: "categories-edit", title: "Modifier", "aria-label": `Modifier ${validator.unescape(String(category.name))}` })
+          $("<button>", { type: "button", class: "categories-edit", title: t("Modifier"), "aria-label": tf("Modifier {name}", { name: validator.unescape(String(category.name)) }) })
             .append($("<i>", { class: "fa fa-pencil" }), " Modifier")
             .on("click", function () { $(this).editCategory(index); }),
-          $("<button>", { type: "button", class: "categories-delete", title: count ? "Déplacez les produits avant de supprimer" : "Supprimer", "aria-label": `Supprimer ${validator.unescape(String(category.name))}`, disabled: count > 0 })
+          $("<button>", { type: "button", class: "categories-delete", title: t(count ? "Déplacez les produits avant de supprimer" : "Supprimer"), "aria-label": tf("Supprimer {name}", { name: validator.unescape(String(category.name)) }), disabled: count > 0 })
             .append($("<i>", { class: "fa fa-trash" }))
             .on("click", function () { $(this).deleteCategory(category._id); }),
         );
         rows.append($("<tr>").append(
           $("<td>").append($("<span>", { class: "categories-icon" }).append($("<i>", { class: "fa fa-tag" })), $("<strong>", { text: validator.unescape(String(category.name || "")) })),
-          $("<td>", { text: `${count} produit${count === 1 ? "" : "s"}` }),
+          $("<td>", { text: tf(count === 1 ? "{count} produit" : "{count} produits", { count }) }),
           $("<td>").append(actions),
         ));
       });
@@ -1051,7 +1094,7 @@ if (auth == undefined) {
         if (isExpired(product.expirationDate)) {
           notiflix.Report.failure(
             "Expired",
-            `${product.name} is expired! Please restock.`,
+            tf("{name} is expired! Please restock.", { name: product.name }),
             "Ok",
           );
         } else {
@@ -1061,7 +1104,7 @@ if (auth == undefined) {
             if (stock == 1) {
               notiflix.Report.failure(
                 "Out of stock!",
-                `${product.name} is out of stock! Please restock.`,
+                tf("{name} is out of stock! Please restock.", { name: product.name }),
                 "Ok",
               );
             }
@@ -1102,7 +1145,7 @@ if (auth == undefined) {
           } else if (expired) {
             notiflix.Report.failure(
               "Expired!",
-              `${product.name} is expired`,
+              tf("{name} is expired", { name: product.name }),
               "Ok",
             );
           } else if (product.stock == 1 && Number(product.quantity) < 1) {
@@ -1338,7 +1381,7 @@ if (auth == undefined) {
       if (cart.length != 0) {
         const selectedCustomer = JSON.parse($("#customer").val() || "0");
         $("#holdCustomerName").text(selectedCustomer && selectedCustomer.name ? selectedCustomer.name : "Client comptoir");
-        $("#holdItemCount").text(`${cart.length} ${cart.length === 1 ? "produit" : "produits"}`);
+        $("#holdItemCount").text(tf(cart.length === 1 ? "{count} produit" : "{count} produits", { count: cart.length }));
         $("#holdTotalAmount").text(`${moneyFormat(Number(orderTotal).toFixed(2))} ${validator.unescape(settings.symbol)}`);
         $("#dueModal").modal("show");
       } else {
@@ -1408,29 +1451,29 @@ if (auth == undefined) {
 
       if (paid != "") {
         payment = `<tr>
-                        <td>Paid</td>
+                        <td>${t("Paid")}</td>
                         <td>:</td>
                         <td class="text-right">${validator.unescape(settings.symbol)} ${moneyFormat(
                           Math.abs(paid).toFixed(2),
                         )}</td>
                     </tr>
                     <tr>
-                        <td>Change</td>
+                        <td>${t("Change")}</td>
                         <td>:</td>
                         <td class="text-right">${validator.unescape(settings.symbol)} ${moneyFormat(
                           Math.abs(change).toFixed(2),
                         )}</td>
                     </tr>
                     <tr>
-                        <td>Method</td>
+                        <td>${t("Method")}</td>
                         <td>:</td>
-                        <td class="text-right">${type}</td>
+                        <td class="text-right">${t(type)}</td>
                     </tr>`;
       }
 
       if (settings.charge_tax) {
         tax_row = `<tr>
-                    <td>VAT(${validator.unescape(settings.percentage)})% </td>
+                    <td>${t("VAT")}(${validator.unescape(settings.percentage)})% </td>
                     <td>:</td>
                     <td class="text-right">${validator.unescape(settings.symbol)} ${moneyFormat(
                       parseFloat(totalVat).toFixed(2),
@@ -1470,20 +1513,20 @@ if (auth == undefined) {
             ${validator.unescape(settings.address_one)} <br>
             ${validator.unescape(settings.address_two)} <br>
             ${
-              validator.unescape(settings.contact) != "" ? "Tel: " + validator.unescape(settings.contact) + "<br>" : ""
+              validator.unescape(settings.contact) != "" ? t("Tel:") + " " + validator.unescape(settings.contact) + "<br>" : ""
             } 
-            ${validator.unescape(settings.tax) != "" ? "Vat No: " + validator.unescape(settings.tax) + "<br>" : ""} 
+            ${validator.unescape(settings.tax) != "" ? t("Vat No:") + " " + validator.unescape(settings.tax) + "<br>" : ""}
         </p>
         <hr>
         <left>
             <p>
-            Order No : ${orderNumber} <br>
-            Ref No : ${refNumber == "" ? orderNumber : _.escape(refNumber)} <br>
-            Customer : ${
-              customer == 0 ? "Walk in customer" : _.escape(customer.name)
+            ${t("Order No")} : ${orderNumber} <br>
+            ${t("Ref No")} : ${refNumber == "" ? orderNumber : _.escape(refNumber)} <br>
+            ${t("Customer")} : ${
+              customer == 0 ? t("Walk in customer") : _.escape(customer.name)
             } <br>
-            Cashier : ${user.fullname} <br>
-            Date : ${date}<br>
+            ${t("Cashier")} : ${user.fullname} <br>
+            ${t("Date")} : ${date}<br>
             </p>
 
         </left>
@@ -1491,23 +1534,23 @@ if (auth == undefined) {
         <table width="90%">
             <thead>
             <tr>
-                <th>Item</th>
-                <th>Qty</th>
-                <th class="text-right">Price</th>
+                <th>${t("Item")}</th>
+                <th>${t("Qty")}</th>
+                <th class="text-right">${t("Price")}</th>
             </tr>
             </thead>
             <tbody>
              ${items}                
             <tr><td colspan="3"><hr></td></tr>
             <tr>                        
-                <td><b>Subtotal</b></td>
+                <td><b>${t("Subtotal")}</b></td>
                 <td>:</td>
                 <td class="text-right"><b>${validator.unescape(settings.symbol)}${moneyFormat(
                   subTotal.toFixed(2),
                 )}</b></td>
             </tr>
             <tr>
-                <td>Discount</td>
+                <td>${t("Discount")}</td>
                 <td>:</td>
                 <td class="text-right">${
                   discount > 0
@@ -1518,7 +1561,7 @@ if (auth == undefined) {
             </tr>
             ${tax_row}
             <tr>
-                <td><h5>Total</h5></td>
+                <td><h5>${t("Total")}</h5></td>
                 <td><h5>:</h5></td>
                 <td class="text-right">
                     <h5>${validator.unescape(settings.symbol)} ${moneyFormat(
@@ -1649,14 +1692,14 @@ if (auth == undefined) {
           if (!selected) {
             $("#customer option")
               .filter(function () {
-                return $(this).text() == "Walk in customer";
+                return $(this).val() === "0";
               })
               .prop("selected", true);
           }
         } else {
           $("#customer option")
             .filter(function () {
-              return $(this).text() == "Walk in customer";
+              return $(this).val() === "0";
             })
             .prop("selected", true);
         }
@@ -1823,7 +1866,7 @@ if (auth == undefined) {
       const symbol = settings && settings.symbol ? validator.unescape(String(settings.symbol)) : "MAD";
       $("#paymentOrderRef").text(holdOrder ? `#${holdOrder}` : "nouvelle");
       $("#paymentCustomerName").text($("#customer option:selected").text() || "Client comptoir");
-      $("#paymentItemCount").text(`${cart.length} produit${cart.length === 1 ? "" : "s"}`);
+      $("#paymentItemCount").text(tf(cart.length === 1 ? "{count} produit" : "{count} produits", { count: cart.length }));
       $("#paymentSubtotalDisplay").text($("#price").text() || `0,00 ${symbol}`);
       $("#paymentTotalDisplay").text($("#gross_price").text() || `0,00 ${symbol}`);
     });
@@ -1913,7 +1956,7 @@ if (auth == undefined) {
         return;
       }
       panel.append($("<span>", { class: "pending-detail-kind", text: order.ref_number ? "Vente en attente" : "Commande client" }));
-      panel.append($("<h2>", { text: order.ref_number || `Commande #${order.order || order._id}` }));
+      panel.append($("<h2>", { text: order.ref_number || tf("Commande #{number}", { number: order.order || order._id }) }));
       panel.append($("<p>", { text: `${pendingCustomerName(order)} · ${moment(order.date).isValid() ? moment(order.date).format("DD/MM/YYYY HH:mm") : "Date inconnue"}` }));
       const list = $("<div>", { class: "pending-detail-lines" });
       (Array.isArray(order.items) ? order.items : []).forEach(item => list.append($("<div>").append(
@@ -1945,7 +1988,7 @@ if (auth == undefined) {
         customerOrderList = pendingItems.filter(order => !order.ref_number);
         const first = result.total ? (result.page - 1) * result.pageSize + 1 : 0;
         const last = first ? first + result.items.length - 1 : 0;
-        $("#pendingPageInfo").text(`${first}–${last} sur ${result.total} commandes`);
+        $("#pendingPageInfo").text(tf("{first}–{last} sur {total} commandes", { first, last, total: result.total }));
         $("#pendingPrevious").prop("disabled", result.page <= 1);
         $("#pendingNext").prop("disabled", result.page >= pendingPageCount);
         const rows = $("#pendingRows").empty();
@@ -2014,7 +2057,7 @@ if (auth == undefined) {
       }
       panel.append(facts);
       const summary = $("<div>", { class: "supplier-details-note" }).append(
-        $("<strong>", { text: `${supplier.productCount || 0} produit(s) · ${supplier.receiptCount || 0} réception(s)` }),
+        $("<strong>", { text: tf("{count} produit(s) · {receipts} réception(s)", { count: supplier.productCount || 0, receipts: supplier.receiptCount || 0 }) }),
         $("<p>", { text: "Le nom reste fixe quand des produits ou des réceptions l'utilisent." }),
       );
       if (supplier.note) summary.append($("<p>", { text: supplier.note }));
@@ -2042,7 +2085,7 @@ if (auth == undefined) {
             openSupplierEditor(supplier, "directory");
           }),
           $("<button>", {
-            type: "button", title: "Supprimer", "aria-label": `Supprimer ${supplier.name}`,
+            type: "button", title: t("Supprimer"), "aria-label": tf("Supprimer {name}", { name: supplier.name }),
             disabled: !supplier._id || supplier.productCount > 0 || supplier.receiptCount > 0,
           }).append($("<i>", { class: "fa fa-trash" })).on("click", event => {
             event.stopPropagation();
@@ -2052,7 +2095,7 @@ if (auth == undefined) {
         const row = $("<tr>", { tabindex: 0, class: selected ? "selected" : "" }).append(
           $("<td>").append($("<strong>", { text: supplier.name })),
           $("<td>", { text: supplier.phone || "—" }),
-          $("<td>", { text: `${supplier.productCount || 0} produit(s)` }),
+          $("<td>", { text: tf("{count} produit(s)", { count: supplier.productCount || 0 }) }),
           $("<td>").append(actions),
         );
         row.on("click keydown", event => {
@@ -2066,7 +2109,7 @@ if (auth == undefined) {
         colspan: 4, text: "Aucun fournisseur trouvé.",
       })));
       $("#suppliersPageInfo").text(matching.length
-        ? `${(suppliersPageNumber - 1) * pageSize + 1}–${Math.min(suppliersPageNumber * pageSize, matching.length)} sur ${matching.length} fournisseurs`
+        ? tf("{first}–{last} sur {total} fournisseurs", { first: (suppliersPageNumber - 1) * pageSize + 1, last: Math.min(suppliersPageNumber * pageSize, matching.length), total: matching.length })
         : "0 fournisseur");
       $("#suppliersPrevious").prop("disabled", suppliersPageNumber <= 1);
       $("#suppliersNext").prop("disabled", suppliersPageNumber >= pageCount);
@@ -2097,7 +2140,7 @@ if (auth == undefined) {
     }
 
     function deleteSupplier(supplier) {
-      notiflix.Confirm.show("Supprimer le fournisseur", `Supprimer ${supplier.name} du répertoire ?`,
+      notiflix.Confirm.show(t("Supprimer le fournisseur"), tf("Supprimer {name} du répertoire ?", { name: supplier.name }),
         "Supprimer", "Annuler", () => {
           $.ajax({ url: api + "suppliers/supplier/" + supplier._id, type: "DELETE" })
             .done(() => {
@@ -2250,7 +2293,7 @@ if (auth == undefined) {
         processData: false,
         contentType: false,
         success: function (result) {
-          status.text(`Imported ${result.added} products; skipped ${result.skipped} already imported.`);
+          status.text(tf("Imported {added} products; skipped {skipped} already imported.", { added: result.added, skipped: result.skipped }));
           loadCategories().then(() => {
             loadProducts(1);
             loadProductList(1);
@@ -2258,7 +2301,7 @@ if (auth == undefined) {
         },
         error: function (response) {
           const details = response.responseJSON || {};
-          status.text(`Import failed: ${details.error || response.statusText}`);
+          status.text(tf("Import failed: {error}", { error: details.error || response.statusText }));
         },
         complete: function () {
           button.prop("disabled", false);
@@ -2470,10 +2513,10 @@ if (auth == undefined) {
         const isOnline = String(account.status || "").startsWith("Logged In_");
         const isProtected = Number(account._id) === 1 || String(account._id) === String(user._id);
         const actions = $("<div>", { class: "users-row-actions" }).append(
-          $("<button>", { type: "button", "aria-label": `Modifier ${validator.unescape(String(account.fullname || account.username))}` })
+          $("<button>", { type: "button", "aria-label": tf("Modifier {name}", { name: validator.unescape(String(account.fullname || account.username)) }) })
             .append($("<i>", { class: "fa fa-pencil" }), " Modifier")
             .on("click", function () { $(this).editUser(index); }),
-          $("<button>", { type: "button", class: "users-delete", title: isProtected ? "Compte protégé" : "Supprimer", "aria-label": `Supprimer ${validator.unescape(String(account.fullname || account.username))}`, disabled: isProtected })
+          $("<button>", { type: "button", class: "users-delete", title: t(isProtected ? "Compte protégé" : "Supprimer"), "aria-label": tf("Supprimer {name}", { name: validator.unescape(String(account.fullname || account.username)) }), disabled: isProtected })
             .append($("<i>", { class: "fa fa-trash" }))
             .on("click", function () { $(this).deleteUser(account._id); }),
         );
@@ -2491,7 +2534,7 @@ if (auth == undefined) {
 
     function updateBarcodeSelection() {
       const total = selectedBarcodeProducts.size;
-      $("#productListSelectionCount").text(`${total} sélectionné${total === 1 ? "" : "s"}`);
+      $("#productListSelectionCount").text(tf(total === 1 ? "{count} sélectionné" : "{count} sélectionnés", { count: total }));
       $("#exportSelectedBarcodes").prop("disabled", total === 0);
       const selectedOnPage = listedProducts.filter(product => selectedBarcodeProducts.has(String(product._id))).length;
       const pageCheckbox = $("#productListSelectPage");
@@ -2530,7 +2573,7 @@ if (auth == undefined) {
           name: validator.unescape(String(product.name || "")),
           barcode: validator.unescape(String(product.barcode || "")),
         }));
-        const { data } = createBarcodeSheet(products, { jsPDFClass: jsPDF.jsPDF || jsPDF, JsBarcode, document });
+        const { data } = createBarcodeSheet(products, { jsPDFClass: jsPDF.jsPDF || jsPDF, JsBarcode, document, title: t("Product barcode sheet") });
         const { canceled, filePath } = await remote.dialog.showSaveDialog(remote.getCurrentWindow(), {
           title: "Exporter les codes-barres PDF",
           defaultPath: path.join(app.getPath("downloads"), "codes-barres-produits.pdf"),
@@ -2539,7 +2582,7 @@ if (auth == undefined) {
         });
         if (canceled || !filePath) return;
         await fs.promises.writeFile(filePath, Buffer.from(data));
-        notiflix.Report.success("Codes-barres exportés", `PDF enregistré : ${$("<div>").text(filePath).html()}`, "OK");
+        notiflix.Report.success(t("Codes-barres exportés"), tf("PDF enregistré : {path}", { path: $("<div>").text(filePath).html() }), "OK");
       } catch (error) {
         console.error("Barcode PDF export failed:", error);
         notiflix.Report.failure("Export impossible", error.message || "Impossible d'exporter les codes-barres.", "OK");
@@ -2559,14 +2602,14 @@ if (auth == undefined) {
       $("#productDetailsName").text(validator.unescape(String(product.name || "")));
       $("#productDetailsPhotoName").text(validator.unescape(String(product.name || "")));
       $("#productDetailsSubtitle").text(validator.unescape(String(product.description || product.reference || "")));
-      $("#productDetailsCategory,#productDetailsCategoryFact").text(category ? validator.unescape(String(category.name)) : "Sans catégorie");
-      $("#productDetailsSupplier").text(product.supplier ? validator.unescape(String(product.supplier)) : "Fournisseur non renseigné");
+      $("#productDetailsCategory,#productDetailsCategoryFact").text(category ? validator.unescape(String(category.name)) : t("Sans catégorie"));
+      $("#productDetailsSupplier").text(product.supplier ? validator.unescape(String(product.supplier)) : t("Fournisseur non renseigné"));
       $("#productDetailsReference").text(validator.unescape(String(product.reference || product.barcode || product._id)));
       $("#productDetailsImage").attr("src", imagePath);
       $("#productDetailsPrice").text(`${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}`);
       $("#productDetailsPriceBasis").prop("hidden", product.priceBasis !== "sample");
-      $("#productDetailsStock").text(product.stock == 1 ? `${product.quantity} unités` : "Non suivi");
-      $("#productDetailsStockSummary").text(product.stock == 1 ? `${product.quantity} unités disponibles` : "Stock non suivi");
+      $("#productDetailsStock").text(product.stock == 1 ? tf("{count} unités", { count: product.quantity }) : t("Non suivi"));
+      $("#productDetailsStockSummary").text(product.stock == 1 ? tf("{count} unités disponibles", { count: product.quantity }) : t("Stock non suivi"));
       $("#productDetailsMinimum").text(product.minStock || "-");
       $("#productDetailsStockMinimum").text(product.minStock || "-");
       $("#productDetailsExpiry").text(product.expirationDate || "-");
@@ -2609,7 +2652,7 @@ if (auth == undefined) {
       const pageCount = Math.max(1, Math.ceil(listTotal / pageSize));
       const first = listTotal ? (listPage - 1) * pageSize + 1 : 0;
       const last = first ? first + products.length - 1 : 0;
-      $("#productListPageInfo").text(`${first}–${last} sur ${listTotal} produits · page ${listPage} / ${pageCount}`);
+      $("#productListPageInfo").text(tf("{first}–{last} sur {total} produits · page {page} / {pages}", { first, last, total: listTotal, page: listPage, pages: pageCount }));
       $("#productListPrevious").prop("disabled", listPage <= 1);
       $("#productListNext").prop("disabled", listPage >= pageCount);
       updateBarcodeSelection();
@@ -2647,9 +2690,8 @@ if (auth == undefined) {
           const diffDays = daysToExpire(expiryDate);
 
           if (diffDays > 0 && diffDays <= 30) {
-            var days_noun = diffDays > 1 ? "days" : "day";
             icon = "fa fa-clock-o";
-            product.expiryStatus = `${diffDays} ${days_noun} left`;
+            product.expiryStatus = tf(diffDays === 1 ? "{count} day left" : "{count} days left", { count: diffDays });
             product.expiryAlert = `<p class="text-danger"><small><i class="${icon}"></i> ${product.expiryStatus}</small></p>`;
           }
         } else {
@@ -2672,20 +2714,20 @@ if (auth == undefined) {
         
         // Render the compact catalogue row shown in the shared Figma layout.
         const safeName = $("<div>").text(validator.unescape(String(product.name || ""))).html();
-        const safeCategory = category.length > 0 ? $("<div>").text(validator.unescape(String(category[0].name))).html() : "Sans catégorie";
+        const safeCategory = category.length > 0 ? $("<div>").text(validator.unescape(String(category[0].name))).html() : t("Sans catégorie");
         const safeCode = $("<div>").text(validator.unescape(String(product.barcode || product._id))).html();
         const safeReference = $("<div>").text(validator.unescape(String(product.reference || product.supplier || ""))).html();
         const checked = selectedBarcodeProducts.has(String(product._id)) ? "checked" : "";
         const samplePriceLabel = product.priceBasis === "sample" ? '<small class="sample-price-label">Prix d’exemple</small>' : "";
         product_list +=
           `<tr>
-            <td><input type="checkbox" class="product-select" value="${product._id}" aria-label="Sélectionner ${safeName}" ${checked}></td>
-            <td><div class="catalogue-product-cell"><img src="${product_img}" alt=""><span><strong>${safeName}</strong><small>${safeReference}</small></span></div></td>
-            <td>${safeCategory}</td>
-            <td>${safeCode}</td>
+            <td><input type="checkbox" class="product-select" value="${product._id}" aria-label="${tf("Sélectionner {name}", { name: safeName })}" ${checked}></td>
+            <td><div class="catalogue-product-cell" translate="no"><img src="${product_img}" alt=""><span><strong>${safeName}</strong><small>${safeReference}</small></span></div></td>
+            <td translate="no">${safeCategory}</td>
+            <td translate="no">${safeCode}</td>
             <td>${moneyFormat(Number(product.price || 0).toFixed(2))} ${settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD"}${samplePriceLabel}</td>
             <td class="catalogue-stock-cell">${product.stock == 1 ? product.quantity : "Non suivi"}${product.stockAlert}</td>
-            <td class="nobr"><span class="btn-group"><button type="button" class="btn btn-default btn-sm product-fiche-button" data-product-id="${product._id}">Fiche</button><button type="button" onClick="$(this).editProduct(${index})" class="btn btn-warning btn-sm" aria-label="Modifier ${safeName}"><i class="fa fa-edit"></i></button><button type="button" onClick="$(this).deleteProduct(${product._id})" class="btn btn-danger btn-sm" aria-label="Supprimer ${safeName}"><i class="fa fa-trash"></i></button></span></td></tr>`;
+            <td class="nobr"><span class="btn-group"><button type="button" class="btn btn-default btn-sm product-fiche-button" data-product-id="${product._id}">${t("Fiche")}</button><button type="button" onClick="$(this).editProduct(${index})" class="btn btn-warning btn-sm" aria-label="${tf("Modifier {name}", { name: safeName })}"><i class="fa fa-edit"></i></button><button type="button" onClick="$(this).deleteProduct(${product._id})" class="btn btn-danger btn-sm" aria-label="${tf("Supprimer {name}", { name: safeName })}"><i class="fa fa-trash"></i></button></span></td></tr>`;
 
       });
       $("#product_list").html(product_list);
@@ -2946,7 +2988,7 @@ function loadTransactions() {
                                 <td>${
                                   trans.paid == ""
                                     ? ""
-                                    : safeText(String(trans.payment_type).toLowerCase() === "cash" ? "Espèces" : trans.payment_type)
+                                    : safeText(localizedPaymentType(trans.payment_type))
                                 }</td>
                                 <td>${safeText(trans.till)}</td>
                                 <td>${safeText(trans.user)}</td>
@@ -2982,15 +3024,15 @@ function loadTransactions() {
         { extend: "pdf", text: '<i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF', className: "sales-export-button", exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] } },
       ],
       language: {
-        emptyTable: "Aucune vente pour ces filtres.",
+        emptyTable: t("Aucune vente pour ces filtres."),
         search: "",
-        searchPlaceholder: "Rechercher une vente",
-        info: "Affichage de _START_ à _END_ sur _TOTAL_ ventes",
-        infoEmpty: "Aucune vente",
-        infoFiltered: "(filtrées parmi _MAX_ ventes)",
-        zeroRecords: "Aucune vente ne correspond à cette recherche.",
-        lengthMenu: "Afficher _MENU_ ventes",
-        paginate: { previous: "Précédent", next: "Suivant" },
+        searchPlaceholder: t("Rechercher une vente"),
+        info: t("Affichage de _START_ à _END_ sur _TOTAL_ ventes"),
+        infoEmpty: t("Aucune vente"),
+        infoFiltered: t("(filtrées parmi _MAX_ ventes)"),
+        zeroRecords: t("Aucune vente ne correspond à cette recherche."),
+        lengthMenu: t("Afficher _MENU_ ventes"),
+        paginate: { previous: t("Précédent"), next: t("Suivant") },
       },
     });
     $("#transactionList_filter input").attr("aria-label", "Rechercher une vente");
@@ -3021,7 +3063,7 @@ $.fn.viewTransaction = function (index) {
   let discount = allTransactions[index].discount;
   let customer =
     allTransactions[index].customer == 0
-      ? "Walk in Customer"
+      ? t("Walk in Customer")
       : allTransactions[index].customer.username;
   let refNumber =
     allTransactions[index].ref_number != ""
@@ -3046,29 +3088,29 @@ $.fn.viewTransaction = function (index) {
 
   if (allTransactions[index].paid != "") {
     payment = `<tr>
-                    <td>Paid</td>
+                    <td>${t("Paid")}</td>
                     <td>:</td>
                     <td class="text-right">${validator.unescape(settings.symbol)} ${moneyFormat(
                       Math.abs(allTransactions[index].paid).toFixed(2),
                     )}</td>
                 </tr>
                 <tr>
-                    <td>Change</td>
+                    <td>${t("Change")}</td>
                     <td>:</td>
                     <td class="text-right">${validator.unescape(settings.symbol)} ${moneyFormat(
                       Math.abs(allTransactions[index].change).toFixed(2),
                     )}</td>
                 </tr>
                 <tr>
-                    <td>Method</td>
+                    <td>${t("Method")}</td>
                     <td>:</td>
-                    <td class="text-right">${paymentMethod}</td>
+                    <td class="text-right">${localizedPaymentType(paymentMethod)}</td>
                 </tr>`;
   }
 
   if (settings.charge_tax) {
     tax_row = `<tr>
-                <td>Vat(${validator.unescape(settings.percentage)})% </td>
+                <td>${t("VAT")}(${validator.unescape(settings.percentage)})% </td>
                 <td>:</td>
                 <td class="text-right">${validator.unescape(settings.symbol)}${parseFloat(
                   allTransactions[index].tax,
@@ -3089,22 +3131,22 @@ $.fn.viewTransaction = function (index) {
             ${validator.unescape(settings.address_one)} <br>
             ${validator.unescape(settings.address_two)} <br>
             ${
-              validator.unescape(settings.contact) != "" ? "Tel: " + validator.unescape(settings.contact) + "<br>" : ""
+              validator.unescape(settings.contact) != "" ? t("Tel:") + " " + validator.unescape(settings.contact) + "<br>" : ""
             } 
-            ${validator.unescape(settings.tax) != "" ? "Vat No: " + validator.unescape(settings.tax) + "<br>" : ""} 
+            ${validator.unescape(settings.tax) != "" ? t("Vat No:") + " " + validator.unescape(settings.tax) + "<br>" : ""}
     </p>
     <hr>
     <left>
         <p>
-        Invoice : ${orderNumber} <br>
-        Ref No : ${refNumber} <br>
-        Customer : ${
+        ${t("Invoice")} : ${orderNumber} <br>
+        ${t("Ref No")} : ${refNumber} <br>
+        ${t("Customer")} : ${
           allTransactions[index].customer == 0
-            ? "Walk in Customer"
+            ? t("Walk in Customer")
             : allTransactions[index].customer.name
         } <br>
-        Cashier : ${allTransactions[index].user} <br>
-        Date : ${moment(allTransactions[index].date).format(
+        ${t("Cashier")} : ${allTransactions[index].user} <br>
+        ${t("Date")} : ${moment(allTransactions[index].date).format(
           "DD MMM YYYY HH:mm:ss",
         )}<br>
         </p>
@@ -3114,23 +3156,23 @@ $.fn.viewTransaction = function (index) {
     <table width="90%">
         <thead>
         <tr>
-            <th>Item</th>
-            <th>Qty</th>
-            <th class="text-right">Price</th>
+            <th>${t("Item")}</th>
+            <th>${t("Qty")}</th>
+            <th class="text-right">${t("Price")}</th>
         </tr>
         </thead>
         <tbody>
         ${items}                
         <tr><td colspan="3"><hr></td></tr>
         <tr>                        
-            <td><b>Subtotal</b></td>
+            <td><b>${t("Subtotal")}</b></td>
             <td>:</td>
             <td class="text-right"><b>${validator.unescape(settings.symbol)}${moneyFormat(
               allTransactions[index].subtotal,
             )}</b></td>
         </tr>
         <tr>
-            <td>Discount</td>
+            <td>${t("Discount")}</td>
             <td>:</td>
             <td class="text-right">${
               discount > 0
@@ -3145,7 +3187,7 @@ $.fn.viewTransaction = function (index) {
         ${tax_row}
     
         <tr>
-            <td><h5>Total</h5></td>
+            <td><h5>${t("Total")}</h5></td>
             <td><h5>:</h5></td>
             <td class="text-right">
                 <h5>${validator.unescape(settings.symbol)}${moneyFormat(

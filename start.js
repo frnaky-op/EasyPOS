@@ -9,11 +9,23 @@ const { app, BrowserWindow, ipcMain, screen} = require("electron");
 const path = require("path");
 const contextMenu = require("electron-context-menu");
 let { Menu, template } = require("./assets/js/native_menu/menu");
+const { setLanguage, t } = require("./assets/js/i18n");
 const menuController = require('./assets/js/native_menu/menuController.js');
 const { registerUpdates } = require("./updates");
 const isPackaged = app.isPackaged;
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+function translatedMenu(items) {
+    return items.map(item => ({
+        ...item,
+        ...(item.label ? { label: t(item.label) } : {}),
+        ...(item.submenu ? { submenu: translatedMenu(item.submenu) } : {}),
+    }));
+}
+
+function refreshMenu(language) {
+    setLanguage(language);
+    Menu.setApplicationMenu(Menu.buildFromTemplate(translatedMenu(template)));
+}
+refreshMenu("fr");
 let mainWindow;
 let updates;
 
@@ -84,6 +96,8 @@ ipcMain.on("app-reload", (event, arg) => {
     mainWindow.reload();
 });
 
+ipcMain.on("language-changed", (_event, language) => refreshMenu(language));
+
 ipcMain.on("settings-backup", () => {
     menuController.saveBackupDialog(menuController.dbFolderPath, menuController.uploadsFolderPath);
 });
@@ -96,7 +110,7 @@ ipcMain.on("settings-restore", () => {
 contextMenu({
     prepend: (params, browserWindow) => [
         {
-            label: "Refresh",
+            label: t("Refresh"),
             click() {
                 mainWindow.reload();
             },

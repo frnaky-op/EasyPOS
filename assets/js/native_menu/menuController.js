@@ -1,4 +1,5 @@
 const { app, dialog} = require("electron");
+const { t } = require("../i18n");
 let mainWindow;
 const path = require("path");
 const iconPath = path.join(__dirname, "../../../assets/images/favicon.png");
@@ -267,9 +268,9 @@ const saveBackupDialog = async (dbFolderPath, uploadsFolderPath) => {
   const timestamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
   const defaultName = `${process.env.APPNAME}-backup-${timestamp}.zip`;
   const { canceled, filePath } = await dialog.showSaveDialog({
-    title: "Save Database Backup",
+    title: t("Save Database Backup"),
     defaultPath: defaultName,
-    filters: [{ name: "Zip Files", extensions: ["zip"] }]
+    filters: [{ name: t("Zip Files"), extensions: ["zip"] }]
   });
 
   if (!canceled && filePath) {
@@ -277,12 +278,12 @@ const saveBackupDialog = async (dbFolderPath, uploadsFolderPath) => {
       await createBackup(dbFolderPath, uploadsFolderPath, filePath);
       dialog.showMessageBox({
         type: "info",
-        title: "Backup Successful",
-        message: "Backup saved successfully.",
+        title: t("Backup Successful"),
+        message: t("Backup saved successfully."),
         detail: `${filePath}`
       });
     } catch (err) {
-      dialog.showErrorBox("Backup Failed", err.message || String(err));
+      dialog.showErrorBox(t("Backup Failed"), err.message || String(err));
     }
   }
 };
@@ -294,17 +295,17 @@ const saveBackupDialog = async (dbFolderPath, uploadsFolderPath) => {
  */
 const restoreBackupDialog = async (dbFolderPath, uploadsFolderPath) => {
   const { canceled, filePaths } = await dialog.showOpenDialog({
-    title: "Select Database Backup to Restore",
-    filters: [{ name: "Zip Files", extensions: ["zip"] }],
+    title: t("Select Database Backup to Restore"),
+    filters: [{ name: t("Zip Files"), extensions: ["zip"] }],
     properties: ["openFile"]
   });
 
   if (!canceled && filePaths && filePaths[0]) {
     const confirm = await dialog.showMessageBox({
       type: "warning",
-      title: "Confirm Restore",
-      message: "Restoring a backup will overwrite your current database and uploads. Are you sure?",
-      buttons: ["Restore", "Cancel"],
+      title: t("Confirm Restore"),
+      message: t("Restoring a backup will overwrite your current database and uploads. Are you sure?"),
+      buttons: [t("Restore"), t("Cancel")],
       defaultId: 1,
       cancelId: 1
     });
@@ -314,8 +315,8 @@ const restoreBackupDialog = async (dbFolderPath, uploadsFolderPath) => {
       await restoreBackup(filePaths[0], dbFolderPath, uploadsFolderPath);
       dialog.showMessageBox({
         type: "info",
-        title: "Restore Successful",
-        message: "Backup restored successfully.",
+        title: t("Restore Successful"),
+        message: t("Backup restored successfully."),
         detail: filePaths[0]
       });
       if (mainWindow) {
@@ -323,7 +324,7 @@ const restoreBackupDialog = async (dbFolderPath, uploadsFolderPath) => {
       }
       restartServer();
     } catch (err) {
-      dialog.showErrorBox("Restore Failed", err.message || String(err));
+      dialog.showErrorBox(t("Restore Failed"), err.message || String(err));
     }
   }
 };

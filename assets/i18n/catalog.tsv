@@ -1,0 +1,672 @@
+# French source	English	Arabic
+Please wait...	Please wait...	يرجى الانتظار...
+La droguerie,	Your hardware store,	متجرك للأدوات،
+à portée de main.	within easy reach.	بين يديك.
+Encaissement, catalogue et stock dans un espace de travail rapide et lisible.	Checkout, catalogue and stock in one fast, clear workspace.	المبيعات والمنتجات والمخزون في مساحة عمل سريعة وواضحة.
+Bienvenue	Welcome	مرحبًا
+Connectez-vous à votre espace de vente.	Sign in to your sales workspace.	سجّل الدخول إلى مساحة المبيعات.
+Nom d’utilisateur	Username	اسم المستخدم
+Mot de passe	Password	كلمة المرور
+Se connecter	Sign in	تسجيل الدخول
+Besoin d’aide ? Contactez l’administrateur.	Need help? Contact the administrator.	هل تحتاج إلى مساعدة؟ تواصل مع المسؤول.
+Caisse	Checkout	الصندوق
+Ventes & rapports	Sales & reports	المبيعات والتقارير
+Suivez les encaissements, les produits vendus et l’historique des ventes.	Track payments, sold products and sales history.	تابع المدفوعات والمنتجات المباعة وسجل المبيعات.
+Exporter CSV (7 jours)	Export CSV (7 days)	تصدير CSV (٧ أيام)
+Ventes du jour	Today's sales	مبيعات اليوم
+Transactions du jour	Today's transactions	معاملات اليوم
+Panier moyen du jour	Today's average basket	متوسط سلة اليوم
+Ventes des 7 derniers jours	Sales over the last 7 days	مبيعات آخر ٧ أيام
+Meilleures ventes	Top sellers	الأكثر مبيعًا
+Historique des ventes	Sales history	سجل المبيعات
+Actualiser	Refresh	تحديث
+Caissier	Cashier	أمين الصندوق
+Statut	Status	الحالة
+Payée	Paid	مدفوعة
+En attente	Pending	معلقة
+Période	Period	الفترة
+Référence	Reference	المرجع
+Date	Date	التاريخ
+Total	Total	الإجمالي
+Payé	Paid	المدفوع
+Monnaie	Change	الباقي
+Mode	Method	الطريقة
+Voir	View	عرض
+Commandes en attente	Pending orders	الطلبات المعلقة
+Retrouvez une vente, reprenez son panier ou passez à l’encaissement.	Find a sale, resume its basket or proceed to checkout.	ابحث عن عملية بيع أو استأنف سلتها أو انتقل إلى الدفع.
+Toutes	All	الكل
+Ventes en attente	Pending sales	المبيعات المعلقة
+Commandes clients	Customer orders	طلبات العملاء
+Client	Customer	العميل
+Articles	Items	العناصر
+Précédent	Previous	السابق
+Suivant	Next	التالي
+Sélectionnez une commande	Select an order	اختر طلبًا
+Ses produits et ses actions apparaîtront ici.	Its products and actions will appear here.	ستظهر منتجاته وإجراءاته هنا.
+Utilisateurs	Users	المستخدمون
+Gérez les comptes et les accès à la caisse.	Manage accounts and checkout access.	إدارة الحسابات وصلاحيات الصندوق.
+Nouveau compte	New account	حساب جديد
+Comptes	Accounts	الحسابات
+Administrateurs	Administrators	المسؤولون
+Sessions ouvertes	Open sessions	الجلسات المفتوحة
+Équipe	Team	الفريق
+Utilisateur	User	المستخدم
+Identifiant	Login	معرّف الدخول
+Accès	Access	الصلاحيات
+État	State	الحالة
+Actions	Actions	الإجراءات
+Catégories	Categories	الفئات
+Organisez vos produits pour les retrouver rapidement à la caisse.	Organize products so they are easy to find at checkout.	نظّم المنتجات ليسهل العثور عليها عند البيع.
+Nouvelle catégorie	New category	فئة جديدة
+Produits classés	Categorized products	المنتجات المصنفة
+Sans catégorie	Uncategorized	بدون فئة
+Liste des catégories	Category list	قائمة الفئات
+Catégorie	Category	الفئة
+Produits	Products	المنتجات
+Paramètres	Settings	الإعدادات
+Configurez la boutique, les comptes et les données locales.	Configure the store, accounts and local data.	اضبط المتجر والحسابات والبيانات المحلية.
+Enregistrer	Save	حفظ
+Informations de la boutique	Store information	معلومات المتجر
+Nom de la boutique *	Store name *	اسم المتجر *
+Téléphone	Phone	الهاتف
+Ville / adresse complémentaire	City / additional address	المدينة / العنوان الإضافي
+Adresse *	Address *	العنوان *
+Devise *	Currency *	العملة *
+TVA par défaut (%) *	Default VAT (%) *	ضريبة القيمة المضافة الافتراضية (%) *
+Ticket de caisse	Receipt	إيصال البيع
+Logo, pied de ticket et informations fiscales	Logo, receipt footer and tax information	الشعار وتذييل الإيصال والمعلومات الضريبية
+Numéro fiscal	Tax number	الرقم الضريبي
+Logo	Logo	الشعار
+Pied de ticket	Receipt footer	تذييل الإيصال
+Ajouter la TVA aux ventes	Add VAT to sales	إضافة الضريبة إلى المبيعات
+Encaissement rapide	Quick checkout	دفع سريع
+Chargement des comptes…	Loading accounts…	جارٍ تحميل الحسابات…
+Gérer les accès	Manage access	إدارة الصلاحيات
+Données & sauvegardes	Data & backups	البيانات والنسخ الاحتياطية
+Sauvegardez la base et les images pour une autre installation.	Back up the database and images for another installation.	انسخ قاعدة البيانات والصور احتياطيًا لاستخدامها في تثبيت آخر.
+Créer une sauvegarde ZIP	Create ZIP backup	إنشاء نسخة ZIP احتياطية
+Restaurer une sauvegarde	Restore a backup	استعادة نسخة احتياطية
+Importer un catalogue ZIP	Import a catalogue ZIP	استيراد كتالوج ZIP
+La restauration remplace les données locales après confirmation.	Restoring replaces local data after confirmation.	تستبدل الاستعادة البيانات المحلية بعد التأكيد.
+Mises à jour	Updates	التحديثات
+Version installée :	Installed version:	الإصدار المثبت:
+Vérification disponible après installation.	Update checks are available after installation.	التحقق من التحديثات متاح بعد التثبيت.
+Vérifier	Check	تحقق
+Installer et redémarrer	Install and restart	تثبيت وإعادة التشغيل
+Configuration réseau et avancée	Network and advanced settings	إعدادات الشبكة والإعدادات المتقدمة
+Clients	Customers	العملاء
+Retrouvez les coordonnées et les achats de vos clients réguliers.	Find your regular customers' contact details and purchases.	اعثر على معلومات الاتصال ومشتريات عملائك الدائمين.
+Nouveau client	New customer	عميل جديد
+Tous	All	الكل
+Professionnels	Business customers	العملاء المهنيون
+Répertoire	Directory	الدليل
+Ville	City	المدينة
+Type	Type	النوع
+Sélectionnez un client pour voir ses achats	Select a customer to view their purchases	اختر عميلًا لعرض مشترياته
+Coordonnées, factures et produits fréquemment achetés.	Contact details, invoices and frequently purchased products.	بيانات الاتصال والفواتير والمنتجات الأكثر شراءً.
+Fournisseurs	Suppliers	الموردون
+Retrouvez vos fournisseurs et leurs coordonnées pour les produits et les réceptions.	Find suppliers and their contact details for products and receipts.	اعثر على الموردين وبيانات الاتصال الخاصة بالمنتجات والاستلامات.
+Nouveau fournisseur	New supplier	مورد جديد
+Répertoire des fournisseurs	Supplier directory	دليل الموردين
+Fournisseur	Supplier	المورد
+Fiche fournisseur	Supplier record	بطاقة المورد
+Sélectionnez un fournisseur pour consulter ses coordonnées.	Select a supplier to view contact details.	اختر موردًا لعرض بيانات الاتصال.
+Stock	Stock	المخزون
+Suivez les quantités et corrigez les écarts d'inventaire.	Track quantities and correct inventory differences.	تابع الكميات وصحّح فروقات الجرد.
+Nouvel inventaire	New stock count	جرد جديد
+Ajustement	Adjustment	تعديل
+Valeur au prix de vente	Value at selling price	القيمة بسعر البيع
+Produits à réapprovisionner	Products to reorder	منتجات تحتاج إلى إعادة التزويد
+Produits en rupture	Out-of-stock products	منتجات نافدة
+Mouvements récents	Recent movements	الحركات الأخيرة
+Produit	Product	المنتج
+Qté	Qty	الكمية
+À réapprovisionner	Reorder	إعادة التزويد
+Ouvrir le catalogue	Open catalogue	فتح الكتالوج
+Réception fournisseur	Supplier receipt	استلام من المورد
+Ajoutez les quantités livrées avec une trace du fournisseur et du coût.	Add delivered quantities with supplier and cost records.	أضف الكميات المستلمة مع تسجيل المورد والتكلفة.
+Enregistrer brouillon	Save draft	حفظ مسودة
+Valider la réception	Confirm receipt	تأكيد الاستلام
+Fournisseur *	Supplier *	المورد *
+Ajouter	Add	إضافة
+N° facture / BL *	Invoice / delivery note no. *	رقم الفاتورة / وصل التسليم *
+Date de réception *	Receipt date *	تاريخ الاستلام *
+Nouvelle réception	New receipt	استلام جديد
+Produits livrés	Delivered products	المنتجات المستلمة
+Ajouter une ligne	Add a line	إضافة سطر
+Stock actuel	Current stock	المخزون الحالي
+Qté reçue	Qty received	الكمية المستلمة
+Coût unit.	Unit cost	تكلفة الوحدة
+Nouveau stock	New stock	المخزون الجديد
+Scanner un code-barres ou rechercher un autre produit	Scan a barcode or find another product	امسح الرمز الشريطي أو ابحث عن منتج آخر
+0 référence · 0 unité reçue	0 products · 0 units received	٠ منتجات · ٠ وحدات مستلمة
+Coût total	Total cost	التكلفة الإجمالية
+Produits disponibles	Available products	المنتجات المتاحة
+Vente en cours	Current sale	البيع الحالي
+Sous-total	Subtotal	المجموع الفرعي
+Remise	Discount	الخصم
+TVA	VAT	الضريبة
+Encaisser	Take payment	تحصيل الدفع
+Mettre en attente	Hold sale	تعليق البيع
+Annuler	Cancel	إلغاء
+Imprimer	Print	طباعة
+Ajuster le stock	Adjust stock	تعديل المخزون
+Enregistrez une entrée, une sortie ou un inventaire.	Record stock in, stock out or a stock count.	سجّل دخول المخزون أو خروجه أو الجرد.
+Produit *	Product *	المنتج *
+Opération	Operation	العملية
+Entrée (+)	Stock in (+)	دخول (+)
+Sortie (−)	Stock out (−)	خروج (−)
+Inventaire	Stock count	الجرد
+Quantité *	Quantity *	الكمية *
+Note (facultatif)	Note (optional)	ملاحظة (اختيارية)
+Les mouvements sont visibles dans la page Stock.	Movements are visible on the Stock page.	تظهر الحركات في صفحة المخزون.
+Mettre la vente en attente	Hold this sale	تعليق هذا البيع
+Retrouvez cette vente plus tard depuis Commandes en attente.	Find this sale later under Pending orders.	اعثر على هذا البيع لاحقًا في الطلبات المعلقة.
+Référence de la vente	Sale reference	مرجع البيع
+Donnez un nom court pour identifier facilement cette vente.	Give this sale a short, recognizable name.	امنح هذا البيع اسمًا قصيرًا يسهل التعرف عليه.
+Client comptoir	Walk-in customer	عميل عابر
+0 produit	0 products	٠ منتجات
+Total de la vente	Sale total	إجمالي البيع
+La vente sera enregistrée sans paiement.	The sale will be recorded without payment.	سيُسجل البيع دون دفع.
+Encaissement	Payment	الدفع
+Vente	Sale	البيع
+Résumé de la vente	Sale summary	ملخص البيع
+Total à payer	Amount due	المبلغ المستحق
+Moyen de paiement	Payment method	طريقة الدفع
+Espèces	Cash	نقدًا
+Carte	Card	بطاقة
+Référence de carte (facultatif)	Card reference (optional)	مرجع البطاقة (اختياري)
+Saisir le montant reçu pour calculer la monnaie à rendre.	Enter the amount received to calculate change.	أدخل المبلغ المستلم لحساب الباقي.
+Vérifiez le total avant de confirmer la vente.	Check the total before confirming the sale.	تحقق من الإجمالي قبل تأكيد البيع.
+Montant reçu	Amount received	المبلغ المستلم
+Montants rapides	Quick amounts	مبالغ سريعة
+Exact	Exact	المبلغ المحدد
+Effacer le montant	Clear amount	مسح المبلغ
+Monnaie à rendre	Change due	الباقي المستحق
+Confirmer la vente	Confirm sale	تأكيد البيع
+Ajoutez ses coordonnées pour le retrouver lors des ventes.	Add contact details to find this customer during sales.	أضف بيانات الاتصال للعثور على هذا العميل أثناء البيع.
+Informations du client	Customer information	معلومات العميل
+Nom complet *	Full name *	الاسم الكامل *
+Adresse e-mail	Email address	البريد الإلكتروني
+Adresse	Address	العنوان
+Type de client	Customer type	نوع العميل
+Particulier	Individual	فرد
+Professionnel	Business	مهني
+* Champ obligatoire	* Required field	* حقل مطلوب
+Catalogue / Nouveau produit	Catalogue / New product	الكتالوج / منتج جديد
+Ajouter un produit	Add a product	إضافة منتج
+Renseigner les informations nécessaires pour la vente et le suivi du stock.	Enter the details needed for sales and stock tracking.	أدخل البيانات اللازمة للبيع وتتبع المخزون.
+Brouillon	Draft	مسودة
+Identification	Identification	التعريف
+Nom, classification et code pour retrouver le produit rapidement.	Name, category and code to find the product quickly.	الاسم والفئة والرمز للعثور على المنتج بسرعة.
+Nom du produit *	Product name *	اسم المنتج *
+Code-barres *	Barcode *	الرمز الشريطي *
+Catégorie *	Category *	الفئة *
+Conseil pour la recherche	Search tip	نصيحة للبحث
+Utiliser un nom court et unique. Le code-barres facilite la vente à la caisse.	Use a short, unique name. The barcode speeds up checkout.	استخدم اسمًا قصيرًا وفريدًا. يسهّل الرمز الشريطي البيع.
+* Champs obligatoires	* Required fields	* حقول مطلوبة
+Prix et stock	Price and stock	السعر والمخزون
+Valeurs initiales modifiables à tout moment.	Initial values can be changed at any time.	يمكن تغيير القيم الأولية في أي وقت.
+Prix de vente *	Selling price *	سعر البيع *
+Stock initial	Initial stock	المخزون الأولي
+Stock minimum	Minimum stock	الحد الأدنى للمخزون
+Date d'expiration	Expiry date	تاريخ الصلاحية
+Désactiver le contrôle du stock	Disable stock tracking	تعطيل تتبع المخزون
+Stock initial :	Initial stock:	المخزون الأولي:
+Une alerte s'affichera sous le stock minimum.	An alert appears below the minimum stock level.	يظهر تنبيه عند انخفاض المخزون عن الحد الأدنى.
+Photo du produit	Product photo	صورة المنتج
+Visible dans la grille de caisse.	Shown in the checkout product grid.	تظهر في شبكة منتجات الصندوق.
+Déposer une photo ici	Drop a photo here	أسقط صورة هنا
+ou sélectionner un fichier	or select a file	أو اختر ملفًا
+Choisir une image	Choose an image	اختر صورة
+Retirer l'image	Remove image	إزالة الصورة
+JPG, PNG ou WebP · image carrée conseillée	JPG, PNG or WebP · square image recommended	JPG أو PNG أو WebP · يُفضل صورة مربعة
+Aperçu en caisse	Checkout preview	معاينة في الصندوق
+Photo nette = article facile à retrouver.	A clear photo makes the item easier to find.	الصورة الواضحة تسهّل العثور على المنتج.
+Le produit apparaîtra dans le catalogue après enregistrement.	The product will appear in the catalogue after saving.	سيظهر المنتج في الكتالوج بعد الحفظ.
+Créer et continuer	Create and continue	إنشاء ومتابعة
+Coordonnées accessibles depuis les produits et les achats.	Contact details available from products and purchases.	بيانات الاتصال متاحة من المنتجات والمشتريات.
+Nom du fournisseur *	Supplier name *	اسم المورد *
+E-mail	Email	البريد الإلكتروني
+Note	Note	ملاحظة
+Organisez vos produits pour les retrouver rapidement.	Organize your products to find them quickly.	نظّم منتجاتك للعثور عليها بسرعة.
+Nom de la catégorie *	Category name *	اسم الفئة *
+Visible partout dans EasyPOS	Visible throughout EasyPOS	ظاهرة في جميع أنحاء EasyPOS
+La catégorie apparaîtra dans le catalogue, les fiches produit et les filtres de la caisse.	The category will appear in the catalogue, product records and checkout filters.	ستظهر الفئة في الكتالوج وبطاقات المنتجات وفلاتر الصندوق.
+Catalogue / Tous les produits	Catalogue / All products	الكتالوج / جميع المنتجات
+Tous les produits	All products	جميع المنتجات
+Rechercher, consulter une fiche et sélectionner les codes-barres à imprimer.	Search, view a product record and select barcodes to print.	ابحث واعرض بطاقة المنتج واختر الرموز الشريطية للطباعة.
+Importer produits et images	Import products and images	استيراد المنتجات والصور
+Stock initial : 100. Prix de vente initial : 0. Vérifiez les fiches avant la vente.	Initial stock: 100. Initial selling price: 0. Check product records before selling.	المخزون الأولي: ١٠٠. سعر البيع الأولي: ٠. تحقق من بطاقات المنتجات قبل البيع.
+Toutes catégories	All categories	جميع الفئات
+0 sélectionné(s)	0 selected	٠ محدد
+Effacer la sélection	Clear selection	مسح التحديد
+Exporter les codes-barres PDF	Export barcodes as PDF	تصدير الرموز الشريطية PDF
+Code-barres	Barcode	الرمز الشريطي
+Prix	Price	السعر
+Catalogue	Catalogue	الكتالوج
+Fiche produit	Product record	بطاقة المنتج
+Toutes les informations utiles pour identifier et vendre ce produit.	All the information needed to identify and sell this product.	كل المعلومات اللازمة للتعرف على هذا المنتج وبيعه.
+Modifier le produit	Edit product	تعديل المنتج
+Photo utilisée dans la grille de caisse	Photo used in the checkout grid	الصورة المستخدمة في شبكة الصندوق
+Prix de vente	Selling price	سعر البيع
+Prix d’exemple à vérifier	Example price to verify	سعر تجريبي يحتاج إلى تحقق
+Quantité	Quantity	الكمية
+Code-barres pour la caisse	Barcode for checkout	رمز شريطي للصندوق
+Scanner le code ci-dessous ou l'imprimer sur une feuille de référence.	Scan the code below or print it on a reference sheet.	امسح الرمز أدناه أو اطبعه على ورقة مرجعية.
+Suivi du stock	Stock tracking	تتبع المخزون
+Seuil minimum :	Minimum level:	الحد الأدنى:
+Date d'expiration :	Expiry date:	تاريخ الصلاحية:
+Définissez les informations et les accès de ce compte.	Set this account's details and access.	حدّد معلومات هذا الحساب وصلاحياته.
+Identifiant *	Login *	معرّف الدخول *
+Confirmer le mot de passe	Confirm password	تأكيد كلمة المرور
+Autorisations	Permissions	الصلاحيات
+Sélectionnez les pages accessibles à cet utilisateur.	Select the pages this user can access.	اختر الصفحات التي يمكن لهذا المستخدم الوصول إليها.
+Produits et stock	Products and stock	المنتجات والمخزون
+Ventes et rapports	Sales and reports	المبيعات والتقارير
+Utilisateurs et accès	Users and access	المستخدمون والصلاحيات
+Vente enregistrée · prêt à imprimer	Sale recorded · ready to print	تم تسجيل البيع · جاهز للطباعة
+Le ticket utilise les informations définies dans Paramètres.	The receipt uses the information set in Settings.	يستخدم الإيصال المعلومات المحددة في الإعدادات.
+Fermer	Close	إغلاق
+Configurer la boutique	Set up the store	إعداد المتجر
+Renseignez les informations nécessaires à votre première vente.	Enter the details needed for your first sale.	أدخل البيانات اللازمة لأول عملية بيع.
+Mode de l’application	Application mode	وضع التطبيق
+Caisse autonome	Standalone checkout	صندوق مستقل
+Terminal réseau	Network terminal	جهاز متصل بالشبكة
+Serveur réseau	Network server	خادم الشبكة
+Terminal connecté au serveur	Terminal connected to server	جهاز متصل بالخادم
+Cette caisse utilise la base de données de l’ordinateur principal.	This checkout uses the main computer's database.	يستخدم هذا الصندوق قاعدة بيانات الحاسوب الرئيسي.
+Adresse IP du serveur *	Server IP address *	عنوان IP للخادم *
+Numéro de caisse *	Checkout number *	رقم الصندوق *
+Identifiant matériel	Device ID	معرّف الجهاز
+Enregistrer la configuration redémarre l’application.	Saving the configuration restarts the app.	حفظ الإعدادات يعيد تشغيل التطبيق.
+Ville / complément *	City / additional address *	المدينة / العنوان الإضافي *
+Identifiant fiscal	Tax ID	المعرّف الضريبي
+Options de vente	Sales options	خيارات البيع
+Logo et pied de ticket	Logo and receipt footer	الشعار وتذييل الإيصال
+Supprimer le logo	Remove logo	إزالة الشعار
+Le logo et le pied de ticket peuvent aussi être modifiés ensuite dans Paramètres.	You can also change the logo and receipt footer later in Settings.	يمكن تغيير الشعار وتذييل الإيصال لاحقًا من الإعدادات.
+Enregistrer et continuer	Save and continue	حفظ ومتابعة
+Votre identifiant	Your username	اسم المستخدم
+Votre mot de passe	Your password	كلمة المرور
+Open navigation	Open navigation	فتح القائمة
+Ouvrir la caisse	Open checkout	فتح الصندوق
+My Profile	My profile	ملفي الشخصي
+Log out	Log out	تسجيل الخروج
+Navigation principale	Main navigation	القائمة الرئيسية
+Ventes des sept derniers jours	Sales over the last seven days	مبيعات آخر سبعة أيام
+Actualiser les ventes	Refresh sales	تحديث المبيعات
+Type de commande	Order type	نوع الطلب
+Référence, client ou numéro	Reference, customer or number	مرجع أو عميل أو رقم
+Rechercher une commande	Search orders	البحث في الطلبات
+Rechercher par nom ou identifiant	Search by name or login	البحث بالاسم أو المعرّف
+Rechercher un utilisateur	Search users	البحث عن مستخدم
+Rechercher une catégorie	Search categories	البحث عن فئة
+Pagination des catégories	Category pages	صفحات الفئات
+Page précédente	Previous page	الصفحة السابقة
+Page suivante	Next page	الصفحة التالية
+Rechercher par nom, téléphone, ville ou email	Search by name, phone, city or email	البحث بالاسم أو الهاتف أو المدينة أو البريد
+Rechercher des clients	Search customers	البحث عن العملاء
+Rechercher un fournisseur, téléphone ou e-mail	Search supplier, phone or email	البحث عن مورد أو هاتف أو بريد إلكتروني
+Rechercher des fournisseurs	Search suppliers	البحث عن الموردين
+Actualiser le stock	Refresh stock	تحديث المخزون
+Choisir ou saisir un fournisseur	Select or enter a supplier	اختر موردًا أو أدخل اسمه
+Référence du document	Document reference	مرجع المستند
+Products for sale	Products for sale	المنتجات المعروضة للبيع
+Rechercher un produit par nom, marque ou code	Search by product name, brand or code	البحث باسم المنتج أو العلامة أو الرمز
+Search products	Search products	البحث عن المنتجات
+Scanner un code-barres	Scan a barcode	مسح رمز شريطي
+Scan a barcode	Scan a barcode	مسح رمز شريطي
+Add scanned product	Add scanned product	إضافة المنتج الممسوح
+Product categories	Product categories	فئات المنتجات
+Filter products by category	Filter products by category	تصفية المنتجات حسب الفئة
+Current sale	Current sale	البيع الحالي
+Customer	Customer	العميل
+Add customer	Add customer	إضافة عميل
+Edit customer	Edit customer	تعديل العميل
+Discount amount	Discount amount	قيمة الخصم
+Nom, référence ou code-barres	Name, reference or barcode	الاسم أو المرجع أو الرمز الشريطي
+Motif ou référence	Reason or reference	السبب أو المرجع
+Ex. Client chantier, commande 42	E.g. construction customer, order 42	مثال: عميل ورشة، طلب ٤٢
+Référence du terminal	Terminal reference	مرجع الجهاز
+Saisie du paiement	Enter payment	إدخال الدفع
+Clavier numérique	Numeric keypad	لوحة أرقام
+Effacer le dernier chiffre	Delete last digit	مسح الرقم الأخير
+Ex. Mohamed El Amrani	E.g. Mohamed El Amrani	مثال: محمد العمراني
+Ex. 06 00 00 00 00	E.g. 06 00 00 00 00	مثال: 06 00 00 00 00
+Ex. client@email.com	E.g. client@email.com	مثال: client@email.com
+Rue, quartier, numéro	Street, neighborhood, number	الشارع والحي والرقم
+Ex. Casablanca	E.g. Casablanca	مثال: الدار البيضاء
+Ex. Perceuse Bosch GSR 120LI	E.g. Bosch GSR 120LI drill	مثال: مثقاب Bosch GSR 120LI
+Scanner ou saisir le code	Scan or enter the code	امسح الرمز أو أدخله
+JJ / MM / AAAA	DD / MM / YYYY	يوم / شهر / سنة
+Ex. Araplast	E.g. Araplast	مثال: Araplast
+Ex. 05 22 00 00 00	E.g. 05 22 00 00 00	مثال: 05 22 00 00 00
+Ex. contact@fournisseur.ma	E.g. contact@supplier.com	مثال: contact@supplier.com
+Ville et adresse	City and address	المدينة والعنوان
+Informations utiles	Useful information	معلومات مفيدة
+Ex. Plomberie	E.g. Plumbing	مثال: السباكة
+Nom, code-barres ou fournisseur	Name, barcode or supplier	الاسم أو الرمز الشريطي أو المورد
+Rechercher des produits	Search products	البحث عن المنتجات
+Filtrer par catégorie	Filter by category	التصفية حسب الفئة
+Sélectionner la page	Select page	اختيار الصفحة
+Code-barres du produit	Product barcode	الرمز الشريطي للمنتج
+Nom et prénom	Full name	الاسم الكامل
+Identifiant de connexion	Login ID	معرّف الدخول
+Répéter le mot de passe	Repeat password	أعد إدخال كلمة المرور
+Aperçu du ticket	Receipt preview	معاينة الإيصال
+Détecté automatiquement	Detected automatically	يُكتشف تلقائيًا
+Ex. Droguerie Générale	E.g. General Hardware Store	مثال: متجر الأدوات العامة
+Facultatif	Optional	اختياري
+Langue	Language	اللغة
+# Dynamic messages, alerts, table labels and dialogs
+Incorrect username or password	Incorrect username or password	اسم المستخدم أو كلمة المرور غير صحيحة
+Please enter a username and password	Please enter a username and password	يرجى إدخال اسم المستخدم وكلمة المرور
+Prêt à rechercher une nouvelle version.	Ready to check for a new version.	جاهز للتحقق من إصدار جديد.
+Les mises à jour sont disponibles dans l'application installée.	Updates are available in the installed app.	التحديثات متاحة في التطبيق المثبت.
+Recherche d'une mise à jour…	Checking for updates…	جارٍ التحقق من التحديثات…
+Vous utilisez la dernière version publiée.	You are using the latest published version.	تستخدم أحدث إصدار منشور.
+Vérification impossible. Réessayez plus tard.	Could not check for updates. Try again later.	تعذر التحقق من التحديثات. حاول لاحقًا.
+Last 7 Days	Last 7 days	آخر ٧ أيام
+Last 30 Days	Last 30 days	آخر ٣٠ يومًا
+This Month	This month	هذا الشهر
+Last Month	Last month	الشهر الماضي
+Close navigation	Close navigation	إغلاق القائمة
+Aucun produit trouvé.	No products found.	لم يُعثر على منتجات.
+Aucun produit à réapprovisionner.	No products need reordering.	لا توجد منتجات تحتاج إلى إعادة تزويد.
+Impossible de charger le stock.	Could not load stock.	تعذر تحميل المخزون.
+Aucun mouvement enregistré.	No movements recorded.	لا توجد حركات مسجلة.
+Impossible de charger les mouvements.	Could not load movements.	تعذر تحميل الحركات.
+Aucun produit avec suivi de stock.	No products with stock tracking.	لا توجد منتجات مع تتبع للمخزون.
+Sélectionnez un produit dans la liste.	Select a product from the list.	اختر منتجًا من القائمة.
+Ajustement impossible.	Could not adjust stock.	تعذر تعديل المخزون.
+Nom, code-barres ou référence	Name, barcode or reference	الاسم أو الرمز الشريطي أو المرجع
+Rechercher un produit	Search for a product	البحث عن منتج
+Quantité reçue	Quantity received	الكمية المستلمة
+Coût unitaire	Unit cost	تكلفة الوحدة
+Retirer la ligne	Remove line	إزالة السطر
+Brouillon enregistré	Draft saved	تم حفظ المسودة
+Brouillon enregistré sur cet appareil.	Draft saved on this device.	تم حفظ المسودة على هذا الجهاز.
+Impossible d'enregistrer le brouillon.	Could not save draft.	تعذر حفظ المسودة.
+Réception à vérifier	Check receipt	تحقق من الاستلام
+Vérifiez les produits, les quantités, les coûts et les lignes en double.	Check products, quantities, costs and duplicate lines.	تحقق من المنتجات والكميات والتكاليف والأسطر المكررة.
+Enregistrement de la réception…	Saving receipt…	جارٍ حفظ الاستلام…
+Réception enregistrée	Receipt saved	تم حفظ الاستلام
+Impossible d'enregistrer la réception.	Could not save receipt.	تعذر حفظ الاستلام.
+Réception impossible	Receipt failed	تعذر الاستلام
+Aucune vente sur les 7 derniers jours.	No sales in the last 7 days.	لا توجد مبيعات خلال آخر ٧ أيام.
+Impossible de charger le rapport des ventes.	Could not load the sales report.	تعذر تحميل تقرير المبيعات.
+Aucun client trouvé.	No customers found.	لم يُعثر على عملاء.
+Sélectionnez un client pour voir ses achats.	Select a customer to view purchases.	اختر عميلًا لعرض مشترياته.
+Impossible de charger les clients.	Could not load customers.	تعذر تحميل العملاء.
+Fiche client	Customer record	بطاقة العميل
+Coordonnées non renseignées	No contact details	لا توجد بيانات اتصال
+Chargement des achats…	Loading purchases…	جارٍ تحميل المشتريات…
+Dernier achat	Last purchase	آخر شراء
+Achats payés	Paid purchases	المشتريات المدفوعة
+Montant total	Total amount	المبلغ الإجمالي
+Achats récents	Recent purchases	المشتريات الأخيرة
+Aucun achat payé pour ce client.	No paid purchases for this customer.	لا توجد مشتريات مدفوعة لهذا العميل.
+Produits fréquents	Frequently bought products	المنتجات الأكثر شراءً
+Aucun produit à afficher.	No products to display.	لا توجد منتجات للعرض.
+Historique des achats indisponible. Réessayez en sélectionnant ce client.	Purchase history unavailable. Select this customer again to retry.	سجل المشتريات غير متاح. اختر هذا العميل مجددًا للمحاولة.
+Impossible de charger les achats de ce client. Réessayez en le sélectionnant.	Could not load this customer's purchases. Select them again to retry.	تعذر تحميل مشتريات هذا العميل. اختره مجددًا للمحاولة.
+Aucun logo enregistré	No logo saved	لم يُحفظ شعار
+Comptes indisponibles	Accounts unavailable	الحسابات غير متاحة
+Paramètres enregistrés.	Settings saved.	تم حفظ الإعدادات.
+Enregistré. Rechargez la page pour voir les nouvelles valeurs.	Saved. Reload the page to see the new values.	تم الحفظ. أعد تحميل الصفحة لرؤية القيم الجديدة.
+Enregistrement impossible.	Could not save.	تعذر الحفظ.
+Toutes les catégories	All categories	جميع الفئات
+Choisir une catégorie	Choose a category	اختر فئة
+Aucune catégorie trouvée.	No categories found.	لم يُعثر على فئات.
+Aucune catégorie enregistrée.	No categories saved.	لا توجد فئات محفوظة.
+Déplacez les produits avant de supprimer	Move products before deleting	انقل المنتجات قبل الحذف
+Chargement des catégories…	Loading categories…	جارٍ تحميل الفئات…
+Impossible de charger les catégories ou leurs produits.	Could not load categories or their products.	تعذر تحميل الفئات أو منتجاتها.
+Out of stock!	Out of stock!	نفد المخزون!
+This item is currently unavailable	This item is currently unavailable	هذا المنتج غير متاح حاليًا
+Not Found!	Not found!	غير موجود!
+Ajoutez un produit pour commencer la vente.	Add a product to start a sale.	أضف منتجًا لبدء البيع.
+Decrease quantity	Decrease quantity	تقليل الكمية
+Increase quantity	Increase quantity	زيادة الكمية
+Remove product	Remove product	إزالة المنتج
+No more stock!	No more stock!	لا توجد كمية إضافية!
+You have already added all the available stock.	You have already added all available stock.	لقد أضفت كل الكمية المتاحة.
+Are you sure?	Are you sure?	هل أنت متأكد؟
+You are about to remove all items from the cart.	You are about to remove all items from the basket.	أنت على وشك إزالة جميع العناصر من السلة.
+Yes, clear it!	Yes, clear it!	نعم، امسحها!
+All items have been removed.	All items have been removed.	تمت إزالة جميع العناصر.
+There is nothing to pay!	There is nothing to pay!	لا يوجد مبلغ للدفع!
+There is nothing to hold!	There is nothing to hold!	لا يوجد بيع لتعليقه!
+print job complete	Print job complete	اكتملت الطباعة
+Configuration de la caisse	Checkout configuration	إعداد الصندوق
+Référence requise	Reference required	المرجع مطلوب
+Sélectionnez un client ou saisissez une référence pour retrouver cette vente.	Select a customer or enter a reference to find this sale later.	اختر عميلًا أو أدخل مرجعًا للعثور على هذا البيع لاحقًا.
+Walk in customer	Walk-in customer	عميل عابر
+Walk in Customer	Walk-in customer	عميل عابر
+Sale not completed	Sale not completed	لم يكتمل البيع
+Please try again.	Please try again.	يرجى المحاولة مجددًا.
+Modifier le client	Edit customer	تعديل العميل
+Customer required	Customer required	العميل مطلوب
+Please select a customer to edit.	Please select a customer to edit.	يرجى اختيار عميل لتعديله.
+Not found	Not found	غير موجود
+Could not load selected customer details.	Could not load selected customer details.	تعذر تحميل بيانات العميل المحدد.
+Client modifié.	Customer updated.	تم تعديل العميل.
+Client ajouté.	Customer added.	تمت إضافة العميل.
+Impossible d’enregistrer le client. Réessayez.	Could not save the customer. Try again.	تعذر حفظ العميل. حاول مجددًا.
+Montant insuffisant	Insufficient amount	المبلغ غير كافٍ
+Saisissez un montant valide couvrant le total de la vente.	Enter a valid amount covering the sale total.	أدخل مبلغًا صالحًا يغطي إجمالي البيع.
+Cette commande a changé. Actualisez la liste.	This order has changed. Refresh the list.	تغير هذا الطلب. حدّث القائمة.
+Vente en attente	Pending sale	بيع معلق
+Commande client	Customer order	طلب عميل
+Date inconnue	Unknown date	تاريخ غير معروف
+Reprendre	Resume	استئناف
+Supprimer	Delete	حذف
+Supprimer la commande ?	Delete the order?	حذف الطلب؟
+Cette commande en attente sera supprimée.	This pending order will be deleted.	سيُحذف هذا الطلب المعلق.
+Suppression impossible.	Could not delete.	تعذر الحذف.
+Chargement des commandes…	Loading orders…	جارٍ تحميل الطلبات…
+Aucune commande trouvée.	No orders found.	لم يُعثر على طلبات.
+Voir →	View →	عرض ←
+Impossible de charger les commandes.	Could not load orders.	تعذر تحميل الطلبات.
+Le nom reste fixe quand des produits ou des réceptions l'utilisent.	The name stays fixed while products or receipts use it.	يبقى الاسم ثابتًا ما دامت المنتجات أو الاستلامات تستخدمه.
+Modifier la fiche	Edit record	تعديل البطاقة
+Aucun fournisseur trouvé.	No suppliers found.	لم يُعثر على موردين.
+0 fournisseur	0 suppliers	٠ موردين
+Impossible de charger les fournisseurs.	Could not load suppliers.	تعذر تحميل الموردين.
+Modifier le fournisseur	Edit supplier	تعديل المورد
+Supprimer le fournisseur	Delete supplier	حذف المورد
+Fournisseur supprimé.	Supplier deleted.	تم حذف المورد.
+Suppression impossible	Could not delete	تعذر الحذف
+Fournisseur enregistré.	Supplier saved.	تم حفظ المورد.
+Enregistrement impossible. Réessayez.	Could not save. Try again.	تعذر الحفظ. حاول مجددًا.
+Choisir une catégorie.	Choose a category.	اختر فئة.
+Produit modifié.	Product updated.	تم تعديل المنتج.
+Produit enregistré.	Product saved.	تم حفظ المنتج.
+Enregistrement impossible	Could not save	تعذر الحفظ
+Importing catalogue and images...	Importing catalogue and images...	جارٍ استيراد الكتالوج والصور...
+Saisissez un nom de catégorie.	Enter a category name.	أدخل اسم الفئة.
+Catégorie enregistrée.	Category saved.	تم حفظ الفئة.
+Enregistrement de la catégorie impossible. Réessayez.	Could not save the category. Try again.	تعذر حفظ الفئة. حاول مجددًا.
+Catalogue / Modifier le produit	Catalogue / Edit product	الكتالوج / تعديل المنتج
+Laisser vide pour conserver le mot de passe	Leave blank to keep the current password	اتركه فارغًا للاحتفاظ بكلمة المرور الحالية
+Modifier le compte	Edit account	تعديل الحساب
+Modifier la catégorie	Edit category	تعديل الفئة
+You are about to delete this product.	You are about to delete this product.	أنت على وشك حذف هذا المنتج.
+Yes, delete it!	Yes, delete it!	نعم، احذفه!
+Product deleted	Product deleted	تم حذف المنتج
+You are about to delete this user.	You are about to delete this user.	أنت على وشك حذف هذا المستخدم.
+Yes, delete!	Yes, delete!	نعم، احذف!
+User deleted	User deleted	تم حذف المستخدم
+You are about to delete this category.	You are about to delete this category.	أنت على وشك حذف هذه الفئة.
+Category deleted	Category deleted	تم حذف الفئة
+Impossible de charger les utilisateurs.	Could not load users.	تعذر تحميل المستخدمين.
+Aucun compte trouvé.	No accounts found.	لم يُعثر على حسابات.
+Aucun compte enregistré.	No accounts saved.	لا توجد حسابات محفوظة.
+Compte protégé	Protected account	حساب محمي
+Session ouverte	Session open	جلسة مفتوحة
+Document PDF	PDF document	مستند PDF
+Codes-barres exportés	Barcodes exported	تم تصدير الرموز الشريطية
+Export impossible	Could not export	تعذر التصدير
+Impossible d'exporter les codes-barres.	Could not export barcodes.	تعذر تصدير الرموز الشريطية.
+Fournisseur non renseigné	Supplier not specified	المورد غير محدد
+Non suivi	Not tracked	غير متتبع
+Stock non suivi	Stock not tracked	المخزون غير متتبع
+Code-barres indisponible	Barcode unavailable	الرمز الشريطي غير متاح
+No Stock	Out of stock	نفد المخزون
+Low Stock	Low stock	مخزون منخفض
+You are about to log out.	You are about to log out.	أنت على وشك تسجيل الخروج.
+Saisissez un taux de TVA entre 0 et 100.	Enter a VAT rate between 0 and 100.	أدخل نسبة ضريبة بين ٠ و١٠٠.
+Saisissez l’adresse IP du serveur.	Enter the server IP address.	أدخل عنوان IP للخادم.
+Le numéro de caisse doit être un entier supérieur à 1.	The checkout number must be an integer greater than 1.	يجب أن يكون رقم الصندوق عددًا صحيحًا أكبر من ١.
+Configuration réseau	Network configuration	إعداد الشبكة
+Configuration avancée	Advanced settings	إعدادات متقدمة
+Choisissez le mode de fonctionnement de cette caisse.	Choose how this checkout operates.	اختر طريقة عمل هذا الصندوق.
+Modifiez les paramètres de la boutique.	Edit the store settings.	عدّل إعدادات المتجر.
+Les mots de passe ne correspondent pas.	Passwords do not match.	كلمتا المرور غير متطابقتين.
+Saisissez un mot de passe pour le nouveau compte.	Enter a password for the new account.	أدخل كلمة مرور للحساب الجديد.
+Compte enregistré.	Account saved.	تم حفظ الحساب.
+Mon compte	My account	حسابي
+Logo actuel	Current logo	الشعار الحالي
+Aucune vente pour ces filtres.	No sales for these filters.	لا توجد مبيعات لهذه الفلاتر.
+Rechercher une vente	Search sales	البحث في المبيعات
+Affichage de _START_ à _END_ sur _TOTAL_ ventes	Showing _START_ to _END_ of _TOTAL_ sales	عرض _START_ إلى _END_ من أصل _TOTAL_ مبيعات
+Aucune vente	No sales	لا توجد مبيعات
+(filtrées parmi _MAX_ ventes)	(filtered from _MAX_ sales)	(مصفاة من أصل _MAX_ مبيعات)
+Aucune vente ne correspond à cette recherche.	No sales match this search.	لا توجد مبيعات تطابق هذا البحث.
+Afficher _MENU_ ventes	Show _MENU_ sales	عرض _MENU_ مبيعات
+Impossible de charger l'historique des ventes.	Could not load sales history.	تعذر تحميل سجل المبيعات.
+Saisissez votre identifiant et votre mot de passe.	Enter your username and password.	أدخل اسم المستخدم وكلمة المرور.
+Connexion en cours…	Signing in…	جارٍ تسجيل الدخول…
+Identifiant ou mot de passe incorrect.	Incorrect username or password.	اسم المستخدم أو كلمة المرور غير صحيحة.
+Connexion impossible. Vérifiez que le serveur est démarré.	Could not sign in. Check that the server is running.	تعذر تسجيل الدخول. تحقق من تشغيل الخادم.
+You are about to close the application.	You are about to close the application.	أنت على وشك إغلاق التطبيق.
+Close Application	Close application	إغلاق التطبيق
+Le montant par carte doit correspondre exactement au total à payer.	The card amount must exactly match the total due.	يجب أن يطابق مبلغ البطاقة المبلغ المستحق تمامًا.
+Paid	Paid	المدفوع
+Change	Change	الباقي
+Method	Method	الطريقة
+Cash	Cash	نقدًا
+Card	Card	بطاقة
+Tel:	Tel:	الهاتف:
+Vat No:	VAT no.:	الرقم الضريبي:
+Order No	Order no.	رقم الطلب
+Ref No	Ref. no.	رقم المرجع
+Invoice	Invoice	الفاتورة
+Cashier	Cashier	أمين الصندوق
+Item	Item	المنتج
+Qty	Qty	الكمية
+Price	Price	السعر
+Subtotal	Subtotal	المجموع الفرعي
+Discount	Discount	الخصم
+VAT	VAT	الضريبة
+au	to	إلى
+Appliquer	Apply	تطبيق
+Today	Today	اليوم
+Yesterday	Yesterday	أمس
+{shown} sur {total} produits · page {page} / {pages}	{shown} of {total} products · page {page} / {pages}	{shown} من {total} منتج · الصفحة {page} من {pages}
+{shown} produits visibles · {total} au total	{shown} visible products · {total} total	{shown} منتج ظاهر · {total} إجمالًا
+Page {page} / {pages}	Page {page} / {pages}	الصفحة {page} من {pages}
+Stock actuel : {quantity}	Current stock: {quantity}	المخزون الحالي: {quantity}
+{barcode} · stock {quantity}	{barcode} · stock {quantity}	{barcode} · المخزون {quantity}
+{count} références · {units} unités reçues	{count} references · {units} units received	{count} صنف · تم استلام {units} وحدة
+{count} référence · {units} unité reçue	{count} reference · {units} unit received	{count} صنف · تم استلام {units} وحدة
+Le stock a été mis à jour pour {count} références.	Stock updated for {count} products.	تم تحديث مخزون {count} منتج.
+Le stock a été mis à jour pour {count} référence.	Stock updated for {count} product.	تم تحديث مخزون منتج واحد.
+{first}–{last} sur {total} clients	{first}–{last} of {total} customers	{first}–{last} من أصل {total} عملاء
+{first}–{last} sur {total} catégories	{first}–{last} of {total} categories	{first}–{last} من أصل {total} فئات
+{first}–{last} sur {total} commandes	{first}–{last} of {total} orders	{first}–{last} من أصل {total} طلبات
+{first}–{last} sur {total} produits · page {page} / {pages}	{first}–{last} of {total} products · page {page} / {pages}	{first}–{last} من أصل {total} منتج · الصفحة {page} من {pages}
+{count} compte	{count} account	{count} حساب
+{count} comptes	{count} accounts	{count} حسابات
+{count} produit	{count} product	{count} منتج
+{count} produits	{count} products	{count} منتجات
+{count} sélectionné	{count} selected	تم اختيار {count}
+{count} sélectionnés	{count} selected	تم اختيار {count}
+{count} unités	{count} units	{count} وحدة
+{count} unités disponibles	{count} units available	{count} وحدة متاحة
+PDF enregistré : {path}	PDF saved: {path}	تم حفظ PDF: {path}
+Imported {added} products; skipped {skipped} already imported.	Imported {added} products; skipped {skipped} already imported.	تم استيراد {added} منتج وتخطي {skipped} منتج مستورد سابقًا.
+File	File	ملف
+New	New	جديد
+Product	Product	منتج
+Category	Category	فئة
+Backup	Backup	نسخ احتياطي
+Restore	Restore	استعادة
+Logout	Log out	تسجيل الخروج
+Edit	Edit	تحرير
+View	View	عرض
+Point of Sale	Point of sale	نقطة البيع
+Transactions	Transactions	المعاملات
+Products	Products	المنتجات
+Settings	Settings	الإعدادات
+Refresh	Refresh	تحديث
+Help	Help	مساعدة
+Documentation	Documentation	الوثائق
+Send feedback	Send feedback	إرسال ملاحظات
+Check for updates...	Check for updates…	البحث عن تحديثات…
+About EasyPOS	About EasyPOS	حول EasyPOS
+{quantity} en stock · seuil {minimum}	{quantity} in stock · minimum {minimum}	{quantity} في المخزون · الحد الأدنى {minimum}
+{count} unité	{count} unit	{count} وحدة
+{count} produit(s) · {receipts} réception(s)	{count} products · {receipts} receipts	{count} منتج · {receipts} استلامات
+{count} produit(s)	{count} products	{count} منتج
+{first}–{last} sur {total} fournisseurs	{first}–{last} of {total} suppliers	{first}–{last} من أصل {total} موردين
+{name} is expired! Please restock.	{name} is expired! Please restock.	انتهت صلاحية {name}، يرجى إعادة التزويد.
+{name} is out of stock! Please restock.	{name} is out of stock! Please restock.	نفد مخزون {name}، يرجى إعادة التزويد.
+{count} administrateur	{count} administrator	{count} مسؤول
+{count} administrateurs	{count} administrators	{count} مسؤولون
+{count} autres comptes	{count} other accounts	{count} حسابات أخرى
+{count} day left	{count} day left	بقي يوم واحد
+{count} days left	{count} days left	بقي {count} أيام
+Expired	Expired	منتهي الصلاحية
+Product barcode sheet	Product barcode sheet	ورقة رموز المنتجات
+Logo actuel : {file}	Current logo: {file}	الشعار الحالي: {file}
+Import failed: {error}	Import failed: {error}	فشل الاستيراد: {error}
+Ventes des sept derniers jours : {summary}	Sales over the last seven days: {summary}	مبيعات الأيام السبعة الأخيرة: {summary}
+Supprimer {name} du répertoire ?	Remove {name} from the supplier directory?	هل تريد حذف {name} من دليل الموردين؟
+{name} enregistré.	{name} saved.	تم حفظ {name}.
+Téléchargement de la version {version} : {percent} %	Downloading version {version}: {percent}%	جارٍ تنزيل الإصدار {version}: {percent}٪
+La version {version} est prête à installer.	Version {version} is ready to install.	الإصدار {version} جاهز للتثبيت.
+EasyPOS {version} est prêt à installer dans Paramètres.	EasyPOS {version} is ready to install in Settings.	إصدار EasyPOS {version} جاهز للتثبيت في الإعدادات.
+{count} article	{count} item	{count} منتج
+{count} articles	{count} items	{count} منتجات
+Commande #{number}	Order #{number}	الطلب رقم {number}
+Modifier {name}	Edit {name}	تعديل {name}
+Supprimer {name}	Delete {name}	حذف {name}
+Sélectionner {name}	Select {name}	اختيار {name}
+{name} is expired	{name} is expired	انتهت صلاحية {name}
+Modifier	Edit	تعديل
+Sélectionner	Select	اختيار
+nouvelle	new	جديد
+Expired!	Expired!	انتهت الصلاحية!
+Ok	OK	حسنًا
+OK	OK	حسنًا
+Changer de langue ?	Change language?	هل تريد تغيير اللغة؟
+La vente en cours sera effacée lors du rechargement.	The current sale will be cleared when the app reloads.	سيتم مسح البيع الحالي عند إعادة تحميل التطبيق.
+Continuer	Continue	متابعة
+Ventes	Sales	المبيعات
+Commandes	Orders	الطلبات
+Catalogue & stock	Catalogue & stock	الكتالوج والمخزون
+Achats	Purchases	المشتريات
+Administration	Administration	الإدارة
+Fiche	Details	التفاصيل
+Save Database Backup	Save database backup	حفظ نسخة احتياطية لقاعدة البيانات
+Zip Files	ZIP files	ملفات ZIP
+Backup Successful	Backup successful	نجح النسخ الاحتياطي
+Backup saved successfully.	Backup saved successfully.	تم حفظ النسخة الاحتياطية بنجاح.
+Backup Failed	Backup failed	فشل النسخ الاحتياطي
+Select Database Backup to Restore	Select a database backup to restore	اختر نسخة احتياطية لاستعادتها
+Confirm Restore	Confirm restore	تأكيد الاستعادة
+Restoring a backup will overwrite your current database and uploads. Are you sure?	Restoring a backup will overwrite your current database and uploads. Are you sure?	ستستبدل الاستعادة قاعدة البيانات والملفات الحالية. هل أنت متأكد؟
+Cancel	Cancel	إلغاء
+Restore Successful	Restore successful	نجحت الاستعادة
+Backup restored successfully.	Backup restored successfully.	تمت استعادة النسخة الاحتياطية بنجاح.
+Restore Failed	Restore failed	فشلت الاستعادة
+Apparence	Appearance	المظهر
+Choisissez un thème pour cet appareil. Le changement est immédiat.	Choose a theme for this device. Changes apply immediately.	اختر مظهرًا لهذا الجهاز. سيظهر التغيير فورًا.
+Thème visuel	Visual theme	المظهر المرئي
+Vert classique	Classic green	الأخضر الكلاسيكي
+Noir & jaune	Black & yellow	الأسود والأصفر
+Bleu océan	Ocean blue	الأزرق المحيطي
+Terre cuite	Terracotta	الطيني
+Indigo	Indigo	نيلي

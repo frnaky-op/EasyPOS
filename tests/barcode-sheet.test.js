@@ -37,3 +37,30 @@ test("missing or unsupported stored barcode falls back to numeric product ID", (
   assert.equal(barcodeValue({ _id: 123, barcode: "123456789" }), "123456789");
   assert.throws(() => barcodeValue({ _id: "", barcode: "" }), /no printable barcode/);
 });
+
+test("Arabic barcode headings and names render through canvas images", () => {
+  const labels = [];
+  class FakePDF {
+    setFont() {}
+    setFontSize() {}
+    text() {}
+    splitTextToSize(value) { return [value]; }
+    setDrawColor() {}
+    roundedRect() {}
+    addImage(data) { labels.push(data); }
+    output() { return new ArrayBuffer(0); }
+  }
+  const document = {
+    createElement() {
+      return {
+        width: 200, height: 54,
+        getContext() { return { fillText() {}, set font(_value) {}, set fillStyle(_value) {}, set textBaseline(_value) {}, set direction(_value) {}, get direction() { return "rtl"; }, set textAlign(_value) {} }; },
+        toDataURL() { return "data:image/png;base64,AA=="; },
+      };
+    },
+  };
+  createBarcodeSheet([{ _id: 1, name: "مطرقة", barcode: "12345" }], {
+    jsPDFClass: FakePDF, JsBarcode() {}, document, title: "ورقة رموز المنتجات",
+  });
+  assert.equal(labels.length, 3); // title, name, barcode
+});

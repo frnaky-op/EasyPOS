@@ -12,6 +12,8 @@ This project is a fork of [PharmaSpot](https://github.com/drkNsubuga/PharmaSpot)
 - Print receipts and export selected product barcodes as a PDF.
 - Import a portable catalogue ZIP with images, and back up or restore local data.
 - Check for and install new versions from the app's Settings page.
+- Switch the interface between French, Arabic (right-to-left), and English.
+- Choose from five interface themes, including the original green and a black-and-yellow palette.
 
 ## Run locally
 
@@ -23,6 +25,14 @@ npm run start
 ```
 
 The first local admin account is created with username `admin` and password `admin`. Change that password after the first login. Run `npm test` for the automated checks.
+
+## Language
+
+Use the language picker on the login screen or in the app header. The choice is saved for this installation. Switching languages reloads the app; if a sale is in progress, EasyPOS asks before clearing it. Product, category, customer, and supplier names remain as entered. Interface translations are maintained in `assets/i18n/catalog.tsv` and `assets/i18n/french-overrides.tsv`.
+
+## Appearance
+
+Open **Settings → Appearance** to preview and choose a theme. The options are Classic green, Black & yellow, Ocean blue, Terracotta, and Indigo. The selected theme applies immediately and is saved on this device.
 
 ## Install and update
 

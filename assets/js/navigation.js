@@ -1,3 +1,4 @@
+const { t } = require("./i18n");
 const sections = [
   { title: "Vente", items: [
     { key: "pos", id: "pointofsale", label: "Caisse", icon: "shopping-cart" },
@@ -23,7 +24,7 @@ function allowed(item, user) {
 }
 
 function pageLabel(page) {
-  return sections.flatMap(section => section.items).find(item => item.key === page)?.label || "Caisse";
+  return t(sections.flatMap(section => section.items).find(item => item.key === page)?.label || "Caisse");
 }
 
 function renderNavigation(host, user) {
@@ -35,7 +36,7 @@ function renderNavigation(host, user) {
     group.className = "app-navigation-group";
     const heading = document.createElement("div");
     heading.className = "app-navigation-heading";
-    heading.textContent = section.title;
+    heading.textContent = t(section.title);
     group.appendChild(heading);
     for (const item of items) {
       const button = document.createElement("button");
@@ -49,7 +50,7 @@ function renderNavigation(host, user) {
       const icon = document.createElement("i");
       icon.className = `fa fa-${item.icon}`;
       icon.setAttribute("aria-hidden", "true");
-      button.append(icon, document.createTextNode(item.label));
+      button.append(icon, document.createTextNode(t(item.label)));
       group.appendChild(button);
     }
     host.appendChild(group);

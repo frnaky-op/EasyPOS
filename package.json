@@ -1,7 +1,7 @@
 {
   "name": "PharmaSpot",
   "productName": "EasyPOS",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Open-source point of sale for hardware and general retail shops",
   "author": "Patterns Digital Limited",
   "credits": "electronjs.org",

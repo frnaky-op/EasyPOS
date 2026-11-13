@@ -10,7 +10,7 @@ function barcodeValue(product) {
   return id;
 }
 
-function createBarcodeSheet(products, { jsPDFClass, JsBarcode, document }) {
+function createBarcodeSheet(products, { jsPDFClass, JsBarcode, document, title = "Product barcode sheet" }) {
   if (!Array.isArray(products) || products.length === 0) {
     throw new Error("Select at least one product.");
   }
@@ -22,6 +22,30 @@ function createBarcodeSheet(products, { jsPDFClass, JsBarcode, document }) {
   const cellHeight = 38;
   const top = 19;
   const pageCount = Math.ceil(products.length / PER_PAGE);
+
+  function writeLabel(value, x, y, width, size, bold = false) {
+    if (!/[^\x20-\x7e]/.test(value)) {
+      pdf.setFont("helvetica", bold ? "bold" : "normal");
+      pdf.setFontSize(size);
+      pdf.text(pdf.splitTextToSize(value, width).slice(0, 2), x, y);
+      return;
+    }
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext && canvas.getContext("2d");
+    if (!context) {
+      pdf.text(value, x, y);
+      return;
+    }
+    canvas.width = 1200;
+    canvas.height = 120;
+    context.font = `${bold ? "bold " : ""}54px Arial, sans-serif`;
+    context.fillStyle = "#17322d";
+    context.textBaseline = "middle";
+    context.direction = /[\u0600-\u06ff]/.test(value) ? "rtl" : "ltr";
+    context.textAlign = context.direction === "rtl" ? "right" : "left";
+    context.fillText(value, context.direction === "rtl" ? 1180 : 20, 60, 1160);
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", x, y - size * 0.42, width, size * 0.65);
+  }
 
   products.forEach((product, index) => {
     const page = Math.floor(index / PER_PAGE);
@@ -35,9 +59,7 @@ function createBarcodeSheet(products, { jsPDFClass, JsBarcode, document }) {
     const code = barcodeValue(product);
 
     if (position === 0) {
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(13);
-      pdf.text("Product barcode sheet", margin, 12);
+      writeLabel(title, margin, 12, 100, 13, true);
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(8);
       pdf.text(`${page + 1} / ${pageCount}`, pageWidth - margin, 12, { align: "right" });
@@ -45,10 +67,7 @@ function createBarcodeSheet(products, { jsPDFClass, JsBarcode, document }) {
 
     pdf.setDrawColor(218, 226, 221);
     pdf.roundedRect(x, y, cellWidth, cellHeight - 2, 2, 2, "S");
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(9);
-    const lines = pdf.splitTextToSize(name, cellWidth - 8).slice(0, 2);
-    pdf.text(lines, x + 4, y + 5);
+    writeLabel(name, x + 4, y + 5, cellWidth - 8, 9, true);
 
     const canvas = document.createElement("canvas");
     JsBarcode(canvas, code, {

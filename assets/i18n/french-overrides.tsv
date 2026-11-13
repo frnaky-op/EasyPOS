@@ -1,0 +1,120 @@
+# English source	French
+Please wait...	Veuillez patienter...
+Open navigation	Ouvrir la navigation
+Close navigation	Fermer la navigation
+My Profile	Mon profil
+Log out	Se déconnecter
+Products for sale	Produits à vendre
+Search products	Rechercher des produits
+Scan a barcode	Scanner un code-barres
+Add scanned product	Ajouter le produit scanné
+Product categories	Catégories de produits
+Filter products by category	Filtrer par catégorie
+Current sale	Vente en cours
+Customer	Client
+Add customer	Ajouter un client
+Edit customer	Modifier le client
+Discount amount	Montant de la remise
+Incorrect username or password	Identifiant ou mot de passe incorrect
+Please enter a username and password	Saisissez votre identifiant et votre mot de passe
+Last 7 Days	7 derniers jours
+Last 30 Days	30 derniers jours
+This Month	Ce mois
+Last Month	Mois dernier
+Out of stock!	Rupture de stock !
+This item is currently unavailable	Cet article est indisponible
+Not Found!	Introuvable !
+Decrease quantity	Diminuer la quantité
+Increase quantity	Augmenter la quantité
+Remove product	Retirer le produit
+No more stock!	Stock épuisé !
+You have already added all the available stock.	Vous avez déjà ajouté tout le stock disponible.
+Are you sure?	Êtes-vous sûr ?
+You are about to remove all items from the cart.	Tous les articles seront retirés du panier.
+Yes, clear it!	Oui, vider !
+All items have been removed.	Tous les articles ont été retirés.
+There is nothing to pay!	Aucun montant à payer !
+There is nothing to hold!	Aucune vente à mettre en attente !
+print job complete	Impression terminée
+Walk in customer	Client comptoir
+Walk in Customer	Client comptoir
+Sale not completed	Vente non terminée
+Please try again.	Veuillez réessayer.
+Customer required	Client requis
+Please select a customer to edit.	Sélectionnez un client à modifier.
+Not found	Introuvable
+Could not load selected customer details.	Impossible de charger la fiche du client.
+Importing catalogue and images...	Importation du catalogue et des images…
+You are about to delete this product.	Ce produit sera supprimé.
+Yes, delete it!	Oui, supprimer !
+Product deleted	Produit supprimé
+You are about to delete this user.	Cet utilisateur sera supprimé.
+Yes, delete!	Oui, supprimer !
+User deleted	Utilisateur supprimé
+You are about to delete this category.	Cette catégorie sera supprimée.
+Category deleted	Catégorie supprimée
+No Stock	Rupture de stock
+Low Stock	Stock faible
+You are about to log out.	Vous allez vous déconnecter.
+You are about to close the application.	Vous allez fermer l'application.
+Close Application	Fermer l'application
+Paid	Payé
+Change	Monnaie
+Method	Mode
+Cash	Espèces
+Card	Carte
+Tel:	Tél. :
+Vat No:	N° TVA :
+Order No	N° commande
+Ref No	N° réf.
+Invoice	Facture
+Cashier	Caissier
+Item	Article
+Qty	Qté
+Price	Prix
+Subtotal	Sous-total
+Discount	Remise
+VAT	TVA
+Today	Aujourd'hui
+Yesterday	Hier
+File	Fichier
+New	Nouveau
+Product	Produit
+Category	Catégorie
+Backup	Sauvegarder
+Restore	Restaurer
+Logout	Déconnexion
+Edit	Édition
+View	Affichage
+Point of Sale	Caisse
+Transactions	Transactions
+Products	Produits
+Settings	Paramètres
+Refresh	Actualiser
+Help	Aide
+Documentation	Documentation
+Send feedback	Envoyer un commentaire
+Check for updates...	Rechercher des mises à jour…
+About EasyPOS	À propos d'EasyPOS
+{name} is expired! Please restock.	{name} a expiré ! Réapprovisionnez le stock.
+{name} is out of stock! Please restock.	{name} est en rupture de stock ! Réapprovisionnez le stock.
+{count} day left	Encore {count} jour
+{count} days left	Encore {count} jours
+Expired	Expiré
+Product barcode sheet	Liste des codes-barres produits
+{name} is expired	{name} a expiré
+Save Database Backup	Enregistrer une sauvegarde de la base
+Zip Files	Fichiers ZIP
+Backup Successful	Sauvegarde réussie
+Backup saved successfully.	Sauvegarde enregistrée avec succès.
+Backup Failed	Échec de la sauvegarde
+Select Database Backup to Restore	Choisir une sauvegarde à restaurer
+Confirm Restore	Confirmer la restauration
+Restoring a backup will overwrite your current database and uploads. Are you sure?	La restauration remplacera la base et les fichiers actuels. Confirmer ?
+Cancel	Annuler
+Restore Successful	Restauration réussie
+Backup restored successfully.	Sauvegarde restaurée avec succès.
+Restore Failed	Échec de la restauration
+Imported {added} products; skipped {skipped} already imported.	{added} produits importés ; {skipped} déjà importés ignorés.
+Import failed: {error}	Échec de l'importation : {error}
+Expired!	Produit expiré !

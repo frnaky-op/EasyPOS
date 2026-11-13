@@ -2,7 +2,6 @@ const { app, Menu, dialog } = require("electron");
 const isMac = process.platform === "darwin";
 const {
   showAbout,
-  checkForUpdates,
   // sendFeedback,
   getDocs,
   handleClick,
@@ -126,7 +125,8 @@ const template = [
   // { role: 'helpMenu' }
 
   {
-    role: "Help",
+    role: "help",
+    label: "Help",
     submenu: [
       {
         label: "Documentation",
@@ -139,11 +139,11 @@ const template = [
       { type: "separator" },
       {
         label: "Check for updates...",
-        click: () => checkForUpdates(),
+        click: () => handleClick("settingsCheckUpdate"),
       },
       { type: "separator" },
       {
-        label: `About ${app.getName()}`,
+        label: "About EasyPOS",
         click: () => showAbout(),
       },
     ],
