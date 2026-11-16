@@ -24,7 +24,39 @@ jobs:
           if ($env:GITHUB_REF_NAME -ne $expected) { throw "Tag $env:GITHUB_REF_NAME must match $expected" }
       - run: npm ci
       - run: npm test
-      - name: Build and publish Windows installer
-        run: npm run release:win
+      - name: Build Windows installer
+        run: npm run electron-build
+      - name: Publish Windows installer and update metadata
+        shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          $tag = $env:GITHUB_REF_NAME
+          $assets = @(
+            "dist/EasyPOS-Setup-$version-x64.exe",
+            "dist/EasyPOS-Setup-$version-x64.exe.blockmap",
+            "dist/latest.yml"
+          )
+          foreach ($asset in $assets) {
+            if (-not (Test-Path $asset)) { throw "Release asset missing: $asset" }
+          }
+          $notes = "docs/releases/$version.md"
+          $releases = gh release list --repo frnaky-op/EasyPOS --limit 100 --json tagName | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw "Could not inspect existing releases" }
+          $exists = @($releases | Where-Object { $_.tagName -eq $tag }).Count -gt 0
+          if ($exists) {
+            gh release upload $tag @assets --repo frnaky-op/EasyPOS --clobber
+            if ($LASTEXITCODE -ne 0) { throw "Could not upload release assets" }
+            if (Test-Path $notes) {
+              gh release edit $tag --repo frnaky-op/EasyPOS --title $version --notes-file $notes
+              if ($LASTEXITCODE -ne 0) { throw "Could not update release notes" }
+            }
+          } else {
+            if (Test-Path $notes) {
+              gh release create $tag @assets --repo frnaky-op/EasyPOS --title $version --notes-file $notes --latest
+            } else {
+              gh release create $tag @assets --repo frnaky-op/EasyPOS --title $version --generate-notes --latest
+            }
+            if ($LASTEXITCODE -ne 0) { throw "Could not create GitHub release" }
+          }
