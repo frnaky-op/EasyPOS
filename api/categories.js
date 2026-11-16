@@ -22,6 +22,7 @@ let categoryDB = new Datastore({
     filename: dbPath,
     autoload: true,
 });
+app.categoryDB = categoryDB;
 
 categoryDB.ensureIndex({ fieldName: "_id", unique: true });
 

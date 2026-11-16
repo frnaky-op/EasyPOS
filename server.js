@@ -40,11 +40,22 @@ express.get("/", function (req, res) {
 const inventoryApi = require("./api/inventory");
 express.use("/api/inventory", inventoryApi);
 express.use("/api/suppliers", require("./api/suppliers")(inventoryApi.inventoryDB, inventoryApi.receiptsDB));
-express.use("/api/customers", require("./api/customers"));
-express.use("/api/categories", require("./api/categories"));
+const customersApi = require("./api/customers");
+express.use("/api/customers", customersApi);
+const categoriesApi = require("./api/categories");
+express.use("/api/categories", categoriesApi);
 express.use("/api/settings", require("./api/settings"));
 express.use("/api/users", require("./api/users"));
-express.use("/api", require("./api/transactions"));
+const transactionsApi = require("./api/transactions");
+express.use("/api", transactionsApi);
+const mobile = require('./mobile/server').startMobileServer({
+    inventoryDB: inventoryApi.inventoryDB,
+    categoryDB: categoriesApi.categoryDB,
+    customerDB: customersApi.customerDB,
+    transactionsDB: transactionsApi.transactionsDB,
+    decrementInventory: inventoryApi.decrementInventory,
+    uploadsDir: require('path').join(process.env.APPDATA, process.env.APPNAME, 'uploads'),
+});
 
 server.listen(PORT, "127.0.0.1", () => {
     process.env.PORT = server.address().port;
@@ -55,7 +66,7 @@ server.listen(PORT, "127.0.0.1", () => {
  * Restarts the server process.
  */
 function restartServer() {
-    server.close(() => {
+    mobile.server.close(() => server.close(() => {
         // Remove cached modules so require() reloads them
         Object.keys(require.cache).forEach(key => {
             if (key.includes('api') || key.endsWith('server.js')) {
@@ -64,7 +75,7 @@ function restartServer() {
         });
         // Re-require server.js to restart everything
         require('./server');
-    });
+    }));
 }
 
-module.exports = { restartServer };
+module.exports = { restartServer, mobileInfo: mobile.info };

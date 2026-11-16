@@ -666,7 +666,128 @@ Apparence	Appearance	المظهر
 Choisissez un thème pour cet appareil. Le changement est immédiat.	Choose a theme for this device. Changes apply immediately.	اختر مظهرًا لهذا الجهاز. سيظهر التغيير فورًا.
 Thème visuel	Visual theme	المظهر المرئي
 Vert classique	Classic green	الأخضر الكلاسيكي
-Noir & jaune	Black & yellow	الأسود والأصفر
+Graphite & bleu pétrole	Graphite & teal	الغرافيت والأزرق البترولي
 Bleu océan	Ocean blue	الأزرق المحيطي
 Terre cuite	Terracotta	الطيني
 Indigo	Indigo	نيلي
+Réduire le menu	Collapse menu	طي القائمة
+Développer le menu	Expand menu	توسيع القائمة
+Fermer le menu	Close menu	إغلاق القائمة
+Ouvrir le menu	Open menu	فتح القائمة
+Panier	Cart	السلة
+Ouvrir le panier	Open cart	فتح السلة
+Fermer le panier	Close cart	إغلاق السلة
+Accès mobile	Mobile access	الوصول عبر الهاتف
+CATALOGUE MOBILE	MOBILE CATALOGUE	كتالوج الهاتف
+Ajouter des produits sur votre téléphone	Add products from your phone	أضف المنتجات من هاتفك
+Connectez le téléphone au même Wi-Fi que cet ordinateur, puis ouvrez cette adresse :	Connect your phone to the same Wi-Fi as this computer, then open this address:	اربط هاتفك بشبكة Wi-Fi نفسها التي يستخدمها هذا الحاسوب، ثم افتح هذا العنوان:
+Entrez ce code de connexion sur le téléphone :	Enter this pairing code on the phone:	أدخل رمز الاتصال هذا في الهاتف:
+Le code change au prochain démarrage de l’application.	The code changes when the app restarts.	يتغير الرمز عند إعادة تشغيل التطبيق.
+Connectez cet ordinateur au Wi-Fi pour obtenir son adresse locale.	Connect this computer to Wi-Fi to get its local address.	اربط هذا الحاسوب بشبكة Wi-Fi للحصول على عنوانه المحلي.
+Sélectionnez l’adresse et copiez-la manuellement.	Select the address and copy it manually.	حدد العنوان وانسخه يدوياً.
+Service mobile indisponible	Mobile service unavailable	خدمة الهاتف غير متاحة
+Redémarrez EasyPOS et réessayez.	Restart EasyPOS and try again.	أعد تشغيل EasyPOS ثم حاول مرة أخرى.
+Copier	Copy	نسخ
+Copié	Copied	تم النسخ
+Catalogue mobile	Mobile catalogue	كتالوج الهاتف
+Caisse mobile	Mobile checkout	صندوق الهاتف
+Gérez vos produits	Manage your products	أدر منتجاتك
+sur votre téléphone	on your phone	من هاتفك
+Même réseau Wi-Fi	Same Wi-Fi network	شبكة Wi-Fi نفسها
+Le téléphone et l’ordinateur doivent être connectés au même réseau.	The phone and computer must be connected to the same network.	يجب ربط الهاتف والحاسوب بالشبكة نفسها.
+EasyPOS · Catalogue mobile sécurisé	EasyPOS · Secure mobile catalogue	EasyPOS · كتالوج هاتف آمن
+Scannez un code ou ajoutez un produit.	Scan a code or add a product.	امسح رمزاً أو أضف منتجاً.
+Scanner avec la caméra	Scan with camera	امسح بالكاميرا
+Ou saisir le code →	Or enter the code →	أو أدخل الرمز ←
+Nouveau produit	New product	منتج جديد
+Voir plus de produits	Show more products	عرض المزيد من المنتجات
+Produits	Products	المنتجات
+Produit identifié	Product found	تم العثور على المنتج
+CODE-BARRES TROUVÉ	BARCODE FOUND	تم العثور على الرمز الشريطي
+CODE SCANNÉ	SCANNED CODE	الرمز الممسوح
+Stock initial	Initial stock	المخزون الأولي
+Prendre ou choisir une photo	Take or choose a photo	التقط أو اختر صورة
+VENTE RAPIDE	QUICK SALE	بيع سريع
+Caisse	Checkout	الصندوق
+Chargement des produits…	Loading products…	جار تحميل المنتجات…
+produits au total	products in total	منتجاً إجمالاً
+Tous	All	الكل
+Scan	Scan	مسح
+Voir le panier	View cart	عرض السلة
+article	item	منتج
+articles	items	منتجات
+Encaisser la vente	Complete sale	إتمام البيع
+article dans le panier	item in cart	منتج في السلة
+articles dans le panier	items in cart	منتجات في السلة
+Client comptoir	Walk-in customer	عميل عابر
+PANIER	CART	السلة
+Le panier est vide.	The cart is empty.	السلة فارغة.
+Sous-total	Subtotal	المجموع الفرعي
+Remise	Discount	الخصم
+Total à payer	Total due	المبلغ المستحق
+MOYEN DE PAIEMENT	PAYMENT METHOD	طريقة الدفع
+Espèces	Cash	نقداً
+Carte	Card	بطاقة
+Montant reçu (MAD)	Amount received (MAD)	المبلغ المستلم (درهم)
+Monnaie à rendre	Change due	الباقي
+Stock insuffisant.	Insufficient stock.	المخزون غير كافٍ.
+Le paiement doit couvrir le total.	Payment must cover the total.	يجب أن يغطي الدفع المبلغ الإجمالي.
+Vente enregistrée	Sale recorded	تم تسجيل البيع
+Diminuer la quantité	Decrease quantity	تقليل الكمية
+Augmenter la quantité	Increase quantity	زيادة الكمية
+En stock	In stock	في المخزون
+Quitter	Sign out	تسجيل الخروج
+Gérez vos produits sur votre téléphone	Manage your products on your phone	أدر منتجاتك من هاتفك
+Sur l’ordinateur EasyPOS, ouvrez « Accès mobile » et saisissez le code affiché.	On the EasyPOS computer, open “Mobile access” and enter the displayed code.	في حاسوب EasyPOS افتح «الوصول عبر الهاتف» وأدخل الرمز الظاهر.
+Code de connexion	Pairing code	رمز الاتصال
+8 chiffres	8 digits	٨ أرقام
+Se connecter	Sign in	تسجيل الدخول
+INVENTAIRE	INVENTORY	المخزون
+Scannez un code, ajoutez une photo et enregistrez l’article.	Scan a code, add a photo, and save the item.	امسح الرمز وأضف صورة ثم احفظ المنتج.
+Scanner un code-barres	Scan a barcode	مسح الرمز الشريطي
+Photographiez le code avec votre téléphone.	Take a photo of the code with your phone.	التقط صورة للرمز بهاتفك.
+📷 Scanner	📷 Scan	📷 مسح
+Ou saisir le code	Or enter the code	أو أدخل الرمز
+Code-barres / référence	Barcode / reference	الرمز الشريطي / المرجع
+Rechercher	Search	بحث
+Produits récents	Recent products	المنتجات الحديثة
++ Nouveau produit	+ New product	+ منتج جديد
+Rechercher un produit	Search for a product	البحث عن منتج
+Nom ou code-barres	Name or barcode	الاسم أو الرمز الشريطي
+NOUVEAU PRODUIT	NEW PRODUCT	منتج جديد
+Effacer	Clear	مسح
+Choisir une catégorie	Choose a category	اختر فئة
+Fournisseur	Supplier	المورد
+Facultatif	Optional	اختياري
+Prix de vente (MAD) *	Selling price (MAD) *	سعر البيع (درهم) *
+Stock actuel	Current stock	المخزون الحالي
+Alerte stock minimum	Low stock alert	حد تنبيه المخزون
+Photo du produit	Product photo	صورة المنتج
+JPG, PNG ou WebP · 2 Mo max	JPG, PNG or WebP · 2 MB max	JPG أو PNG أو WebP · الحد ٢ ميغابايت
+📷 Prendre ou choisir une photo	📷 Take or choose a photo	📷 التقط أو اختر صورة
+Enregistrer le produit	Save product	حفظ المنتج
+MODIFIER LE PRODUIT	EDIT PRODUCT	تعديل المنتج
+Enregistrer les modifications	Save changes	حفظ التعديلات
+Aucun produit trouvé.	No products found.	لم يتم العثور على منتجات.
+Saisissez ou scannez un code-barres.	Enter or scan a barcode.	أدخل الرمز الشريطي أو امسحه.
+Produit trouvé. Vous pouvez le modifier.	Product found. You can edit it.	تم العثور على المنتج ويمكنك تعديله.
+Nouveau code-barres. Complétez le produit.	New barcode. Complete the product details.	رمز شريطي جديد. أكمل بيانات المنتج.
+Lecture du code-barres…	Reading barcode…	جار قراءة الرمز الشريطي…
+Code illisible. Reprenez la photo de près, bien éclairée, ou saisissez le code.	Could not read the code. Take a close, well-lit photo or enter it manually.	تعذرت قراءة الرمز. التقط صورة قريبة وواضحة أو أدخله يدوياً.
+Photo limitée à 2 Mo.	Photo limited to 2 MB.	الصورة محدودة بميغابايتين.
+enregistré.	saved.	تم حفظه.
+Photo optimisée automatiquement pour la caisse	Photo automatically optimized for checkout	تُحسّن الصورة تلقائياً للعرض في الصندوق
+Photo illisible.	Could not read the photo.	تعذرت قراءة الصورة.
+Photo trop volumineuse. Choisissez une autre image.	Photo too large. Choose another image.	الصورة كبيرة جداً. اختر صورة أخرى.
+Connexion impossible. Vérifiez le Wi-Fi et EasyPOS sur l’ordinateur.	Cannot connect. Check Wi-Fi and EasyPOS on the computer.	تعذر الاتصال. تحقق من Wi-Fi وEasyPOS على الحاسوب.
+Session expirée. Saisissez le code de connexion.	Session expired. Enter the pairing code.	انتهت الجلسة. أدخل رمز الاتصال.
+Code incorrect.	Incorrect code.	الرمز غير صحيح.
+Trop de tentatives. Réessayez dans 15 minutes.	Too many attempts. Try again in 15 minutes.	محاولات كثيرة. حاول بعد ١٥ دقيقة.
+Session invalide. Rechargez la page.	Invalid session. Reload the page.	الجلسة غير صالحة. أعد تحميل الصفحة.
+Code-barres invalide.	Invalid barcode.	الرمز الشريطي غير صالح.
+Vérifiez le nom, le code, la catégorie, le prix et le stock.	Check the name, barcode, category, price, and stock.	تحقق من الاسم والرمز والفئة والسعر والمخزون.
+Catégorie inconnue.	Unknown category.	الفئة غير معروفة.
+Produit introuvable.	Product not found.	المنتج غير موجود.
+Ce code-barres appartient déjà à un produit.	This barcode already belongs to a product.	هذا الرمز الشريطي مسجل لمنتج آخر.
+Utilisez une photo JPG, PNG ou WebP.	Use a JPG, PNG, or WebP photo.	استخدم صورة JPG أو PNG أو WebP.
+Une erreur est survenue. Réessayez.	An error occurred. Try again.	حدث خطأ. حاول مرة أخرى.

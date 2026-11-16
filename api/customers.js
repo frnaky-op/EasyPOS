@@ -22,6 +22,7 @@ let customerDB = new Datastore({
     filename: dbPath,
     autoload: true,
 });
+app.customerDB = customerDB;
 
 customerDB.ensureIndex({ fieldName: "_id", unique: true });
 

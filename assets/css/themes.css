@@ -22,29 +22,29 @@
 }
 
 :root[data-theme="atelier"] {
-  --pos-bg: #fbf9f2;
-  --pos-ink: #20201d;
-  --pos-muted: #666050;
-  --pos-line: #e7dfc9;
-  --pos-green: #735400;
-  --pos-mint: #fff0b4;
-  --pos-soft: #f8f3e4;
-  --pos-soft-2: #f5efdd;
-  --pos-softest: #fffcf4;
-  --pos-table-head: #f8efd2;
-  --pos-hover-bg: #fff8e4;
-  --pos-accent-fill: #f4c51a;
-  --pos-on-accent: #1b1b1b;
-  --pos-accent-hover: #e4b500;
-  --pos-accent-tint: #f4c51a35;
-  --pos-focus-ring: #f4c51a45;
-  --pos-accent-line: #d9c675;
-  --pos-shadow: #29210020;
-  --pos-brand-bg: #191919;
-  --pos-brand-muted: #ded6ba;
-  --pos-brand-footer: #e6d9a1;
-  --pos-brand-secondary: #f4c51a;
-  --pos-brand-tertiary: #f8e59b;
+  --pos-bg: #f3f6f7;
+  --pos-ink: #253742;
+  --pos-muted: #69808a;
+  --pos-line: #dce5e8;
+  --pos-green: #236e78;
+  --pos-mint: #e7f2f3;
+  --pos-soft: #edf3f4;
+  --pos-soft-2: #e6eef0;
+  --pos-softest: #f7f9fa;
+  --pos-table-head: #eaf1f3;
+  --pos-hover-bg: #f4f9fa;
+  --pos-accent-fill: #236e78;
+  --pos-on-accent: #ffffff;
+  --pos-accent-hover: #195a64;
+  --pos-accent-tint: #236e7826;
+  --pos-focus-ring: #236e7840;
+  --pos-accent-line: #a8c9ce;
+  --pos-shadow: #192d3824;
+  --pos-brand-bg: #192d38;
+  --pos-brand-muted: #b4c6cb;
+  --pos-brand-footer: #a8c9ce;
+  --pos-brand-secondary: #76b3ba;
+  --pos-brand-tertiary: #cae3e5;
 }
 
 :root[data-theme="ocean"] {
@@ -119,24 +119,24 @@
   --pos-brand-tertiary: #ded1f4;
 }
 
-:root[data-theme="atelier"] .app-topbar { background: #191919; border-color: #191919; color: #f7f2de; }
+:root[data-theme="atelier"] .app-topbar { background: #192d38; border-color: #192d38; color: #e7f1f2; }
 :root[data-theme="atelier"] .app-brand-name { color: #fff; }
-:root[data-theme="atelier"] .app-section { background: #f4c51a; color: #1b1b1b; }
-:root[data-theme="atelier"] .app-store-name { color: #ddd4b9; }
-:root[data-theme="atelier"] .app-menu-toggle { background: #343434; color: #f4c51a; }
-:root[data-theme="atelier"] .app-user-button { background: #343434; color: #fff; }
-:root[data-theme="atelier"] .app-logout { color: #f5e5ab; }
-:root[data-theme="atelier"] .app-topbar-language { background: #2d2d2d; border-color: #4b4b4b; color: #fff; }
-:root[data-theme="atelier"] .app-navigation { background: #202020; border-color: #3b3b3b; }
-:root[data-theme="atelier"] .app-navigation-heading { color: #cfc4a3; }
-:root[data-theme="atelier"] .app-navigation button { color: #f6f1df; }
-:root[data-theme="atelier"] .app-navigation button i { color: #f4c51a; }
+:root[data-theme="atelier"] .app-section { background: #2b414d; color: #e7f1f2; }
+:root[data-theme="atelier"] .app-store-name { color: #bdccd0; }
+:root[data-theme="atelier"] .app-menu-toggle { background: #2b414d; color: #e7f1f2; }
+:root[data-theme="atelier"] .app-user-button { background: #2b414d; color: #fff; }
+:root[data-theme="atelier"] .app-logout { color: #bdccd0; }
+:root[data-theme="atelier"] .app-topbar-language { background: #2b414d; border-color: #49606a; color: #fff; }
+:root[data-theme="atelier"] .app-navigation { background: #192d38; border-color: #2b414d; }
+:root[data-theme="atelier"] .app-navigation-heading { color: #a8bdc2; }
+:root[data-theme="atelier"] .app-navigation button { color: #e7f1f2; }
+:root[data-theme="atelier"] .app-navigation button i { color: #8dc2c9; }
 :root[data-theme="atelier"] .app-navigation button:hover,
 :root[data-theme="atelier"] .app-navigation button:focus,
-:root[data-theme="atelier"] .app-navigation button.active { background: #f4c51a; color: #1b1b1b; }
+:root[data-theme="atelier"] .app-navigation button.active { background: #236e78; color: #ffffff; }
 :root[data-theme="atelier"] .app-navigation button:hover i,
 :root[data-theme="atelier"] .app-navigation button:focus i,
-:root[data-theme="atelier"] .app-navigation button.active i { color: #1b1b1b; }
+:root[data-theme="atelier"] .app-navigation button.active i { color: #ffffff; }
 
 /* Cover legacy Bootstrap controls that do not use the redesign variables. */
 :root[data-theme]:not([data-theme="classic"]) .btn-primary,
@@ -165,7 +165,7 @@
 .theme-option[aria-pressed="true"] .fa-check { display: inline; }
 .theme-swatch { flex: 0 0 24px; width: 24px; height: 24px; border: 2px solid var(--swatch-ink); border-radius: 50%; background: linear-gradient(135deg, var(--swatch-bg) 0 48%, var(--swatch-accent) 48% 100%); }
 .theme-option[data-theme="classic"] { --swatch-bg: #f6f8f6; --swatch-accent: #087a5c; --swatch-ink: #17322d; }
-.theme-option[data-theme="atelier"] { --swatch-bg: #191919; --swatch-accent: #f4c51a; --swatch-ink: #191919; }
+.theme-option[data-theme="atelier"] { --swatch-bg: #192d38; --swatch-accent: #236e78; --swatch-ink: #192d38; }
 .theme-option[data-theme="ocean"] { --swatch-bg: #f3f8fb; --swatch-accent: #12688c; --swatch-ink: #153247; }
 .theme-option[data-theme="terracotta"] { --swatch-bg: #fcf8f5; --swatch-accent: #a54832; --swatch-ink: #3c2e29; }
 .theme-option[data-theme="indigo"] { --swatch-bg: #f8f7fc; --swatch-accent: #5b43a1; --swatch-ink: #302843; }

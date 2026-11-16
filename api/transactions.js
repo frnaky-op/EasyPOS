@@ -22,6 +22,7 @@ let transactionsDB = new Datastore({
   filename: dbPath,
   autoload: true,
 });
+app.transactionsDB = transactionsDB;
 
 transactionsDB.ensureIndex({ fieldName: "_id", unique: true });
 transactionsDB.ensureIndex({ fieldName: "date" });

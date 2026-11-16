@@ -30,6 +30,7 @@ let listedProducts = [];
 const selectedBarcodeProducts = new Map();
 let posPage = 1;
 let posTotal = 0;
+const posPageSize = 28;
 let listPage = 1;
 let listTotal = 0;
 let listPageSize = 7;
@@ -326,31 +327,120 @@ if (auth == undefined) {
     applyPermissionVisibility();
 
     const navigation = $("#appNavigation");
+    const cartPanel = $("#card-box");
+    const cartBackdrop = $("#posCartBackdrop");
+    const mobileOverlay = $("#mobileAccessOverlay");
+    $("#mobileAccessToggle").on("click", function () {
+      mobileOverlay.prop("hidden", false);
+      $("#mobileAccessUrl").text("Chargement…");
+      $("#mobileAccessCode").text("••••••••");
+      ipcRenderer.invoke("mobile-info").then(function (info) {
+        if (!info.ready) throw new Error("Mobile service unavailable");
+        $("#mobileAccessUrl").text(info.urls[0] || `http://ADRESSE-DE-CET-ORDINATEUR:${info.port}/`);
+        $("#mobileAccessCode").text(info.code);
+        $("#mobileAccessHint").text(info.urls.length
+          ? "Le code change au prochain démarrage de l’application."
+          : "Connectez cet ordinateur au Wi-Fi pour obtenir son adresse locale.");
+      }).catch(function () {
+        $("#mobileAccessUrl").text("Service mobile indisponible");
+        $("#mobileAccessHint").text("Redémarrez EasyPOS et réessayez.");
+      });
+    });
+    $("#mobileAccessClose").on("click", () => mobileOverlay.prop("hidden", true));
+    mobileOverlay.on("click", function (event) { if (event.target === this) mobileOverlay.prop("hidden", true); });
+    $("#mobileAccessCopy").on("click", async function () {
+      const url = $("#mobileAccessUrl").text();
+      if (!/^http:\/\//.test(url)) return;
+      try {
+        await navigator.clipboard.writeText(url);
+        $(this).text("Copié");
+        setTimeout(() => $(this).text("Copier"), 2000);
+      } catch (_) { $("#mobileAccessHint").text("Sélectionnez l’adresse et copiez-la manuellement."); }
+    });
+    let activePage = "pos";
+    let sidebarCollapsed = false;
+    let posSidebarExpanded = false;
+    function hasSidebar() {
+      return window.innerWidth > 960;
+    }
+    function syncNavigationLayout(resetOverlay = false) {
+      const sidebar = hasSidebar();
+      const collapsed = activePage === "pos" ? !posSidebarExpanded : sidebarCollapsed;
+      document.body.classList.toggle("app-pos-page", activePage === "pos");
+      document.body.classList.toggle("app-sidebar-mode", sidebar);
+      document.body.classList.toggle("app-sidebar-collapsed", sidebar && collapsed);
+      if (sidebar) navigation.prop("hidden", false);
+      else if (resetOverlay) navigation.prop("hidden", true);
+      const expanded = sidebar ? !collapsed : !navigation.prop("hidden");
+      $("#appMenuToggle").attr("aria-expanded", String(expanded))
+        .attr("aria-label", t(sidebar ? (expanded ? "Réduire le menu" : "Développer le menu") : (expanded ? "Fermer le menu" : "Ouvrir le menu")));
+      const collapseDirection = document.documentElement.dir === "rtl" ? "right" : "left";
+      const expandDirection = document.documentElement.dir === "rtl" ? "left" : "right";
+      $("#appMenuToggle i").attr("class", sidebar ? `fa fa-angle-double-${expanded ? collapseDirection : expandDirection}` : "fa fa-bars");
+    }
     renderNavigation(navigation.get(0), user);
     setActiveNavigation(navigation.get(0), "pos");
+    syncNavigationLayout(true);
     $(document).on("easypos:user-updated", function () {
       const active = navigation.find("button.active").data("page") || "pos";
       renderNavigation(navigation.get(0), user);
       setActiveNavigation(navigation.get(0), active);
     });
     function closeNavigation() {
+      if (hasSidebar()) return;
       navigation.prop("hidden", true);
-      $("#appMenuToggle").attr("aria-expanded", "false").attr("aria-label", "Open navigation");
+      syncNavigationLayout();
     }
+    function setCartOpen(open, restoreFocus = false) {
+      const wasOpen = !cartPanel.prop("hidden");
+      const show = Boolean(open && activePage === "pos");
+      cartPanel.prop("hidden", !show);
+      cartBackdrop.prop("hidden", !show);
+      document.body.classList.toggle("pos-cart-open", show);
+      $("#posCartToggle").attr("aria-expanded", String(show));
+      if (show) {
+        closeNavigation();
+        $("#posCartClose").trigger("focus");
+      } else if (wasOpen && restoreFocus) $("#posCartToggle").trigger("focus");
+    }
+    $("#posCartToggle").on("click", () => setCartOpen(cartPanel.prop("hidden"), true));
+    $("#posCartClose,#posCartBackdrop").on("click", () => setCartOpen(false, true));
     $("#appMenuToggle").on("click", function () {
+      if (hasSidebar()) {
+        if (activePage === "pos") posSidebarExpanded = !posSidebarExpanded;
+        else sidebarCollapsed = !sidebarCollapsed;
+        syncNavigationLayout();
+        return;
+      }
       const opening = navigation.prop("hidden");
       navigation.prop("hidden", !opening);
-      $(this).attr("aria-expanded", String(opening)).attr("aria-label", opening ? "Close navigation" : "Open navigation");
+      syncNavigationLayout();
     });
     navigation.on("click", "button", function () {
       closeNavigation();
     });
     $(document).on("keydown", function (event) {
-      if (event.key === "Escape") closeNavigation();
+      if (event.key === "Escape") {
+        if (!mobileOverlay.prop("hidden")) mobileOverlay.prop("hidden", true);
+        else if (!cartPanel.prop("hidden")) setCartOpen(false, true);
+        else closeNavigation();
+      } else if (event.key === "Tab" && !cartPanel.prop("hidden")) {
+        const focusable = cartPanel.find("button:not(:disabled), input:not(:disabled), select:not(:disabled)").filter(":visible");
+        const first = focusable.get(0);
+        const last = focusable.get(focusable.length - 1);
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
     });
     $(document).on("click", function (event) {
-      if (!navigation.prop("hidden") && !$(event.target).closest("#appNavigation, #appMenuToggle").length) closeNavigation();
+      if (!hasSidebar() && !navigation.prop("hidden") && !$(event.target).closest("#appNavigation, #appMenuToggle").length) closeNavigation();
     });
+    $(window).on("resize", () => syncNavigationLayout(true));
 
     $("#parent").on("click", ".pos-product-card", function () {
       $(this).addToCart(Number(this.dataset.productId), Number(this.dataset.quantity), Number(this.dataset.stock));
@@ -379,7 +469,7 @@ if (auth == undefined) {
       if (loadProducts.request) loadProducts.request.abort();
       const request = {
         page,
-        pageSize: 25,
+        pageSize: posPageSize,
         q: $("#search").val() || "",
         category: $("#categories").val() || "0",
       };
@@ -387,7 +477,7 @@ if (auth == undefined) {
         const data = result.items;
         posPage = result.page;
         posTotal = result.total;
-        const pageCount = Math.max(1, Math.ceil(posTotal / 25));
+        const pageCount = Math.max(1, Math.ceil(posTotal / posPageSize));
         $("#posPageInfo").text(tf("{shown} sur {total} produits · page {page} / {pages}", { shown: data.length, total: posTotal, page: posPage, pages: pageCount }));
         $("#posVisibleCount").text(tf("{shown} produits visibles · {total} au total", { shown: data.length, total: posTotal }));
         $("#posPrevious").prop("disabled", posPage <= 1);
@@ -397,8 +487,6 @@ if (auth == undefined) {
         if (!data.length) grid.append($("<p>", { class: "pos-cart-empty", text: "Aucun produit trouvé." }));
         data.forEach((item) => {
           const name = validator.unescape(String(item.name || "Produit"));
-          const category = allCategories.find(entry => String(entry._id) === String(item.category));
-          const categoryName = category ? validator.unescape(String(category.name)) : "Produit";
           const imagePath = item.img && checkFileExists(path.join(img_path, item.img))
             ? path.join(img_path, item.img) : default_item_img;
           const expired = item.expirationDate && isExpired(item.expirationDate);
@@ -408,19 +496,16 @@ if (auth == undefined) {
           const amount = Number(item.price);
           const symbol = settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD";
           const priceLabel = `${moneyFormat(Number.isFinite(amount) ? amount : 0)} ${symbol}`;
-          const card = $("<button>", { type: "button", class: "pos-product-card", title: name });
+          const card = $("<button>", { type: "button", class: "pos-product-card", title: `${name} · ${item.barcode || item._id}` });
           card.attr({ "data-product-id": item._id, "data-quantity": item.quantity || 0, "data-stock": item.stock });
           if (expired || (tracked && stockStatus === 0)) card.addClass("is-unavailable");
           const photo = $("<span>", { class: "pos-product-photo" }).append(
-            $("<img>", { src: imagePath, alt: "" }),
+            $("<img>", { src: imagePath, alt: "", loading: "lazy" }),
             $("<span>", { class: `pos-stock-badge ${tracked && stockStatus < 1 ? "low" : ""}`, text: expired ? "Exp." : stockLabel }),
           );
           card.append(photo,
             $("<span>", { class: "pos-product-name", text: name, translate: "no" }),
-            $("<span>", { class: "pos-product-detail", text: item.barcode || item._id, translate: "no" }),
-            $("<span>", { class: "pos-product-foot" }).append(
-              $("<span>", { text: categoryName, translate: "no" }), $("<strong>", { text: priceLabel }),
-            ));
+            $("<strong>", { class: "pos-product-price", text: priceLabel }));
           grid.append(card);
         });
       });
@@ -1243,6 +1328,8 @@ if (auth == undefined) {
         total_items += parseInt(data.quantity);
       });
       $("#total").text(total_items);
+      $("#posCartCount").text(total_items);
+      $("#posCartToggle").attr("aria-label", `${t("Panier")} · ${total_items}`);
       const symbol = settings && settings.symbol ? validator.unescape(settings.symbol) : "MAD";
       $("#price").text(moneyFormat(total.toFixed(2)) + " " + symbol);
       const requestedDiscount = Number($("#inputDiscount").val()) || 0;
@@ -1363,6 +1450,7 @@ if (auth == undefined) {
 
     $("#payButton").on("click", function () {
       if (cart.length != 0) {
+        setCartOpen(false);
         if (settings && settings.quick_billing) {
           const payableAmount = parsePaymentAmount($("#payablePrice").val()).toFixed(2);
           $("#payment").val(payableAmount);
@@ -1379,6 +1467,7 @@ if (auth == undefined) {
 
     $("#hold").on("click", function () {
       if (cart.length != 0) {
+        setCartOpen(false);
         const selectedCustomer = JSON.parse($("#customer").val() || "0");
         $("#holdCustomerName").text(selectedCustomer && selectedCustomer.name ? selectedCustomer.name : "Client comptoir");
         $("#holdItemCount").text(tf(cart.length === 1 ? "{count} produit" : "{count} produits", { count: cart.length }));
@@ -1888,7 +1977,6 @@ if (auth == undefined) {
       }
     });
 
-    let activePage = "pos";
     const pageViews = {
       pos: "#pos_view", sales: "#transactions_view", stock: "#stock_view",
       receiving: "#receiving_view", clients: "#clients_view", settings: "#settings_view",
@@ -1897,6 +1985,10 @@ if (auth == undefined) {
     };
     function showAppPage(page) {
       activePage = page;
+      setCartOpen(false);
+      if (page === "pos") posSidebarExpanded = false;
+      else sidebarCollapsed = false;
+      syncNavigationLayout(true);
       document.body.classList.toggle("catalogue-open", page === "catalogue");
       $("#pos_view,#transactions_view").hide();
       $("#stock_view,#receiving_view,#clients_view,#settings_view,#categories_view,#suppliers_view,#users_view,#pending_view,#Products,#productDetails,#newProduct").prop("hidden", true);

@@ -40,6 +40,7 @@ function createWindow() {
         width: width,
         height: height,
         frame: true,
+        icon: path.join(__dirname, "assets", "images", "icon.ico"),
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: false,
@@ -97,6 +98,7 @@ ipcMain.on("app-reload", (event, arg) => {
 });
 
 ipcMain.on("language-changed", (_event, language) => refreshMenu(language));
+ipcMain.handle("mobile-info", () => server.mobileInfo());
 
 ipcMain.on("settings-backup", () => {
     menuController.saveBackupDialog(menuController.dbFolderPath, menuController.uploadsFolderPath);

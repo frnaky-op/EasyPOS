@@ -50,7 +50,12 @@ function renderNavigation(host, user) {
       const icon = document.createElement("i");
       icon.className = `fa fa-${item.icon}`;
       icon.setAttribute("aria-hidden", "true");
-      button.append(icon, document.createTextNode(t(item.label)));
+      const label = document.createElement("span");
+      label.className = "app-navigation-label";
+      label.textContent = t(item.label);
+      button.title = label.textContent;
+      button.setAttribute("aria-label", label.textContent);
+      button.append(icon, label);
       group.appendChild(button);
     }
     host.appendChild(group);

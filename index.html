@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="assets/images/favicon.png" />
     <title></title>
     <link href="assets/dist/css/bundle.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/pages.css" rel="stylesheet" type="text/css" />
@@ -12,12 +13,12 @@
 
 <body>
     <div class="splash loading">
-        <img src="assets/images/easypos-logo.svg" alt="EasyPOS" />
+        <img src="assets/images/easypos-logo-concept.png" alt="EasyPOS" />
         <h1 class="pull-right pt-3"><i class="fa fa-spinner fa-spin"></i> Please wait...</h1>
     </div>
     <div id="login">
         <section class="login-brand" aria-label="EasyPOS">
-            <div class="login-brand-name"><span class="login-brand-mark">E</span><strong>EasyPOS</strong></div>
+            <div class="login-brand-name"><span class="login-brand-mark"><img src="assets/images/easypos-logo-concept.png" alt="" /></span><strong>EasyPOS</strong></div>
             <div class="login-brand-copy">
                 <h1>La droguerie,<br>à portée de main.</h1>
                 <p>Encaissement, catalogue et stock dans un espace de travail rapide et lisible.</p>
@@ -52,14 +53,26 @@
         <div class="container">
             <header class="app-topbar">
                 <button id="appMenuToggle" type="button" class="app-menu-toggle" aria-label="Open navigation" aria-controls="appNavigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
-                <span class="app-brand-mark">E</span><strong class="app-brand-name">EasyPOS</strong>
+                <span class="app-brand-mark"><img src="assets/images/easypos-logo-concept.png" alt="" /></span><strong class="app-brand-name">EasyPOS</strong>
                 <span id="appSection" class="app-section">Caisse</span>
                 <span class="app-store-name" id="appStoreName">Droguerie Générale</span>
                 <select class="app-language-select app-topbar-language" aria-label="Langue"><option value="fr">Français</option><option value="ar">العربية</option><option value="en">English</option></select>
                 <button id="appCaisseShortcut" type="button" class="app-caisse-shortcut" title="Ouvrir la caisse"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Caisse</button>
+                <button id="posCartToggle" type="button" class="app-pos-cart-toggle" aria-controls="card-box" aria-expanded="false" aria-label="Ouvrir le panier"><i class="fa fa-shopping-basket" aria-hidden="true"></i><span id="posCartCount" class="app-pos-cart-count" aria-live="polite">0</span></button>
+                <button id="mobileAccessToggle" type="button" class="app-mobile-access p_one" aria-label="Accès mobile" title="Accès mobile"><i class="fa fa-mobile" aria-hidden="true"></i><span>Accès mobile</span></button>
                 <button type="button" title="My Profile" class="app-user-button" id="cashier"><i class="fa fa-user"></i> <span id="loggedin-user"></span></button>
                 <button id="log-out" type="button" class="app-logout" title="Log out"><i class="fa fa-sign-out"></i></button>
             </header>
+            <div id="mobileAccessOverlay" class="mobile-access-overlay" hidden>
+                <div class="mobile-access-dialog" role="dialog" aria-modal="true" aria-labelledby="mobileAccessTitle">
+                    <div class="mobile-access-head"><div><span>CATALOGUE MOBILE</span><h2 id="mobileAccessTitle">Ajouter des produits sur votre téléphone</h2></div><button id="mobileAccessClose" type="button" aria-label="Fermer"><i class="fa fa-times" aria-hidden="true"></i></button></div>
+                    <p>Connectez le téléphone au même Wi-Fi que cet ordinateur, puis ouvrez cette adresse :</p>
+                    <div class="mobile-access-url"><code id="mobileAccessUrl">Chargement…</code><button id="mobileAccessCopy" type="button">Copier</button></div>
+                    <p>Entrez ce code de connexion sur le téléphone :</p>
+                    <strong id="mobileAccessCode" class="mobile-access-code">••••••••</strong>
+                    <p id="mobileAccessHint" class="mobile-access-hint">Le code change au prochain démarrage de l’application.</p>
+                </div>
+            </div>
             <nav id="appNavigation" class="app-navigation" aria-label="Navigation principale" hidden></nav>
             <datalist id="supplierSuggestions"></datalist>
             <div hidden aria-hidden="true">
@@ -163,11 +176,11 @@
                         <aside class="settings-side">
                         <section class="settings-side-card settings-theme-card" aria-labelledby="themeHeading">
                             <h2 id="themeHeading"><i class="fa fa-paint-brush" aria-hidden="true"></i> Apparence</h2>
-                            <p>Choisissez un th?me pour cet appareil. Le changement est imm?diat.</p>
-                            <div id="themeOptions" class="theme-options" role="group" aria-label="Th?me visuel">
+                            <p>Choisissez un thème pour cet appareil. Le changement est immédiat.</p>
+                            <div id="themeOptions" class="theme-options" role="group" aria-label="Thème visuel">
                                 <button type="button" class="theme-option" data-theme="classic" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span>Vert classique</span><i class="fa fa-check" aria-hidden="true"></i></button>
-                                <button type="button" class="theme-option" data-theme="atelier" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span>Noir &amp; jaune</span><i class="fa fa-check" aria-hidden="true"></i></button>
-                                <button type="button" class="theme-option" data-theme="ocean" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span>Bleu oc?an</span><i class="fa fa-check" aria-hidden="true"></i></button>
+                                <button type="button" class="theme-option" data-theme="atelier" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span>Graphite &amp; bleu pétrole</span><i class="fa fa-check" aria-hidden="true"></i></button>
+                                <button type="button" class="theme-option" data-theme="ocean" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span>Bleu océan</span><i class="fa fa-check" aria-hidden="true"></i></button>
                                 <button type="button" class="theme-option" data-theme="terracotta" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span>Terre cuite</span><i class="fa fa-check" aria-hidden="true"></i></button>
                                 <button type="button" class="theme-option" data-theme="indigo" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span>Indigo</span><i class="fa fa-check" aria-hidden="true"></i></button>
                             </div>
@@ -223,6 +236,7 @@
                 </form>
             </div>
             <div id="pos_view">
+                <div id="posCartBackdrop" class="pos-cart-backdrop" hidden></div>
                 <div class="pos-workspace">
                     <section class="pos-product-panel" aria-label="Products for sale">
                         <div class="pos-search-row">
@@ -240,8 +254,8 @@
                             <div><button type="button" id="posPrevious">Précédent</button><button type="button" id="posNext">Suivant</button></div>
                         </div>
                     </section>
-                    <aside id="card-box" class="pos-cart-panel" aria-label="Current sale">
-                        <div class="pos-cart-head"><h2>Vente en cours</h2><span id="total">0</span></div>
+                    <aside id="card-box" class="pos-cart-panel" role="dialog" aria-modal="true" aria-labelledby="posCartTitle" hidden>
+                        <div class="pos-cart-head"><h2 id="posCartTitle">Vente en cours</h2><div class="pos-cart-head-actions"><span id="total">0</span><button id="posCartClose" type="button" aria-label="Fermer le panier"><i class="fa fa-times" aria-hidden="true"></i></button></div></div>
                         <div class="pos-customer-row"><select id="customer" aria-label="Customer"></select><button id="newCustomerModal" data-toggle="modal" data-target="#newCustomer" type="button" title="Add customer"><i class="fa fa-plus"></i></button><button id="editCustomerModal" type="button" title="Edit customer"><i class="fa fa-pencil"></i></button></div>
                         <div id="cartTable" class="pos-cart-lines"><div class="card-body"></div></div>
                         <div class="pos-cart-summary">

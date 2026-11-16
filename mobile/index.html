@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#192d38">
+  <title>EasyPOS · Mobile</title>
+  <link rel="icon" href="/logo.png">
+  <link rel="stylesheet" href="/app.css">
+  <script defer src="/scanner.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <img class="brand-mark" src="/logo.png" alt="">
+    <div class="brand-copy"><strong>EasyPOS</strong><small id="headerSection">Catalogue mobile</small></div>
+    <button id="cartToggle" class="header-cart" type="button" aria-label="Ouvrir le panier" hidden><img src="/icons/shopping-cart.svg" alt=""><span id="headerCartCount">0</span></button>
+    <select id="language" aria-label="Langue"><option value="fr">FR</option><option value="ar">AR</option><option value="en">EN</option></select>
+  </header>
+  <main>
+    <section id="pairScreen" class="pair-card" hidden>
+      <div class="intro-icon"><img src="/icons/scan-barcode.svg" alt=""></div>
+      <h1>Gérez vos produits<br>sur votre téléphone</h1>
+      <p>Sur l’ordinateur EasyPOS, ouvrez « Accès mobile » et saisissez le code affiché.</p>
+      <div class="rule"></div>
+      <form id="pairForm"><label for="pairCode">Code de connexion</label><input id="pairCode" name="code" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" autocomplete="one-time-code" required placeholder="••••••••"><button class="primary" type="submit">Se connecter</button></form>
+      <div class="pair-tip"><strong>Même réseau Wi-Fi</strong><span>Le téléphone et l’ordinateur doivent être connectés au même réseau.</span></div>
+      <small class="pair-foot">EasyPOS · Catalogue mobile sécurisé</small>
+    </section>
+    <div id="workspace" hidden>
+      <section id="catalogueScreen" class="screen">
+        <div class="page-title"><span class="eyebrow">INVENTAIRE</span><h1>Produits</h1><p>Scannez un code ou ajoutez un produit.</p></div>
+        <div class="scan-card">
+          <div class="scan-head"><span class="scan-icon"><img src="/icons/scan-barcode.svg" alt=""></span><div><strong>Scanner un code-barres</strong><small>Photographiez le code avec votre téléphone.</small></div></div>
+          <label class="primary camera-action" for="barcodePhoto"><img src="/icons/camera.svg" alt="">Scanner avec la caméra</label>
+          <input id="barcodePhoto" type="file" accept="image/*" capture="environment" hidden>
+          <button id="manualToggle" class="manual-toggle" type="button">Ou saisir le code <span aria-hidden="true">→</span></button>
+          <div id="manualLookup" class="manual-lookup" hidden><input id="barcodeSearch" type="text" autocomplete="off" placeholder="Code-barres / référence"><button id="lookupBarcode" type="button">Rechercher</button></div>
+        </div>
+        <div class="catalogue-tabs"><button class="active" type="button">Produits récents</button><button id="showForm" type="button"><img src="/icons/plus.svg" alt="">Nouveau produit</button></div>
+        <div class="search-field"><img src="/icons/search.svg" alt=""><input id="productSearch" type="search" placeholder="Nom ou code-barres" aria-label="Rechercher un produit"></div>
+        <div id="productList" class="product-list"></div>
+        <button id="moreProducts" class="more-button" type="button" hidden>Voir plus de produits</button>
+      </section>
+      <section id="productScreen" class="screen" hidden>
+        <button id="productBack" class="back-link" type="button"><img src="/icons/arrow-left.svg" alt="">Produits</button>
+        <span id="formMode" class="eyebrow">NOUVEAU PRODUIT</span><h1 id="formTitle" class="form-title">Ajouter un produit</h1>
+        <div id="barcodeBanner" class="barcode-banner" hidden><img src="/icons/scan-barcode.svg" alt=""><div><small id="barcodeBannerLabel">CODE SCANNÉ</small><strong id="barcodeBannerValue"></strong></div></div>
+        <div id="productSummary" class="product-summary" hidden><img id="summaryPhoto" alt=""><div><strong id="summaryName"></strong><small id="summaryCategory"></small><b id="summaryPrice"></b></div></div>
+        <form id="productForm" enctype="multipart/form-data">
+          <input type="hidden" id="productId" name="id">
+          <label id="barcodeLabel" for="barcode">Code-barres *</label><input id="barcode" name="barcode" type="text" required autocomplete="off" placeholder="Scanner ou saisir le code">
+          <label for="name">Nom du produit *</label><input id="name" name="name" type="text" required maxlength="180" placeholder="Ex. Perceuse Bosch GSR 120LI">
+          <label for="category">Catégorie *</label><select id="category" name="category" required><option value="">Choisir une catégorie</option></select>
+          <label for="supplier">Fournisseur</label><input id="supplier" name="supplier" type="text" maxlength="120" placeholder="Facultatif">
+          <div class="field-pair"><div><label for="price">Prix de vente (MAD) *</label><input id="price" name="price" inputmode="decimal" required placeholder="0,00"></div><div><label for="quantity">Stock initial</label><input id="quantity" name="quantity" type="number" min="0" max="1000000" value="100"></div></div>
+          <details class="advanced-fields"><summary>Options de stock</summary><label for="minStock">Alerte stock minimum</label><input id="minStock" name="minStock" type="number" min="0" max="1000000" value="5"></details>
+          <label for="photo">Photo du produit</label><label class="photo-picker" for="photo"><img id="photoPreview" alt="Aperçu du produit" hidden><span id="photoPrompt"><img src="/icons/camera.svg" alt="">Prendre ou choisir une photo</span></label>
+          <input id="photo" name="photo" type="file" accept="image/*" capture="environment" hidden>
+          <div class="sticky-footer"><button id="saveProduct" class="primary" type="submit">Enregistrer le produit</button></div>
+        </form>
+      </section>
+      <section id="posScreen" class="screen" hidden>
+        <div class="page-title pos-title"><span class="eyebrow">VENTE RAPIDE</span><h1>Caisse</h1><p id="posCount">Chargement des produits…</p><button id="goCatalogue" type="button">Produits</button></div>
+        <div class="pos-search"><div class="search-field"><img src="/icons/search.svg" alt=""><input id="posSearch" type="search" placeholder="Nom ou code-barres" aria-label="Rechercher dans la caisse"></div><label class="scan-pos" for="posBarcodePhoto"><img src="/icons/scan-barcode.svg" alt="">Scan</label><input id="posBarcodePhoto" type="file" accept="image/*" capture="environment" hidden></div>
+        <div id="posFilters" class="pos-filters"></div>
+        <div id="posProducts" class="pos-grid"></div>
+        <button id="morePosProducts" class="more-button" type="button" hidden>Voir plus de produits</button>
+        <div class="sticky-footer" id="posFooter"><button id="viewCart" class="primary" type="button">Voir le panier · 0 article</button></div>
+      </section>
+      <section id="checkoutScreen" class="screen" hidden>
+        <button id="checkoutBack" class="back-link" type="button"><img src="/icons/arrow-left.svg" alt="">Caisse</button>
+        <h1 class="checkout-title">Encaisser la vente</h1><p id="checkoutCount" class="muted">0 article dans le panier</p>
+        <div class="customer-field"><img src="/icons/user-round.svg" alt=""><select id="checkoutCustomer" aria-label="Client"><option value="">Client comptoir</option></select></div>
+        <h2 class="section-label">PANIER</h2><div id="cartItems" class="cart-items"></div>
+        <div class="totals"><div><span>Sous-total</span><span id="subtotal">0,00 MAD</span></div><div><span>Remise</span><span>0,00 MAD</span></div><div class="total-row"><strong>Total à payer</strong><strong id="total">0,00 MAD</strong></div></div>
+        <h2 class="section-label">MOYEN DE PAIEMENT</h2><div class="payment-methods"><button id="cashMethod" class="active" type="button"><img src="/icons/banknote.svg" alt="">Espèces</button><button id="cardMethod" type="button"><img src="/icons/credit-card.svg" alt="">Carte</button></div>
+        <div id="cashField"><label for="paidAmount">Montant reçu (MAD)</label><input id="paidAmount" inputmode="decimal" placeholder="0,00"><p id="changeAmount" class="muted"></p></div>
+        <div class="sticky-footer"><button id="confirmSale" class="primary" type="button">Confirmer la vente</button></div>
+      </section>
+      <nav id="mobileNav" class="mobile-nav" aria-label="Navigation"><button id="navCatalogue" class="active" type="button">Produits</button><button id="navPos" type="button">Caisse</button><button id="logout" type="button">Quitter</button></nav>
+    </div>
+    <p id="message" class="message" role="status" aria-live="polite" hidden></p>
+  </main>
+</body>
+</html>
