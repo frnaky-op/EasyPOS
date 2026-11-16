@@ -7,6 +7,7 @@ The Windows installer uses electron-builder's NSIS target. The release workflow 
 3. Run `npm test` and `npm run electron-build` locally on Windows. Inspect the generated `dist/` installer. The local build never publishes.
 4. Push the commit to `main`. Create and push the matching tag, for example `git tag v1.6.0` and `git push easypos v1.6.0`.
 5. Wait for the **Windows release** GitHub Action and confirm that the public release includes `EasyPOS-Setup-<version>-x64.exe` and `latest.yml`. Only then is that version available to the in-app updater and the website download link.
+6. Add the version notes from `docs/releases/<version>.md` to the GitHub Release. When `website/` changes, confirm that the **EasyPOS website** workflow deploys the landing page and guide.
 
 The first NSIS release requires a manual installation for people using older Forge/Squirrel builds. Their data is under Electron's app data path plus the unchanged `PharmaSpot` package name. Keep that name until a tested data migration exists. A code-signing certificate should be configured before broad distribution to reduce Windows SmartScreen warnings.
 

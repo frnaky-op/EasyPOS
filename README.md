@@ -1,57 +1,70 @@
 # EasyPOS
 
-EasyPOS is an open-source desktop point-of-sale system for hardware, plumbing, paint, electrical, and other general retail shops. It includes a fast product grid, barcode lookup, sales, customers, supplier receiving, stock movements, and reports.
+EasyPOS is an open-source desktop point-of-sale system for hardware, plumbing, paint, electrical, and general retail shops. It includes a photo-led checkout, barcode lookup, customers, suppliers, receiving, stock movements, reports, and a phone interface for adding products and making sales.
 
-This project is a fork of [PharmaSpot](https://github.com/drkNsubuga/PharmaSpot). The original project and its contributors remain credited under the [MIT license](LICENSE). The internal package name remains `PharmaSpot` for now so existing local installations continue to use their current data directory; the application and installer are branded EasyPOS.
+**[Download for Windows](https://github.com/frnaky-op/EasyPOS/releases/latest)** · **[User guide (French)](https://frnaky-op.github.io/EasyPOS/guide.html)** · **[Project website](https://frnaky-op.github.io/EasyPOS/)**
 
-## Features
+![EasyPOS checkout design preview with a photo grid of products](website/images/desktop-caisse.png)
 
-- Search and scan products at checkout, with a paginated product grid.
-- Track stock through paid sales, supplier receipts, and manual adjustments.
-- Manage products, categories, customers, and staff permissions.
-- Print receipts and export selected product barcodes as a PDF.
-- Import a portable catalogue ZIP with images, and back up or restore local data.
-- Check for and install new versions from the app's Settings page.
-- Switch the interface between French, Arabic (right-to-left), and English.
-- Choose from five interface themes, including the original green and a black-and-yellow palette.
+*Design preview with sample products and prices. The installed app uses your own catalogue and selected theme.*
 
-## Run locally
+## What you can do
 
-Requires Node.js and npm. From the project directory:
+| Area | Capabilities |
+| --- | --- |
+| Checkout | Search by name or barcode, browse product photos, use a cart, take cash or card payments, print receipts, and review sales. |
+| Catalogue | Manage products, categories, prices, photos, suppliers, and stock thresholds. Select products to export a barcode-sheet PDF. |
+| Inventory | Decrease stock after paid sales, increase it with supplier receipts, record adjustments and movements, and identify low-stock products. |
+| Mobile | Pair a phone on the same Wi-Fi, photograph barcodes, create or edit products, and use the mobile cart and checkout. |
+| Administration | Manage customers, suppliers, staff permissions, local backups, catalogue ZIP imports, updates, language, and themes. |
+
+The interface supports French, Arabic with right-to-left layout, and English. Five color themes are available in **Settings → Appearance**.
+
+## Requirements
+
+- **Installed app:** Windows x64. Download the latest `EasyPOS-Setup-<version>-x64.exe` from [Releases](https://github.com/frnaky-op/EasyPOS/releases/latest).
+- **Phone access:** A phone browser with a camera, on the same trusted Wi-Fi as the PC. EasyPOS must remain open on the PC. A barcode reader and receipt printer are optional.
+- **From source:** Node.js 22 and npm on Windows. The release and CI workflows use Node.js 22.
+
+EasyPOS stores shop data locally. Internet access is needed to download installers or updates. The phone interface is served over local HTTP on port **3211**; this local connection is not encrypted. See the [mobile setup notes](mobile/README.md) for camera and network details.
+
+## Install and make a first sale
+
+1. Download and run the latest Windows installer.
+2. Sign in with the initial `admin` / `admin` account and change its password immediately.
+3. Configure the store name, address, currency, and receipt details.
+4. Create a category and product with a price and starting quantity, or import a catalogue ZIP with images.
+5. Open **Caisse**, find the product by photo, name, or barcode, add it to the cart, and confirm the payment.
+6. Check **Stock** and **Ventes & rapports**, then create a backup ZIP in **Paramètres → Données & sauvegardes**.
+
+The illustrated [step-by-step user guide](https://frnaky-op.github.io/EasyPOS/guide.html) covers supplier receiving, the mobile interface, barcode sheets, backups, updates, and troubleshooting.
+
+## Mobile catalogue and checkout
+
+On the PC, click **Accès mobile** in the header. Open the displayed local address on a phone connected to the same Wi-Fi, then enter the eight-digit pairing code. You can take a photo of a barcode, add or edit the product, or open **Caisse** on the phone. Mobile checkout reads current prices from the local database and checks stock before recording a paid sale.
+
+The pairing code changes when EasyPOS restarts; sessions expire after 12 hours. See [mobile/README.md](mobile/README.md) for details.
+
+## Run from source
+
+From a Windows terminal in the project directory:
 
 ```sh
-npm install
+npm ci
+npm test
 npm run start
 ```
 
-The first local admin account is created with username `admin` and password `admin`. Change that password after the first login. Run `npm test` for the automated checks.
+`npm run start` runs the source app and does not install updates. The internal package name remains `PharmaSpot` so existing local installations keep using their current data directory.
 
-## Language
+## Updates and backups
 
-Use the language picker on the login screen or in the app header. The choice is saved for this installation. Switching languages reloads the app; if a sale is in progress, EasyPOS asks before clearing it. Product, category, customer, and supplier names remain as entered. Interface translations are maintained in `assets/i18n/catalog.tsv` and `assets/i18n/french-overrides.tsv`.
+Installed NSIS builds can check for a new version in **Paramètres → Mises à jour**. When the download is ready, choose **Installer et redémarrer**. Older Forge/Squirrel installations need one manual installation of an NSIS release before in-app updates work. Create a backup ZIP before changing installers or restoring data.
 
-## Appearance
+The [release guide](RELEASING.md) explains how maintainers version, build, and publish installers. The local `products/` catalogue and `design/` exports are excluded from Git because they contain third-party images and working data. Import your own catalogue into each installation.
 
-Open **Settings → Appearance** to preview and choose a theme. The options are Classic green, Black & yellow, Ocean blue, Terracotta, and Indigo. The selected theme applies immediately and is saved on this device.
+## Project and attribution
 
-## Install and update
+This project is a fork of [PharmaSpot](https://github.com/drkNsubuga/PharmaSpot). The original project, Git history, and contributors remain credited under the [MIT license](LICENSE). The application and installer are branded EasyPOS, while the internal package name remains `PharmaSpot` for data compatibility.
 
-Download the Windows installer from [GitHub Releases](https://github.com/frnaky-op/EasyPOS/releases/latest). In an installed copy, open **Paramètres → Mises à jour** to check for a new version. The app also checks at startup. When a download finishes, choose **Installer et redémarrer**. Source checkouts started with `npm run start` do not auto-update.
-
-Versions installed using the previous Forge/Squirrel installer need one manual installation of the new NSIS release before in-app updates work. The internal package name remains `PharmaSpot` so the existing local data directory is retained. Back up your data before changing installers.
-
-Maintainers: see [RELEASING.md](RELEASING.md) for versioning and publishing steps.
-
-## Website
-
-The [French landing page](https://frnaky-op.github.io/EasyPOS/) is maintained in [`website/`](website/). It uses a temporary text mark until the final EasyPOS logo is supplied. Its download links point to GitHub Releases.
-
-## Catalogue data
-
-The local `products/` catalogue and `design/` exports are excluded from this repository. They contain downloaded third-party product images and other working files. Import your own product data and images into each installation.
-
-## Development and attribution
-
-The original PharmaSpot repository is maintained at [drkNsubuga/PharmaSpot](https://github.com/drkNsubuga/PharmaSpot). This fork retains its Git history and copyright notice. Contributions are welcome through issues and pull requests.
-
-EasyPOS is licensed under the [MIT license](LICENSE).
+Contributions are welcome through issues and pull requests; see [CONTRIBUTING.md](CONTRIBUTING.md).
