@@ -1,6 +1,6 @@
 {
   "name": "easypos-companion",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "EasyPOS mobile companion for Android and iPhone",
   "scripts": {

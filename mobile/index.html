@@ -116,7 +116,19 @@
       <div class="scan-viewport"><video id="scanVideo" autoplay muted playsinline></video><div class="scan-frame" aria-hidden="true"><span></span></div><p id="scanGuide">Placez le code-barres dans le cadre</p></div>
       <p id="scanStatus" class="scan-status" role="status" aria-live="polite">Ouverture de la caméra…</p>
       <div class="scan-actions"><button id="scanTorch" type="button" hidden>Lampe</button><label id="scanPhotoAction" for="scanPhoto">Prendre une photo</label><input id="scanPhoto" type="file" accept="image/*" capture="environment" hidden><button id="scanManual" type="button">Saisir le code</button></div>
-      <small>Gardez le code net et bien éclairé. La caisse peut scanner plusieurs articles à la suite.</small>
+      <small>Gardez le code net et bien éclairé.</small>
+    </section>
+    <section id="scannedProductOverlay" class="scanned-product-overlay" role="dialog" aria-modal="true" aria-labelledby="scannedProductTitle" hidden>
+      <div class="scanned-product-panel">
+        <div class="scanned-product-heading"><span class="eyebrow">PRODUIT SCANNÉ</span><button id="scannedProductClose" type="button" aria-label="Fermer">×</button></div>
+        <div class="scanned-product-details">
+          <img id="scannedProductImage" alt="">
+          <div><h2 id="scannedProductTitle"></h2><small id="scannedProductBarcode" translate="no"></small><strong id="scannedProductPrice"></strong><small id="scannedProductStock"></small></div>
+        </div>
+        <div class="scanned-product-quantity"><div><strong>Quantité à ajouter</strong><small id="scannedProductInCart"></small></div><div class="quantity-control"><button id="scannedProductMinus" type="button" aria-label="Diminuer la quantité">−</button><span id="scannedProductQuantity">1</span><button id="scannedProductPlus" type="button" aria-label="Augmenter la quantité">+</button></div></div>
+        <p class="scanned-product-subtotal"><span>Sous-total</span><strong id="scannedProductSubtotal"></strong></p>
+        <div class="scanned-product-actions"><button id="scannedProductNext" type="button"><img src="/icons/scan-barcode.svg" alt="">Scanner le produit suivant</button><button id="scannedProductCheckout" class="primary" type="button"><img src="/icons/shopping-cart.svg" alt="">Passer à l’encaissement</button></div>
+      </div>
     </section>
     <p id="message" class="message" role="status" aria-live="polite" hidden></p>
   </main>

@@ -7,7 +7,7 @@ This is the installable Android/iPhone companion for the EasyPOS desktop app. It
 1. Start EasyPOS on the PC and open **Accès mobile** in the header.
 2. Scan the QR with the phone camera. If EasyPOS Mobile is installed, the connection page opens it with the PC address and pairing code. Otherwise, it offers the Android APK. After installing, return to the page and tap **Ouvrir l’application**.
 3. You can also scan the desktop QR from inside the companion, or enter the displayed local address and eight-digit code.
-4. Allow camera access. In **Produits** or **Caisse**, tap **Scanner avec la caméra** or **Scan**. The camera shows behind the guide frame. In Caisse, scanning remains active for successive products.
+4. Allow camera access. In **Produits** or **Caisse**, tap **Scanner avec la caméra** or **Scan**. The camera shows behind the guide frame. In Caisse, the first recognized product stops the camera and opens a quantity panel. Adjust the quantity, then choose checkout or scan the next product. Closing the panel does not add the product.
 
 After pairing, **Caisse** opens first. Use the header menu or bottom navigation for Catalogue and Stock. The Stock page has search, low-stock and out-of-stock filters, and product editing. The menu also opens the new-product form and cart.
 

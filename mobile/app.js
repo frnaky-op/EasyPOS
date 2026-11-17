@@ -26,6 +26,8 @@
   let scanTorchOn = false;
   let lastScanCode = '';
   let lastScanAt = 0;
+  let scannedProduct = null;
+  let scannedQuantity = 1;
   let nativePairing = false;
   let availableUpdate = null;
   let updateChecking = false;
@@ -108,6 +110,7 @@
   function showPair() {
     csrf = '';
     closeMenu();
+    closeScannedProduct();
     $('updateOverlay').hidden = true;
     if (companion) $('pairServer').value = companion.getServerUrl();
     $('pairScreen').hidden = false;
@@ -314,7 +317,7 @@
   }
   function posCard(product) {
     const button = document.createElement('button');
-    button.type = 'button'; button.className = 'pos-card';
+    button.type = 'button'; button.className = 'pos-card'; button.dataset.productId = product.id;
     button.disabled = product.stock && product.quantity < 1;
     const photo = document.createElement('span'); photo.className = 'pos-photo'; photo.append(productImage(product));
     const stock = document.createElement('span'); stock.className = 'stock-chip'; stock.textContent = product.stock ? product.quantity : '∞';
@@ -348,6 +351,48 @@
       if (name && name.textContent === product.name) { button.classList.add('in-cart'); button.dataset.count = next; }
     }
     return true;
+  }
+  function closeScannedProduct() {
+    scannedProduct = null;
+    $('scannedProductOverlay').hidden = true;
+  }
+  function renderScannedQuantity() {
+    if (!scannedProduct) return;
+    const inCart = cart.get(scannedProduct.id)?.quantity || 0;
+    const available = scannedProduct.stock ? Math.max(0, scannedProduct.quantity - inCart) : Infinity;
+    $('scannedProductQuantity').textContent = scannedQuantity;
+    $('scannedProductInCart').textContent = inCart ? `${t('Déjà dans le panier')} : ${inCart}` : '';
+    $('scannedProductSubtotal').textContent = money(scannedQuantity * Number(scannedProduct.price));
+    $('scannedProductMinus').disabled = scannedQuantity <= 1;
+    $('scannedProductPlus').disabled = scannedQuantity >= available;
+  }
+  function openScannedProduct(product) {
+    const inCart = cart.get(product.id)?.quantity || 0;
+    if (product.stock && inCart >= product.quantity) return message('Stock insuffisant.', true);
+    scannedProduct = product;
+    scannedQuantity = 1;
+    setProductImage($('scannedProductImage'), product.image || (companion ? './logo.png' : '/logo.png'));
+    $('scannedProductTitle').textContent = product.name;
+    $('scannedProductBarcode').textContent = product.barcode || String(product.id);
+    $('scannedProductPrice').textContent = money(product.price);
+    $('scannedProductStock').textContent = product.stock ? `${t('En stock')} : ${product.quantity}` : t('Sans suivi de stock');
+    renderScannedQuantity();
+    $('scannedProductOverlay').hidden = false;
+    $('scannedProductCheckout').focus();
+  }
+  function confirmScannedProduct(nextScan) {
+    if (!scannedProduct) return;
+    const product = scannedProduct;
+    const inCart = cart.get(product.id)?.quantity || 0;
+    if (product.stock && inCart + scannedQuantity > product.quantity) return message('Stock insuffisant.', true);
+    cart.set(product.id, { product, quantity: inCart + scannedQuantity });
+    updateCartButton();
+    for (const button of $('posProducts').querySelectorAll('.pos-card')) {
+      if (button.dataset.productId === String(product.id)) { button.classList.add('in-cart'); button.dataset.count = inCart + scannedQuantity; }
+    }
+    closeScannedProduct();
+    if (nextScan) openScanner(true);
+    else showCheckout();
   }
   function updateCartButton() {
     const amount = count();
@@ -406,7 +451,7 @@
     try {
       const { product } = await request(`/api/product?barcode=${encodeURIComponent(barcode)}`);
       if (product) {
-        if (forSale) { addToCart(product); showScreen('posScreen'); }
+        if (forSale) { showScreen('posScreen'); openScannedProduct(product); }
         else openProduct(product);
       } else {
         newProduct(barcode);
@@ -493,10 +538,9 @@
       const { product } = await request(`/api/product?barcode=${encodeURIComponent(code)}`);
       if (session !== scanSession) return;
       if (!product) { stopScanner(); newProduct(code); message('Nouveau code-barres. Complétez le produit.'); return; }
-      if (addToCart(product)) {
-        scanStatus(`${product.name} · ${t('Ajouté au panier')}`);
-        if (navigator.vibrate) navigator.vibrate(45);
-      } else scanStatus('Stock insuffisant.');
+      stopScanner();
+      openScannedProduct(product);
+      if (navigator.vibrate) navigator.vibrate(45);
     } catch (error) { scanStatus(error.message); }
     finally { scanBusy = false; }
   }
@@ -650,7 +694,7 @@
     catch (error) { message(error.message, true); } finally { button.disabled = false; }
   });
   $('pairScan').addEventListener('click', () => openScanner(false, true));
-  $('language').addEventListener('change', event => { language = ['fr', 'en', 'ar'].includes(event.target.value) ? event.target.value : 'fr'; localStorage.setItem('easypos_mobile_language', language); localize(); renderFilters(); updateCartButton(); renderCart(); if (!$('stockScreen').hidden) loadStock().catch(error => message(error.message, true)); });
+  $('language').addEventListener('change', event => { language = ['fr', 'en', 'ar'].includes(event.target.value) ? event.target.value : 'fr'; localStorage.setItem('easypos_mobile_language', language); localize(); renderFilters(); updateCartButton(); renderCart(); renderScannedQuantity(); if (!$('stockScreen').hidden) loadStock().catch(error => message(error.message, true)); });
   $('logout').addEventListener('click', async () => { try { await request('/api/logout', { method: 'POST', headers: { 'x-mobile-csrf': csrf } }); } catch (error) { message(error.message, true); } if (companion) companion.clearToken(); cart.clear(); showPair(); });
   const goCatalogue = () => { showScreen('catalogueScreen'); loadProducts().catch(error => message(error.message, true)); };
   const goPos = () => { showScreen('posScreen'); loadPosProducts().catch(error => message(error.message, true)); };
@@ -658,7 +702,12 @@
   $('menuToggle').addEventListener('click', () => { const opening = $('mobileMenu').hidden; $('mobileMenu').hidden = !opening; $('menuToggle').setAttribute('aria-expanded', String(opening)); });
   $('menuClose').addEventListener('click', closeMenu);
   $('mobileMenu').addEventListener('click', event => { if (event.target === $('mobileMenu')) closeMenu(); });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !$('mobileMenu').hidden) closeMenu(); });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    if (!$('scannedProductOverlay').hidden) closeScannedProduct();
+    else if (!$('scanOverlay').hidden) stopScanner();
+    else if (!$('mobileMenu').hidden) closeMenu();
+  });
   $('menuPos').addEventListener('click', goPos);
   $('menuCatalogue').addEventListener('click', goCatalogue);
   $('menuStock').addEventListener('click', goStock);
@@ -680,6 +729,12 @@
   $('catalogueScan').addEventListener('click', () => openScanner());
   $('posScan').addEventListener('click', () => openScanner(true));
   $('scanClose').addEventListener('click', stopScanner);
+  $('scannedProductClose').addEventListener('click', closeScannedProduct);
+  $('scannedProductOverlay').addEventListener('click', event => { if (event.target === $('scannedProductOverlay')) closeScannedProduct(); });
+  $('scannedProductMinus').addEventListener('click', () => { if (scannedQuantity > 1) { scannedQuantity--; renderScannedQuantity(); } });
+  $('scannedProductPlus').addEventListener('click', () => { if (scannedProduct && (!scannedProduct.stock || scannedQuantity < scannedProduct.quantity - (cart.get(scannedProduct.id)?.quantity || 0))) { scannedQuantity++; renderScannedQuantity(); } });
+  $('scannedProductNext').addEventListener('click', () => confirmScannedProduct(true));
+  $('scannedProductCheckout').addEventListener('click', () => confirmScannedProduct(false));
   $('scanManual').addEventListener('click', () => {
     const forSale = scanForSale;
     stopScanner();
