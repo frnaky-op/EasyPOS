@@ -56,16 +56,19 @@ html[dir="rtl"] .pos-barcode-search input { padding-right: 12px; padding-left: 0
 .app-mobile-access i { font-size: 17px; }
 .mobile-access-overlay { position: fixed; z-index: 1060; inset: 0; display: grid; place-items: center; padding: 18px; background: #10232bbb; }
 .mobile-access-overlay[hidden] { display: none !important; }
-.mobile-access-dialog { width: min(100%, 470px); padding: 24px; border-radius: 15px; background: var(--pos-surface); color: var(--pos-ink); box-shadow: 0 20px 55px var(--pos-modal-shadow); }
+.mobile-access-dialog { width: min(100%, 470px); max-height: calc(100vh - 36px); overflow-y: auto; padding: 24px; border-radius: 15px; background: var(--pos-surface); color: var(--pos-ink); box-shadow: 0 20px 55px var(--pos-modal-shadow); }
 .mobile-access-head { display: flex; justify-content: space-between; gap: 15px; }
 .mobile-access-head span { color: var(--pos-green); font-size: 10px; font-weight: 800; letter-spacing: .1em; }
 .mobile-access-head h2 { margin: 5px 0 0; font-size: 19px; line-height: 1.25; }
 .mobile-access-head button { align-self: flex-start; border: 0; background: transparent; color: var(--pos-muted); }
 .mobile-access-dialog p { margin: 22px 0 9px; color: var(--pos-muted); font-size: 13px; line-height: 1.5; }
+.mobile-access-qr { display: flex; justify-content: center; padding: 12px; border: 1px solid var(--pos-line); border-radius: 12px; background: #fff; }
+.mobile-access-qr[hidden] { display: none !important; }
+.mobile-access-qr img { display: block; width: min(100%, 224px); height: auto; image-rendering: pixelated; }
 .mobile-access-url { display: flex; align-items: center; gap: 8px; padding: 7px; border: 1px solid var(--pos-line); border-radius: 9px; background: var(--pos-softest); }
 .mobile-access-url code { flex: 1; overflow: hidden; color: var(--pos-ink); text-overflow: ellipsis; font-size: 14px; }
 .mobile-access-url button { padding: 8px 10px; border: 0; border-radius: 7px; background: var(--pos-accent-fill); color: var(--pos-on-accent); font-size: 12px; font-weight: 700; }
-.mobile-access-code { display: block; padding: 12px; border: 1px solid var(--pos-line); border-radius: 9px; background: var(--pos-softest); color: var(--pos-green); text-align: center; font-size: 27px; letter-spacing: .25em; }
+.mobile-access-code { display: block; margin-top: 8px; padding: 12px; border: 1px solid var(--pos-line); border-radius: 9px; background: var(--pos-softest); color: var(--pos-green); text-align: center; font-size: 27px; letter-spacing: .25em; }
 .mobile-access-dialog .mobile-access-hint { margin-bottom: 0; font-size: 11px; }
 @media (max-width: 900px) { .app-mobile-access span { display: none; } .app-mobile-access { width: 36px; padding: 7px 10px; } }
 .app-user-button { padding: 9px 13px; border-radius: 18px; background: var(--pos-soft-2); color: var(--pos-ink); white-space: nowrap; }

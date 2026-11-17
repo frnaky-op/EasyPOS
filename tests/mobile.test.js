@@ -4,6 +4,7 @@ const Datastore = require('@seald-io/nedb');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const crypto = require('crypto');
 const { createMobileApp } = require('../mobile/server');
 
 test('paired phone can scan, create and update products without exposing inventory to unpaired phones', async t => {
@@ -12,7 +13,13 @@ test('paired phone can scan, create and update products without exposing invento
   await new Promise((resolve, reject) => categoryDB.insert({ _id: 7, name: 'Outillage' }, error => error ? reject(error) : resolve()));
   const uploadsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'easypos-mobile-'));
   t.after(() => fs.rmSync(uploadsDir, { recursive: true, force: true }));
-  const app = createMobileApp({ inventoryDB, categoryDB, uploadsDir, pairingCode: '12345678' });
+  const androidApkPath = path.join(uploadsDir, 'EasyPOS-Mobile.apk');
+  fs.writeFileSync(androidApkPath, 'test apk');
+  fs.writeFileSync(androidApkPath.replace(/\.apk$/, '.json'), JSON.stringify({
+    packageId: 'com.easypos.companion', versionCode: 3, versionName: '1.2.0', size: 8,
+    sha256: crypto.createHash('sha256').update('test apk').digest('hex'),
+  }));
+  const app = createMobileApp({ inventoryDB, categoryDB, uploadsDir, pairingCode: '12345678', androidApkPath, iosInstallUrl: 'https://testflight.apple.com/join/example' });
   const server = app.listen(0, '127.0.0.1');
   t.after(() => new Promise(resolve => server.close(resolve)));
   await new Promise(resolve => server.once('listening', resolve));
@@ -21,6 +28,34 @@ test('paired phone can scan, create and update products without exposing invento
 
   assert.equal((await get('/')).status, 200);
   assert.equal((await get('/scanner.js')).status, 200);
+  assert.equal((await get('/pairing.js')).status, 200);
+  assert.equal((await get('/api/mobile-update')).status, 401);
+  assert.equal((await get('/connect')).status, 200);
+  assert.equal((await get('/connect.js')).status, 200);
+  assert.deepEqual(await (await get('/install-options')).json(), { android: true, ios: 'https://testflight.apple.com/join/example' });
+  const apk = await get('/download/android');
+  assert.equal(apk.status, 200);
+  assert.match(apk.headers.get('content-disposition'), /EasyPOS-Mobile\.apk/);
+  assert.equal(await apk.text(), 'test apk');
+  const nativeOrigin = 'capacitor://localhost';
+  const preflight = await get('/api/pair', { method: 'OPTIONS', headers: { Origin: nativeOrigin, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'authorization,content-type' } });
+  assert.equal(preflight.status, 204);
+  assert.equal(preflight.headers.get('access-control-allow-origin'), nativeOrigin);
+  const nativePair = await get('/api/pair', { method: 'POST', headers: { Origin: nativeOrigin, 'Content-Type': 'application/json' }, body: JSON.stringify({ code: '12345678' }) });
+  const nativeToken = (await nativePair.json()).token;
+  assert.match(nativeToken, /^[a-f0-9]{64}$/);
+  const nativeSession = await get('/api/session', { headers: { Origin: nativeOrigin, Authorization: `Bearer ${nativeToken}` } });
+  assert.equal(nativeSession.status, 200);
+  const update = await (await get('/api/mobile-update', { headers: { Origin: nativeOrigin, Authorization: `Bearer ${nativeToken}` } })).json();
+  assert.equal(update.android.versionCode, 3);
+  assert.equal(update.android.size, 8);
+  assert.equal(update.android.url, '/download/android');
+  fs.writeFileSync(androidApkPath.replace(/\.apk$/, '.json'), JSON.stringify({ ...update.android, packageId: 'com.easypos.companion', size: 99 }));
+  assert.equal((await (await get('/api/mobile-update', { headers: { Origin: nativeOrigin, Authorization: `Bearer ${nativeToken}` } })).json()).android, null);
+  assert.equal(nativeSession.headers.get('access-control-allow-origin'), nativeOrigin);
+  const nativeCsrf = (await nativeSession.json()).csrf;
+  assert.equal((await get('/api/logout', { method: 'POST', headers: { Origin: nativeOrigin, Authorization: `Bearer ${nativeToken}`, 'x-mobile-csrf': nativeCsrf } })).status, 200);
+  assert.equal((await get('/api/session', { headers: { Authorization: `Bearer ${nativeToken}` } })).status, 401);
   assert.equal((await get('/api/categories')).status, 401);
   assert.equal((await get('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: '00000000' }) })).status, 401);
   const paired = await get('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: '12345678' }) });
@@ -51,7 +86,23 @@ test('paired phone can scan, create and update products without exposing invento
   assert.ok(updatedProduct.image);
   assert.equal((await get(updatedProduct.image)).status, 401);
   assert.equal((await get(updatedProduct.image, { headers: { Cookie: cookie } })).status, 200);
+  const nativeAgain = await get('/api/pair', { method: 'POST', headers: { Origin: nativeOrigin, 'Content-Type': 'application/json' }, body: JSON.stringify({ code: '12345678' }) });
+  const imageToken = (await nativeAgain.json()).token;
+  const imageSession = await (await get('/api/session', { headers: { Origin: nativeOrigin, Authorization: `Bearer ${imageToken}` } })).json();
+  assert.equal((await get(updatedProduct.image, { headers: { Origin: nativeOrigin, Authorization: `Bearer ${imageToken}` } })).status, 200);
+  form.set('quantity', '94');
+  assert.equal((await get('/api/product', { method: 'POST', headers: { Origin: nativeOrigin, Authorization: `Bearer ${imageToken}`, 'x-mobile-csrf': imageSession.csrf }, body: form })).status, 200);
   assert.equal((await get('/api/products', { headers: { Cookie: cookie } })).status, 200);
+  await new Promise((resolve, reject) => inventoryDB.insert([
+    { _id: 4001, name: 'Vis en stock faible', barcode: 'LOW-1', quantity: 3, minStock: 5, stock: 1 },
+    { _id: 4002, name: 'Vis en rupture', barcode: 'OUT-1', quantity: 0, minStock: 5, stock: 1 },
+    { _id: 4003, name: 'Service sans stock', barcode: 'FREE-1', quantity: 0, minStock: 5, stock: 0 },
+  ], error => error ? reject(error) : resolve()));
+  const low = await (await get('/api/products?stock=low', { headers: { Cookie: cookie } })).json();
+  const out = await (await get('/api/products?stock=out', { headers: { Cookie: cookie } })).json();
+  assert.deepEqual(low.items.map(item => item.id), [4001]);
+  assert.deepEqual(out.items.map(item => item.id), [4002]);
+  assert.equal((await get('/api/products?stock=invalid', { headers: { Cookie: cookie } })).status, 400);
   assert.equal((await get('/api/product?barcode=6110001234567')).status, 401);
 });
 

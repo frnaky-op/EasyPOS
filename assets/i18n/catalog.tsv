@@ -678,6 +678,10 @@ Panier	Cart	السلة
 Ouvrir le panier	Open cart	فتح السلة
 Fermer le panier	Close cart	إغلاق السلة
 Accès mobile	Mobile access	الوصول عبر الهاتف
+Connectez le téléphone au même Wi-Fi, puis scannez ce QR. Il ouvre l’application si elle est installée, ou propose son installation.	Connect your phone to the same Wi-Fi and scan this QR code. It opens the app if installed, or offers installation.	اربط هاتفك بشبكة Wi-Fi نفسها ثم امسح رمز QR. سيفتح التطبيق إذا كان مثبتًا، أو سيقترح تثبيته.
+Code QR pour connecter le téléphone	QR code to connect the phone	رمز QR لتوصيل الهاتف
+Ou ouvrez cette adresse et entrez le code de connexion :	Or open this address and enter the pairing code:	أو افتح هذا العنوان وأدخل رمز الاتصال:
+Copier le lien	Copy link	نسخ الرابط
 CATALOGUE MOBILE	MOBILE CATALOGUE	كتالوج الهاتف
 Ajouter des produits sur votre téléphone	Add products from your phone	أضف المنتجات من هاتفك
 Connectez le téléphone au même Wi-Fi que cet ordinateur, puis ouvrez cette adresse :	Connect your phone to the same Wi-Fi as this computer, then open this address:	اربط هاتفك بشبكة Wi-Fi نفسها التي يستخدمها هذا الحاسوب، ثم افتح هذا العنوان:
@@ -698,6 +702,24 @@ Le téléphone et l’ordinateur doivent être connectés au même réseau.	The 
 EasyPOS · Catalogue mobile sécurisé	EasyPOS · Secure mobile catalogue	EasyPOS · كتالوج هاتف آمن
 Scannez un code ou ajoutez un produit.	Scan a code or add a product.	امسح رمزاً أو أضف منتجاً.
 Scanner avec la caméra	Scan with camera	امسح بالكاميرا
+Scanner le QR de l’ordinateur	Scan the computer’s QR code	امسح رمز QR الخاص بالحاسوب
+Adresse locale de l’ordinateur	Computer’s local address	العنوان المحلي للحاسوب
+Placez le QR de l’ordinateur dans le cadre	Place the computer’s QR code in the frame	ضع رمز QR الخاص بالحاسوب داخل الإطار
+Scannez le QR affiché dans Accès mobile.	Scan the QR code shown in Mobile access.	امسح رمز QR الظاهر في الوصول عبر الهاتف.
+Utilisez l’adresse locale affichée par EasyPOS.	Use the local address shown by EasyPOS.	استخدم العنوان المحلي الظاهر في EasyPOS.
+Autorisez la caméra dans les réglages du téléphone.	Allow camera access in the phone settings.	اسمح بالوصول إلى الكاميرا في إعدادات الهاتف.
+Placez le code dans le cadre de la caméra.	Place the barcode inside the camera frame.	ضع الرمز الشريطي داخل إطار الكاميرا.
+Placez le code-barres dans le cadre	Place the barcode inside the frame	ضع الرمز الشريطي داخل الإطار
+Ouverture de la caméra…	Opening camera…	جارٍ فتح الكاميرا…
+Le scan vidéo nécessite HTTPS. Prenez une photo du code-barres ou saisissez-le.	Live scanning requires HTTPS. Take a photo of the barcode or enter it.	يتطلب المسح المباشر اتصال HTTPS. التقط صورة للرمز الشريطي أو أدخله.
+Autorisez la caméra dans le navigateur, ou prenez une photo du code-barres.	Allow camera access in the browser, or take a photo of the barcode.	اسمح بالوصول إلى الكاميرا في المتصفح أو التقط صورة للرمز الشريطي.
+Caméra indisponible. Prenez une photo du code-barres ou saisissez-le.	Camera unavailable. Take a photo of the barcode or enter it.	الكاميرا غير متاحة. التقط صورة للرمز الشريطي أو أدخله.
+Prendre une photo	Take a photo	التقط صورة
+Saisir le code	Enter code	أدخل الرمز
+Lampe	Flashlight	مصباح
+Éteindre la lampe	Turn off flashlight	إطفاء المصباح
+Gardez le code net et bien éclairé. La caisse peut scanner plusieurs articles à la suite.	Keep the barcode sharp and well lit. Checkout can scan several items in a row.	حافظ على وضوح الرمز وإضاءته. يمكن للصندوق مسح عدة منتجات متتالية.
+Ajouté au panier	Added to cart	أضيف إلى السلة
 Ou saisir le code →	Or enter the code →	أو أدخل الرمز ←
 Nouveau produit	New product	منتج جديد
 Voir plus de produits	Show more products	عرض المزيد من المنتجات
@@ -788,6 +810,28 @@ Code-barres invalide.	Invalid barcode.	الرمز الشريطي غير صالح
 Vérifiez le nom, le code, la catégorie, le prix et le stock.	Check the name, barcode, category, price, and stock.	تحقق من الاسم والرمز والفئة والسعر والمخزون.
 Catégorie inconnue.	Unknown category.	الفئة غير معروفة.
 Produit introuvable.	Product not found.	المنتج غير موجود.
+Stock faible	Low stock	مخزون منخفض
+Rupture	Out of stock	نفد المخزون
+Seuil	Minimum	الحد الأدنى
+Sans suivi de stock	Stock not tracked	بدون تتبع للمخزون
+Rechercher dans le stock	Search stock	البحث في المخزون
+Filtrer le stock	Filter stock	تصفية المخزون
+Vérifier les mises à jour	Check for updates	التحقق من التحديثات
+Mise à jour disponible	Update available	يتوفر تحديث
+Version installée	Installed version	الإصدار المثبت
+Nouvelle version	New version	الإصدار الجديد
+Une nouvelle version est prête sur l’ordinateur.	A new version is ready on the computer.	إصدار جديد جاهز على الحاسوب.
+Télécharger et installer	Download and install	تنزيل وتثبيت
+Ouvrir la mise à jour	Open update	فتح التحديث
+Plus tard	Later	لاحقًا
+Recherche de mises à jour…	Checking for updates…	جارٍ التحقق من التحديثات…
+L’application est à jour.	The app is up to date.	التطبيق محدث.
+Téléchargement de la mise à jour…	Downloading update…	جارٍ تنزيل التحديث…
+Téléchargement	Downloading	جارٍ التنزيل
+Autorisez cette application à installer les mises à jour, puis réessayez.	Allow this app to install updates, then try again.	اسمح لهذا التطبيق بتثبيت التحديثات ثم حاول مجددًا.
+Confirmez l’installation dans Android.	Confirm installation in Android.	أكد التثبيت في أندرويد.
+Réessayer	Try again	إعادة المحاولة
+Terminez la mise à jour dans TestFlight ou l’App Store.	Finish the update in TestFlight or the App Store.	أكمل التحديث في TestFlight أو App Store.
 Ce code-barres appartient déjà à un produit.	This barcode already belongs to a product.	هذا الرمز الشريطي مسجل لمنتج آخر.
 Utilisez une photo JPG, PNG ou WebP.	Use a JPG, PNG, or WebP photo.	استخدم صورة JPG أو PNG أو WebP.
 Une erreur est survenue. Réessayez.	An error occurred. Try again.	حدث خطأ. حاول مرة أخرى.

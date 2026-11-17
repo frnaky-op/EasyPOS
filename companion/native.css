@@ -1,0 +1,11 @@
+.companion-only { display: none; }
+body.easypos-companion .companion-only { display: block!important; }
+body.easypos-companion .menu-panel > button.companion-only { display: flex!important; }
+body.easypos-companion #pairServer { margin: 12px 0; }
+body.easypos-companion #pairScan { margin: 0 0 14px; }
+html.native-scanning, html.native-scanning body, html.native-scanning main { background: transparent !important; }
+html.native-scanning .topbar, html.native-scanning #workspace, html.native-scanning #pairScreen, html.native-scanning #message { visibility: hidden !important; }
+html.native-scanning .scan-overlay { background: transparent !important; }
+html.native-scanning .scan-viewport, html.native-scanning .scan-viewport video { background: transparent !important; }
+html.native-scanning .scan-viewport video { display: none !important; }
+html.native-scanning .scan-frame { box-shadow: 0 0 0 999px #07171d77; }

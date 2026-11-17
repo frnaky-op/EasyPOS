@@ -1,4 +1,14 @@
 node_modules*
+companion/www/
+companion/android/.gradle/
+companion/android/build/
+companion/android/app/build/
+companion/android/app/src/main/assets/public/
+companion/ios/App/Pods/
+companion/ios/App/DerivedData/
+companion/ios/App/App/public/
+mobile/downloads/*.apk
+mobile/downloads/*.json
 notes.txt
 package.*.json
 TODO

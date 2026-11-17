@@ -42,7 +42,7 @@ function translateText(node) {
 
 function translateElement(element) {
   if (element.nodeType !== 1 || element.closest("[data-no-i18n], [translate='no']")) return;
-  for (const attr of ["placeholder", "title", "aria-label"]) {
+  for (const attr of ["placeholder", "title", "aria-label", "alt"]) {
     if (!element.hasAttribute(attr)) continue;
     const value = element.getAttribute(attr);
     const translated = t(value);
@@ -72,7 +72,7 @@ function initI18n(document, selectedLanguage) {
   });
   observer.observe(document.body, {
     subtree: true, childList: true, characterData: true, attributes: true,
-    attributeFilter: ["placeholder", "title", "aria-label"],
+    attributeFilter: ["placeholder", "title", "aria-label", "alt"],
   });
   return language;
 }

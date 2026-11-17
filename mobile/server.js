@@ -1,26 +1,29 @@
 const crypto = require('crypto');
 const express = require('express');
 const fs = require('fs');
+const https = require('https');
 const multer = require('multer');
 const os = require('os');
 const path = require('path');
 const validator = require('validator');
+const { readAndroidUpdate } = require('./update');
 
 const SESSION_AGE_MS = 12 * 60 * 60 * 1000;
+const COMPANION_ORIGINS = new Set(['capacitor://localhost', 'http://localhost', 'https://localhost']);
 const imageTypes = {
   'image/jpeg': '.jpg',
   'image/png': '.png',
   'image/webp': '.webp',
 };
 
-function mobileAddresses(port) {
+function mobileAddresses(port, protocol = 'http') {
   const addresses = [];
   for (const [name, interfaces] of Object.entries(os.networkInterfaces())) {
     for (const address of interfaces || []) {
       if (address.family === 'IPv4' && !address.internal) {
         const virtual = /virtual|vEthernet|VPN|Tailscale|WireGuard|Docker|Loopback/i.test(name);
         const preferred = /wi-?fi|wlan|ethernet/i.test(name);
-        addresses.push({ url: `http://${address.address}:${port}/`, priority: virtual ? 2 : preferred ? 0 : 1 });
+        addresses.push({ url: `${protocol}://${address.address}:${port}/`, priority: virtual ? 2 : preferred ? 0 : 1 });
       }
     }
   }
@@ -47,14 +50,28 @@ function publicProduct(product) {
   };
 }
 
-function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, decrementInventory, uploadsDir, pairingCode }) {
+function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, decrementInventory, uploadsDir, pairingCode, androidApkPath, iosInstallUrl, iosVersionCode, iosVersionName }) {
   const app = express();
   const sessions = new Map();
   const failedPairs = new Map();
   const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 2 * 1024 * 1024 } }).single('photo');
+  const apkPath = androidApkPath || path.join(__dirname, 'downloads', 'EasyPOS-Mobile.apk');
+  const apkManifestPath = apkPath.replace(/\.apk$/i, '.json');
+  const iosUrl = typeof iosInstallUrl === 'string' && /^https:\/\//i.test(iosInstallUrl) ? iosInstallUrl : '';
 
   app.disable('x-powered-by');
   app.use((req, res, next) => {
+    const origin = req.get('origin');
+    if (COMPANION_ORIGINS.has(origin)) {
+      res.set({
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Authorization, Content-Type, x-mobile-csrf',
+        'Access-Control-Allow-Private-Network': 'true',
+        'Vary': 'Origin',
+      });
+      if (req.method === 'OPTIONS') return res.sendStatus(204);
+    }
     res.set({
       'Cache-Control': 'no-store',
       'X-Content-Type-Options': 'nosniff',
@@ -66,8 +83,17 @@ function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, 
   app.use(express.json({ limit: '16kb' }));
   const page = path.join(__dirname, 'index.html');
   app.get('/', (_req, res) => res.sendFile(page));
+  app.get('/connect', (_req, res) => res.sendFile(path.join(__dirname, 'connect.html')));
+  app.get('/connect.css', (_req, res) => res.sendFile(path.join(__dirname, 'connect.css')));
+  app.get('/connect.js', (_req, res) => res.sendFile(path.join(__dirname, 'connect.js')));
+  app.get('/install-options', (_req, res) => res.json({ android: fs.existsSync(apkPath), ios: iosUrl }));
+  app.get('/download/android', (_req, res) => {
+    if (!fs.existsSync(apkPath)) return res.sendStatus(404);
+    res.download(apkPath, 'EasyPOS-Mobile.apk');
+  });
   app.get('/app.css', (_req, res) => res.sendFile(path.join(__dirname, 'app.css')));
   app.get('/app.js', (_req, res) => res.sendFile(path.join(__dirname, 'app.js')));
+  app.get('/pairing.js', (_req, res) => res.sendFile(path.join(__dirname, 'pairing.js')));
   app.get('/scanner.js', (_req, res) => res.sendFile(require.resolve('@zxing/browser/umd/zxing-browser.min.js')));
   app.get('/catalog.tsv', (_req, res) => res.type('text/tab-separated-values').sendFile(path.join(__dirname, '..', 'assets', 'i18n', 'catalog.tsv')));
   app.get('/logo.png', (_req, res) => res.sendFile(path.join(__dirname, '..', 'assets', 'images', 'easypos-logo-concept.png')));
@@ -80,15 +106,16 @@ function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, 
   });
 
   function sessionFrom(req) {
+    const bearer = String(req.get('authorization') || '').match(/^Bearer ([a-f0-9]{64})$/i);
     const match = String(req.headers.cookie || '').match(/(?:^|;\s*)easypos_mobile=([a-f0-9]{64})(?:;|$)/);
-    const token = match && match[1];
+    const token = bearer ? bearer[1] : match && match[1];
     const session = token && sessions.get(token);
     if (!session) return null;
     if (session.expires < Date.now()) {
       sessions.delete(token);
       return null;
     }
-    return { token, session };
+    return { token, session, bearer: Boolean(bearer) };
   }
   function requireSession(req, res, next) {
     const found = sessionFrom(req);
@@ -104,7 +131,9 @@ function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, 
     }
     const origin = req.get('origin');
     if (origin) {
-      try { if (new URL(origin).host !== req.get('host')) return res.sendStatus(403); }
+      try {
+        if (req.mobileSession.bearer ? !COMPANION_ORIGINS.has(origin) : new URL(origin).host !== req.get('host')) return res.sendStatus(403);
+      }
       catch { return res.sendStatus(403); }
     }
     next();
@@ -127,9 +156,15 @@ function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, 
     const token = crypto.randomBytes(32).toString('hex');
     sessions.set(token, { csrf: crypto.randomBytes(24).toString('hex'), expires: Date.now() + SESSION_AGE_MS });
     res.setHeader('Set-Cookie', `easypos_mobile=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=43200`);
-    res.json({ ok: true });
+    res.json(COMPANION_ORIGINS.has(req.get('origin')) ? { ok: true, token } : { ok: true });
   });
   app.get('/api/session', requireSession, (req, res) => res.json({ csrf: req.mobileSession.session.csrf }));
+  app.get('/api/mobile-update', requireSession, (_req, res) => {
+    const iosBuild = Number(iosVersionCode);
+    res.json({ android: readAndroidUpdate(apkPath, apkManifestPath),
+      ios: iosUrl && Number.isSafeInteger(iosBuild) && iosBuild > 0
+        ? { versionCode: iosBuild, versionName: String(iosVersionName || iosBuild), url: iosUrl } : null });
+  });
   app.post('/api/logout', requireSession, requireCsrf, (req, res) => {
     sessions.delete(req.mobileSession.token);
     res.setHeader('Set-Cookie', 'easypos_mobile=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');
@@ -153,10 +188,13 @@ function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, 
   app.get('/api/products', requireSession, wrap(async (req, res) => {
     const search = String(req.query.q || '').trim();
     const category = String(req.query.category || '').trim();
+    const stock = String(req.query.stock || 'all');
     const page = Number(req.query.page || 1);
-    if (search.length > 80 || category.length > 80 || !Number.isSafeInteger(page) || page < 1) return res.status(400).json({ error: 'Recherche invalide.' });
+    if (search.length > 80 || category.length > 80 || !['all', 'low', 'out'].includes(stock) || !Number.isSafeInteger(page) || page < 1) return res.status(400).json({ error: 'Recherche invalide.' });
     const pattern = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
     const filter = { ...(search ? { $or: [{ name: pattern }, { barcode: pattern }] } : {}), ...(category ? { category } : {}) };
+    if (stock === 'out') filter.$where = function () { return this.stock !== 0 && Number(this.quantity || 0) <= 0; };
+    if (stock === 'low') filter.$where = function () { const quantity = Number(this.quantity || 0); return this.stock !== 0 && quantity > 0 && quantity <= Number(this.minStock || 0); };
     const total = await query(inventoryDB, 'count', filter);
     const items = await new Promise((resolve, reject) => inventoryDB.find(filter).sort({ _id: -1 }).skip((page - 1) * 24).limit(24).exec((error, rows) => error ? reject(error) : resolve(rows)));
     res.json({ items: items.map(publicProduct), total, page, pageSize: 24 });
@@ -286,11 +324,29 @@ function createMobileApp({ inventoryDB, categoryDB, customerDB, transactionsDB, 
 function startMobileServer(options) {
   const port = Number(process.env.MOBILE_PORT || 3211);
   const pairingCode = crypto.randomInt(10000000, 100000000).toString();
-  const app = createMobileApp({ ...options, pairingCode });
+  const app = createMobileApp({ ...options, pairingCode,
+    androidApkPath: options.androidApkPath || process.env.MOBILE_ANDROID_APK,
+    iosInstallUrl: options.iosInstallUrl || process.env.MOBILE_IOS_INSTALL_URL,
+    iosVersionCode: options.iosVersionCode || process.env.MOBILE_IOS_VERSION_CODE,
+    iosVersionName: options.iosVersionName || process.env.MOBILE_IOS_VERSION_NAME });
+  const certPath = process.env.MOBILE_TLS_CERT;
+  const keyPath = process.env.MOBILE_TLS_KEY;
+  let tlsOptions;
+  if (certPath && keyPath) {
+    try { tlsOptions = { cert: fs.readFileSync(certPath), key: fs.readFileSync(keyPath) }; }
+    catch (error) { console.error('Mobile HTTPS unavailable; using HTTP:', error.message); }
+  } else if (certPath || keyPath) console.error('Mobile HTTPS requires both MOBILE_TLS_CERT and MOBILE_TLS_KEY; using HTTP');
+  let secure = false;
   let ready = false;
-  const server = app.listen(port, '0.0.0.0', () => { ready = true; console.log(`Mobile catalogue listening on ${port}`); });
+  let server;
+  if (tlsOptions) {
+    try { server = https.createServer(tlsOptions, app); secure = true; }
+    catch (error) { console.error('Mobile HTTPS certificate invalid; using HTTP:', error.message); }
+  }
+  if (!server) server = require('http').createServer(app);
+  server.listen(port, '0.0.0.0', () => { ready = true; console.log(`Mobile catalogue listening on ${secure ? 'https' : 'http'} port ${port}`); });
   server.on('error', error => { ready = false; console.error('Mobile catalogue unavailable:', error); });
-  return { server, info: () => ({ code: pairingCode, urls: ready ? mobileAddresses(port) : [], port, ready }) };
+  return { server, info: () => ({ code: pairingCode, urls: ready ? mobileAddresses(port, secure ? 'https' : 'http') : [], port, ready, secure }) };
 }
 
 module.exports = { createMobileApp, startMobileServer, mobileAddresses };

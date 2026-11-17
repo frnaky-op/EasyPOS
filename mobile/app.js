@@ -1,12 +1,15 @@
 (() => {
   const $ = id => document.getElementById(id);
-  const screens = ['catalogueScreen', 'productScreen', 'posScreen', 'checkoutScreen'];
+  const screens = ['catalogueScreen', 'stockScreen', 'productScreen', 'posScreen', 'checkoutScreen'];
   const cart = new Map();
   let csrf = '';
   let categories = [];
   let category = '';
   let productPage = 1;
   let posPage = 1;
+  let stockPage = 1;
+  let stockFilter = 'all';
+  let productReturnScreen = 'catalogueScreen';
   let productTotal = 0;
   let posTotal = 0;
   let paymentType = 'Cash';
@@ -14,10 +17,26 @@
   let photoFile = null;
   let searchTimer;
   let messageTimer;
+  let scanSession = 0;
+  let scanControls = null;
+  let scanFrame = 0;
+  let scanBusy = false;
+  let scanForSale = false;
+  let scanPairing = false;
+  let scanTorchOn = false;
+  let lastScanCode = '';
+  let lastScanAt = 0;
+  let nativePairing = false;
+  let availableUpdate = null;
+  let updateChecking = false;
+  const imageCache = new Map();
   let language = localStorage.getItem('easypos_mobile_language') || 'fr';
   const translations = { fr: {}, en: {}, ar: {} };
   const originalText = new WeakMap();
   const form = $('productForm');
+  const companion = window.EasyPOSCompanion || null;
+  if (companion) document.body.classList.add('easypos-companion');
+  const qrPairCode = window.EasyPOSPairing.takePairCode(window.location, window.history);
   const money = value => `${Number(value || 0).toLocaleString(language === 'fr' ? 'fr-MA' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MAD`;
   const count = () => [...cart.values()].reduce((sum, item) => sum + item.quantity, 0);
   const total = () => Math.round([...cart.values()].reduce((sum, item) => sum + Number(item.product.price) * item.quantity, 0) * 100) / 100;
@@ -64,7 +83,16 @@
   }
   async function request(url, options = {}) {
     let response;
-    try { response = await fetch(url, { credentials: 'same-origin', ...options }); }
+    const headers = new Headers(options.headers || {});
+    if (companion && url.startsWith('/api/')) {
+      const token = companion.getToken();
+      if (token && url !== '/api/pair') headers.set('Authorization', `Bearer ${token}`);
+    }
+    try {
+      response = await fetch(companion && url.startsWith('/api/') ? companion.apiUrl(url) : url, {
+        credentials: companion ? 'omit' : 'same-origin', ...options, headers,
+      });
+    }
     catch { throw new Error('Connexion impossible. Vérifiez le Wi-Fi et EasyPOS sur l’ordinateur.'); }
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
@@ -74,33 +102,110 @@
       error.product = data.product;
       throw error;
     }
+    if (companion && url === '/api/pair' && data.token) companion.setToken(data.token);
     return data;
   }
   function showPair() {
     csrf = '';
+    closeMenu();
+    $('updateOverlay').hidden = true;
+    if (companion) $('pairServer').value = companion.getServerUrl();
     $('pairScreen').hidden = false;
     $('workspace').hidden = true;
+    $('menuToggle').hidden = true;
     $('cartToggle').hidden = true;
     $('headerSection').textContent = t('Catalogue mobile');
   }
+  function closeMenu() {
+    $('mobileMenu').hidden = true;
+    $('menuToggle').setAttribute('aria-expanded', 'false');
+  }
   function showScreen(id) {
+    closeMenu();
     $('pairScreen').hidden = true;
     $('workspace').hidden = false;
+    $('menuToggle').hidden = false;
     for (const screen of screens) $(screen).hidden = screen !== id;
-    $('cartToggle').hidden = id !== 'posScreen' && id !== 'checkoutScreen';
-    $('headerSection').textContent = t(id === 'posScreen' || id === 'checkoutScreen' ? 'Caisse mobile' : 'Catalogue mobile');
-    $('navCatalogue').classList.toggle('active', id === 'catalogueScreen' || id === 'productScreen');
+    $('cartToggle').hidden = false;
+    $('headerSection').textContent = t(id === 'posScreen' || id === 'checkoutScreen' ? 'Caisse mobile' : id === 'stockScreen' ? 'Stock' : 'Catalogue mobile');
+    $('navCatalogue').classList.toggle('active', id === 'catalogueScreen' || (id === 'productScreen' && productReturnScreen === 'catalogueScreen'));
     $('navPos').classList.toggle('active', id === 'posScreen' || id === 'checkoutScreen');
-    $('mobileNav').hidden = id === 'productScreen' || id === 'posScreen' || id === 'checkoutScreen';
+    $('navStock').classList.toggle('active', id === 'stockScreen' || (id === 'productScreen' && productReturnScreen === 'stockScreen'));
+    $('mobileNav').hidden = id === 'productScreen' || id === 'checkoutScreen';
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
   async function showWorkspace() {
     const session = await request('/api/session');
     csrf = session.csrf;
     await Promise.all([loadCategories(), loadCustomers()]);
-    showScreen('catalogueScreen');
-    await loadProducts();
+    showScreen('posScreen');
+    await loadPosProducts();
+    checkForUpdates().catch(() => {});
   }
+  async function checkForUpdates(manual = false) {
+    if (!companion || updateChecking || !companion.getServerUrl()) return;
+    updateChecking = true;
+    if (manual) { closeMenu(); message('Recherche de mises à jour…'); }
+    try {
+      const [installed, releases] = await Promise.all([companion.updates.installedInfo(), request('/api/mobile-update')]);
+      const release = releases[companion.updates.platform];
+      const installedBuild = Number(installed.build);
+      if (!release || !Number.isSafeInteger(installedBuild) || release.versionCode <= installedBuild) {
+        availableUpdate = null;
+        $('updateBadge').hidden = true;
+        if (manual) message('L’application est à jour.');
+        return;
+      }
+      availableUpdate = release;
+      $('updateBadge').hidden = false;
+      $('updateVersions').textContent = `${t('Version installée')} ${installed.version} · ${t('Nouvelle version')} ${release.versionName}`;
+      $('updateStatus').textContent = t('Une nouvelle version est prête sur l’ordinateur.');
+      $('updateInstall').textContent = t(companion.updates.platform === 'android' ? 'Télécharger et installer' : 'Ouvrir la mise à jour');
+      $('updateInstall').disabled = false;
+      $('updateOverlay').hidden = false;
+    } catch (error) { if (manual) message(error.message, true); }
+    finally { updateChecking = false; }
+  }
+  async function installUpdate() {
+    if (!companion || !availableUpdate) return;
+    const button = $('updateInstall');
+    button.disabled = true;
+    try {
+      if (companion.updates.platform === 'ios') {
+        await companion.updates.openStore(availableUpdate.url);
+        $('updateStatus').textContent = t('Terminez la mise à jour dans TestFlight ou l’App Store.');
+        return;
+      }
+      $('updateStatus').textContent = t('Téléchargement de la mise à jour…');
+      const result = await companion.updates.installAndroid({
+        ...availableUpdate, url: companion.apiUrl(availableUpdate.url),
+      }, progress => {
+        const percent = Math.min(100, Math.round(100 * progress.received / progress.total));
+        $('updateStatus').textContent = `${t('Téléchargement')} ${percent} %`;
+      });
+      $('updateStatus').textContent = t(result.status === 'permission_required'
+        ? 'Autorisez cette application à installer les mises à jour, puis réessayez.'
+        : 'Confirmez l’installation dans Android.');
+      if (result.status === 'permission_required') button.textContent = t('Réessayer');
+    } catch (error) { $('updateStatus').textContent = error.message; }
+    finally { button.disabled = false; }
+  }
+  async function pairWithCode(code, serverAddress) {
+    if (companion) companion.setServerUrl(serverAddress);
+    await request('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }) });
+    $('pairCode').value = '';
+    await showWorkspace();
+  }
+  async function pairFromAppLink(link) {
+    if (!companion || !link) return;
+    nativePairing = true;
+    stopScanner();
+    showPair();
+    try { await pairWithCode(link.code, link.server); }
+    catch (error) { showPair(); message(error.message, true); }
+    finally { companion.consumePairLink(); nativePairing = false; }
+  }
+  if (companion) window.addEventListener('easypos:pair', event => { pairFromAppLink(event.detail); });
   async function loadCategories() {
     categories = await request('/api/categories');
     const select = $('category');
@@ -126,10 +231,23 @@
       container.append(button);
     }
   }
+  function setProductImage(element, source) {
+    if (!companion || !source?.startsWith('/api/image/')) { element.src = source; return; }
+    const key = `${companion.getServerUrl()}${source}`;
+    if (!imageCache.has(key)) {
+      imageCache.set(key, fetch(companion.apiUrl(source), {
+        headers: { Authorization: `Bearer ${companion.getToken()}` }, credentials: 'omit',
+      }).then(response => {
+        if (!response.ok) throw new Error('Image unavailable');
+        return response.blob();
+      }).then(blob => URL.createObjectURL(blob)).catch(error => { imageCache.delete(key); throw error; }));
+    }
+    imageCache.get(key).then(url => { element.src = url; }).catch(() => {});
+  }
   function productImage(product, className = '') {
     if (product.image) {
       const image = document.createElement('img');
-      image.src = product.image;
+      setProductImage(image, product.image);
       image.alt = '';
       image.loading = 'lazy';
       if (className) image.className = className;
@@ -162,6 +280,38 @@
     if (!result.total) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = t('Aucun produit trouvé.'); $('productList').append(empty); }
     $('moreProducts').hidden = page * result.pageSize >= productTotal;
   }
+  function stockRow(product) {
+    const row = document.createElement('button');
+    row.type = 'button'; row.className = 'product-row stock-row';
+    const info = document.createElement('span'); info.className = 'product-info';
+    const name = document.createElement('strong'); name.textContent = product.name; name.setAttribute('translate', 'no');
+    const barcode = document.createElement('small'); barcode.textContent = product.barcode || String(product.id); barcode.setAttribute('translate', 'no');
+    const quantity = document.createElement('b');
+    quantity.textContent = product.stock ? `${product.quantity} ${t('En stock')} · ${t('Seuil')} ${product.minStock}` : t('Sans suivi de stock');
+    quantity.classList.toggle('stock-out', product.stock && product.quantity <= 0);
+    quantity.classList.toggle('stock-low', product.stock && product.quantity > 0 && product.quantity <= product.minStock);
+    info.append(name, barcode, quantity);
+    const arrow = document.createElement('span'); arrow.className = 'product-arrow'; arrow.textContent = '›';
+    row.append(productImage(product), info, arrow);
+    row.addEventListener('click', () => openProduct(product));
+    return row;
+  }
+  async function loadStock(append = false) {
+    const page = append ? stockPage + 1 : 1;
+    const query = $('stockSearch').value.trim();
+    const result = await request(`/api/products?q=${encodeURIComponent(query)}&stock=${stockFilter}&page=${page}`);
+    if (!append) $('stockList').replaceChildren();
+    stockPage = page;
+    $('stockCount').textContent = `${result.total} ${t('produits au total')}`;
+    for (const product of result.items) $('stockList').append(stockRow(product));
+    if (!result.total) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = t('Aucun produit trouvé.'); $('stockList').append(empty); }
+    $('moreStock').hidden = page * result.pageSize >= result.total;
+  }
+  function selectStockFilter(value) {
+    stockFilter = value;
+    for (const [id, filter] of [['stockAll', 'all'], ['stockLow', 'low'], ['stockOut', 'out']]) $(id).classList.toggle('active', filter === value);
+    loadStock().catch(error => message(error.message, true));
+  }
   function posCard(product) {
     const button = document.createElement('button');
     button.type = 'button'; button.className = 'pos-card';
@@ -190,17 +340,19 @@
   function addToCart(product) {
     const current = cart.get(product.id);
     const next = (current?.quantity || 0) + 1;
-    if (product.stock && next > product.quantity) return message('Stock insuffisant.', true);
+    if (product.stock && next > product.quantity) { message('Stock insuffisant.', true); return false; }
     cart.set(product.id, { product, quantity: next });
     updateCartButton();
     for (const button of $('posProducts').querySelectorAll('.pos-card')) {
       const name = button.querySelector('strong');
       if (name && name.textContent === product.name) { button.classList.add('in-cart'); button.dataset.count = next; }
     }
+    return true;
   }
   function updateCartButton() {
     const amount = count();
     $('headerCartCount').textContent = amount;
+    $('menuCartCount').textContent = amount;
     $('viewCart').textContent = `${t('Voir le panier')} · ${amount} ${t(amount === 1 ? 'article' : 'articles')} · ${money(total())}`;
   }
   function resetProduct() {
@@ -222,6 +374,8 @@
     $('barcodeLabel').hidden = true; $('barcode').hidden = true;
   }
   function openProduct(product) {
+    productReturnScreen = ['catalogueScreen', 'stockScreen', 'posScreen'].find(id => !$(id).hidden) || 'catalogueScreen';
+    $('productBackLabel').textContent = t(productReturnScreen === 'stockScreen' ? 'Stock' : productReturnScreen === 'posScreen' ? 'Caisse' : 'Produits');
     resetProduct();
     $('productId').value = product.id; $('barcode').value = product.barcode;
     $('name').value = product.name; $('category').value = product.category;
@@ -231,14 +385,16 @@
     $('saveProduct').textContent = t('Enregistrer les modifications');
     if (product.barcode) showBarcode(product.barcode, true);
     $('productSummary').hidden = false;
-    $('summaryPhoto').src = product.image || '/logo.png';
+    setProductImage($('summaryPhoto'), product.image || (companion ? './logo.png' : '/logo.png'));
     $('summaryName').textContent = product.name;
     $('summaryCategory').textContent = `${categories.find(item => item.id === product.category)?.name || ''} · ${t('En stock')} : ${product.quantity}`;
     $('summaryPrice').textContent = money(product.price);
-    if (product.image) { $('photoPreview').src = product.image; $('photoPreview').hidden = false; $('photoPrompt').hidden = true; }
+    if (product.image) { setProductImage($('photoPreview'), product.image); $('photoPreview').hidden = false; $('photoPrompt').hidden = true; }
     showScreen('productScreen');
   }
   function newProduct(barcode = '') {
+    productReturnScreen = ['catalogueScreen', 'stockScreen', 'posScreen'].find(id => !$(id).hidden) || 'catalogueScreen';
+    $('productBackLabel').textContent = t(productReturnScreen === 'stockScreen' ? 'Stock' : productReturnScreen === 'posScreen' ? 'Caisse' : 'Produits');
     resetProduct();
     $('barcode').value = barcode;
     if (barcode) showBarcode(barcode, false);
@@ -265,12 +421,153 @@
     const url = URL.createObjectURL(file);
     let barcode;
     try {
-      const reader = new ZXingBrowser.BrowserMultiFormatReader();
-      const result = await reader.decodeFromImageUrl(url);
-      barcode = result.getText();
+      if (window.BarcodeDetector) {
+        try { barcode = (await new BarcodeDetector().detect(file))[0]?.rawValue; }
+        catch (_) { /* Use the bundled decoder for unsupported image formats. */ }
+      }
+      if (!barcode) {
+        const reader = new ZXingBrowser.BrowserMultiFormatReader();
+        try { barcode = (await reader.decodeFromImageUrl(url)).getText(); }
+        catch (_) {
+          const image = new Image();
+          await new Promise((resolve, reject) => { image.onload = resolve; image.onerror = reject; image.src = url; });
+          const regions = [
+            [0, 0, image.naturalWidth, image.naturalHeight],
+            [image.naturalWidth * .12, image.naturalHeight * .2, image.naturalWidth * .76, image.naturalHeight * .6],
+          ];
+          for (const [x, y, width, height] of regions) {
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 1600 / Math.max(width, height));
+            canvas.width = Math.max(1, Math.round(width * scale));
+            canvas.height = Math.max(1, Math.round(height * scale));
+            canvas.getContext('2d').drawImage(image, x, y, width, height, 0, 0, canvas.width, canvas.height);
+            try { barcode = reader.decodeFromCanvas(canvas).getText(); break; }
+            catch (_) { /* Try a tighter central crop. */ }
+          }
+          if (!barcode) throw new Error('Barcode not found');
+        }
+      }
     } catch { message('Code illisible. Reprenez la photo de près, bien éclairée, ou saisissez le code.', true); }
     finally { URL.revokeObjectURL(url); input.value = ''; }
     if (barcode) await lookup(barcode, forSale);
+  }
+  function scanStatus(text) { $('scanStatus').textContent = t(text); }
+  function stopScanner() {
+    scanSession++;
+    cancelAnimationFrame(scanFrame);
+    scanFrame = 0;
+    if (scanControls) { scanControls.stop(); scanControls = null; }
+    const video = $('scanVideo');
+    if (video.srcObject) { for (const track of video.srcObject.getTracks()) track.stop(); video.srcObject = null; }
+    $('scanOverlay').hidden = true;
+    $('scanTorch').hidden = true;
+    $('scanTorch').textContent = t('Lampe');
+    scanTorchOn = false;
+    scanBusy = false;
+    scanPairing = false;
+  }
+  async function foundScan(code, session) {
+    code = String(code || '').trim();
+    if (!code || session !== scanSession || scanBusy) return;
+    const now = Date.now();
+    if (code === lastScanCode && now - lastScanAt < 1800) return;
+    lastScanCode = code; lastScanAt = now; scanBusy = true;
+    if (scanPairing) {
+      try {
+        const link = new URL(code);
+        const match = link.hash.match(/^#pair=(\d{8})$/);
+        if (!match) throw new Error('Scannez le QR affiché dans Accès mobile.');
+        const serverAddress = link.href;
+        companion.setServerUrl(serverAddress);
+        stopScanner();
+        await pairWithCode(match[1], serverAddress);
+      } catch (error) {
+        if (session === scanSession) scanStatus(error.message);
+        else { showPair(); message(error.message, true); }
+        scanBusy = false;
+      }
+      return;
+    }
+    if (!scanForSale) { stopScanner(); await lookup(code); return; }
+    try {
+      const { product } = await request(`/api/product?barcode=${encodeURIComponent(code)}`);
+      if (session !== scanSession) return;
+      if (!product) { stopScanner(); newProduct(code); message('Nouveau code-barres. Complétez le produit.'); return; }
+      if (addToCart(product)) {
+        scanStatus(`${product.name} · ${t('Ajouté au panier')}`);
+        if (navigator.vibrate) navigator.vibrate(45);
+      } else scanStatus('Stock insuffisant.');
+    } catch (error) { scanStatus(error.message); }
+    finally { scanBusy = false; }
+  }
+  async function openScanner(forSale = false, pair = false) {
+    stopScanner();
+    scanForSale = forSale;
+    scanPairing = pair;
+    lastScanCode = ''; lastScanAt = 0;
+    $('scanOverlay').hidden = false;
+    $('scanVideo').hidden = Boolean(companion);
+    $('scanPhotoAction').hidden = pair;
+    $('scanManual').hidden = pair;
+    $('scanGuide').textContent = t(pair ? 'Placez le QR de l’ordinateur dans le cadre' : 'Placez le code-barres dans le cadre');
+    scanStatus('Ouverture de la caméra…');
+    const session = scanSession;
+    if (companion) {
+      try {
+        const controls = await companion.scanner.start(code => foundScan(code, session), pair);
+        if (session !== scanSession) { await controls.stop(); return; }
+        scanControls = controls;
+        $('scanTorch').hidden = false;
+        scanStatus(pair ? 'Placez le QR de l’ordinateur dans le cadre' : 'Placez le code-barres dans le cadre');
+      } catch (error) { if (session === scanSession) scanStatus(error.message); }
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia) {
+      $('scanVideo').hidden = true;
+      scanStatus('Le scan vidéo nécessite HTTPS. Prenez une photo du code-barres ou saisissez-le.');
+      return;
+    }
+    try {
+      const constraints = { audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } };
+      const commonFormats = ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'itf', 'codabar'];
+      const supported = window.BarcodeDetector?.getSupportedFormats ? await BarcodeDetector.getSupportedFormats() : [];
+      const formats = commonFormats.filter(format => supported.includes(format));
+      if (formats.length) {
+        const detector = new BarcodeDetector({ formats });
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        if (session !== scanSession) { stream.getTracks().forEach(track => track.stop()); return; }
+        const video = $('scanVideo');
+        video.srcObject = stream;
+        await video.play();
+        const track = stream.getVideoTracks()[0];
+        $('scanTorch').hidden = !track?.getCapabilities?.().torch;
+        scanStatus('Placez le code-barres dans le cadre');
+        const detect = async () => {
+          if (session !== scanSession) return;
+          if (!scanBusy && video.readyState >= 2) {
+            try { const results = await detector.detect(video); if (results[0]) await foundScan(results[0].rawValue, session); }
+            catch (_) { /* Keep scanning when a frame cannot be decoded. */ }
+          }
+          if (session === scanSession) scanFrame = requestAnimationFrame(detect);
+        };
+        scanFrame = requestAnimationFrame(detect);
+      } else {
+        const reader = new ZXingBrowser.BrowserMultiFormatOneDReader(undefined, { delayBetweenScanAttempts: 120, delayBetweenScanSuccess: 250 });
+        const controls = await reader.decodeFromConstraints(constraints, $('scanVideo'), result => {
+          if (result) foundScan(result.getText(), session);
+        });
+        if (session !== scanSession) { controls.stop(); return; }
+        scanControls = controls;
+        $('scanTorch').hidden = typeof controls.switchTorch !== 'function';
+        scanStatus('Placez le code-barres dans le cadre');
+      }
+    } catch (error) {
+      if (session !== scanSession) return;
+      $('scanVideo').hidden = true;
+      scanStatus(error.name === 'NotAllowedError'
+        ? 'Autorisez la caméra dans le navigateur, ou prenez une photo du code-barres.'
+        : 'Caméra indisponible. Prenez une photo du code-barres ou saisissez-le.');
+    }
   }
   function compressPhoto(file) {
     return new Promise((resolve, reject) => {
@@ -349,25 +646,65 @@
 
   $('pairForm').addEventListener('submit', async event => {
     event.preventDefault(); const button = event.submitter; button.disabled = true;
-    try { await request('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: $('pairCode').value }) }); $('pairCode').value = ''; await showWorkspace(); }
+    try { await pairWithCode($('pairCode').value, companion ? $('pairServer').value : ''); }
     catch (error) { message(error.message, true); } finally { button.disabled = false; }
   });
-  $('language').addEventListener('change', event => { language = ['fr', 'en', 'ar'].includes(event.target.value) ? event.target.value : 'fr'; localStorage.setItem('easypos_mobile_language', language); localize(); renderFilters(); updateCartButton(); renderCart(); });
-  $('logout').addEventListener('click', async () => { try { await request('/api/logout', { method: 'POST', headers: { 'x-mobile-csrf': csrf } }); } catch (error) { message(error.message, true); } cart.clear(); showPair(); });
-  $('navCatalogue').addEventListener('click', () => showScreen('catalogueScreen'));
-  $('navPos').addEventListener('click', () => { showScreen('posScreen'); loadPosProducts().catch(error => message(error.message, true)); });
-  $('goCatalogue').addEventListener('click', () => showScreen('catalogueScreen'));
+  $('pairScan').addEventListener('click', () => openScanner(false, true));
+  $('language').addEventListener('change', event => { language = ['fr', 'en', 'ar'].includes(event.target.value) ? event.target.value : 'fr'; localStorage.setItem('easypos_mobile_language', language); localize(); renderFilters(); updateCartButton(); renderCart(); if (!$('stockScreen').hidden) loadStock().catch(error => message(error.message, true)); });
+  $('logout').addEventListener('click', async () => { try { await request('/api/logout', { method: 'POST', headers: { 'x-mobile-csrf': csrf } }); } catch (error) { message(error.message, true); } if (companion) companion.clearToken(); cart.clear(); showPair(); });
+  const goCatalogue = () => { showScreen('catalogueScreen'); loadProducts().catch(error => message(error.message, true)); };
+  const goPos = () => { showScreen('posScreen'); loadPosProducts().catch(error => message(error.message, true)); };
+  const goStock = () => { showScreen('stockScreen'); loadStock().catch(error => message(error.message, true)); };
+  $('menuToggle').addEventListener('click', () => { const opening = $('mobileMenu').hidden; $('mobileMenu').hidden = !opening; $('menuToggle').setAttribute('aria-expanded', String(opening)); });
+  $('menuClose').addEventListener('click', closeMenu);
+  $('mobileMenu').addEventListener('click', event => { if (event.target === $('mobileMenu')) closeMenu(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !$('mobileMenu').hidden) closeMenu(); });
+  $('menuPos').addEventListener('click', goPos);
+  $('menuCatalogue').addEventListener('click', goCatalogue);
+  $('menuStock').addEventListener('click', goStock);
+  $('menuNewProduct').addEventListener('click', () => { closeMenu(); newProduct(); });
+  $('menuCart').addEventListener('click', showCheckout);
+  $('menuUpdates').addEventListener('click', () => checkForUpdates(true));
+  $('updateLater').addEventListener('click', () => { $('updateOverlay').hidden = true; });
+  $('updateInstall').addEventListener('click', installUpdate);
+  $('navCatalogue').addEventListener('click', goCatalogue);
+  $('navPos').addEventListener('click', goPos);
+  $('navStock').addEventListener('click', goStock);
+  $('goCatalogue').addEventListener('click', goCatalogue);
+  $('stockAll').addEventListener('click', () => selectStockFilter('all'));
+  $('stockLow').addEventListener('click', () => selectStockFilter('low'));
+  $('stockOut').addEventListener('click', () => selectStockFilter('out'));
   $('manualToggle').addEventListener('click', () => { $('manualLookup').hidden = !$('manualLookup').hidden; if (!$('manualLookup').hidden) $('barcodeSearch').focus(); });
   $('lookupBarcode').addEventListener('click', () => lookup($('barcodeSearch').value));
   $('barcodeSearch').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); lookup(event.currentTarget.value); } });
-  $('barcodePhoto').addEventListener('change', event => scanImage(event.currentTarget));
-  $('posBarcodePhoto').addEventListener('change', event => scanImage(event.currentTarget, true));
+  $('catalogueScan').addEventListener('click', () => openScanner());
+  $('posScan').addEventListener('click', () => openScanner(true));
+  $('scanClose').addEventListener('click', stopScanner);
+  $('scanManual').addEventListener('click', () => {
+    const forSale = scanForSale;
+    stopScanner();
+    if (forSale) $('posSearch').focus();
+    else { $('manualLookup').hidden = false; $('barcodeSearch').focus(); }
+  });
+  $('scanPhoto').addEventListener('change', event => { const forSale = scanForSale; stopScanner(); scanImage(event.currentTarget, forSale); });
+  $('scanTorch').addEventListener('click', async () => {
+    try {
+      scanTorchOn = !scanTorchOn;
+      if (scanControls?.switchTorch) await scanControls.switchTorch(scanTorchOn);
+      else await $('scanVideo').srcObject.getVideoTracks()[0].applyConstraints({ advanced: [{ torch: scanTorchOn }] });
+      $('scanTorch').textContent = t(scanTorchOn ? 'Éteindre la lampe' : 'Lampe');
+    } catch (_) { scanTorchOn = false; $('scanTorch').hidden = true; }
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden && !$('scanOverlay').hidden) stopScanner(); });
+  window.addEventListener('pagehide', stopScanner);
   $('showForm').addEventListener('click', () => newProduct());
-  $('productBack').addEventListener('click', () => showScreen('catalogueScreen'));
+  $('productBack').addEventListener('click', () => showScreen(productReturnScreen));
   $('checkoutBack').addEventListener('click', () => showScreen('posScreen'));
   $('cartToggle').addEventListener('click', showCheckout);
   $('viewCart').addEventListener('click', showCheckout);
   $('moreProducts').addEventListener('click', () => loadProducts(true).catch(error => message(error.message, true)));
+  $('moreStock').addEventListener('click', () => loadStock(true).catch(error => message(error.message, true)));
+  $('stockSearch').addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => loadStock().catch(error => message(error.message, true)), 250); });
   $('morePosProducts').addEventListener('click', () => loadPosProducts(true).catch(error => message(error.message, true)));
   $('productSearch').addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => loadProducts().catch(error => message(error.message, true)), 250); });
   $('posSearch').addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => loadPosProducts().catch(error => message(error.message, true)), 250); });
@@ -392,9 +729,27 @@
       const data = new FormData(form); if (photoFile) data.set('photo', photoFile, photoFile.name);
       const result = await request('/api/product', { method: 'POST', headers: { 'x-mobile-csrf': csrf }, body: data });
       message(`${result.product.name} ${t('enregistré.')}`);
-      resetProduct(); $('barcodeSearch').value = ''; showScreen('catalogueScreen'); await loadProducts();
+      const returnScreen = productReturnScreen;
+      resetProduct(); $('barcodeSearch').value = ''; showScreen(returnScreen);
+      if (returnScreen === 'stockScreen') await loadStock();
+      else if (returnScreen === 'posScreen') await loadPosProducts();
+      else await loadProducts();
     } catch (error) { if (error.status === 409 && error.product) openProduct(error.product); message(error.message, true); }
     finally { button.disabled = false; }
   });
-  loadTranslations().catch(() => {}).finally(() => { localize(); showWorkspace().catch(error => { showPair(); if (error.status !== 401) message(error.message, true); }); });
+  loadTranslations().catch(() => {}).finally(async () => {
+    localize();
+    if (nativePairing) return;
+    const nativeLink = companion?.consumePairLink();
+    if (nativeLink) { await pairFromAppLink(nativeLink); return; }
+    if (companion && !companion.getServerUrl()) { showPair(); return; }
+    if (qrPairCode) {
+      try {
+        await request('/api/pair', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: qrPairCode }) });
+        await showWorkspace();
+      } catch (error) { showPair(); message(error.message, true); }
+      return;
+    }
+    showWorkspace().catch(error => { showPair(); if (error.status !== 401) message(error.message, true); });
+  });
 })();

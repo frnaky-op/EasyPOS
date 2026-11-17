@@ -7,6 +7,8 @@ const { parsePaymentAmount, paymentChange } = require("./payment-amount");
 const { pageLabel, renderNavigation, setActiveNavigation } = require("./navigation");
 const { initI18n, t, tf, getLanguage } = require("./i18n");
 const { applyTheme } = require("./theme");
+const QRCode = require("qrcode");
+const { buildPairUrl } = require("../../mobile/pairing");
 const macaddress = require("macaddress");
 const notiflix = require("notiflix");
 const validator = require("validator");
@@ -330,32 +332,44 @@ if (auth == undefined) {
     const cartPanel = $("#card-box");
     const cartBackdrop = $("#posCartBackdrop");
     const mobileOverlay = $("#mobileAccessOverlay");
+    let mobilePairUrl = "";
     $("#mobileAccessToggle").on("click", function () {
       mobileOverlay.prop("hidden", false);
-      $("#mobileAccessUrl").text("Chargement…");
+      mobilePairUrl = "";
+      $("#mobileAccessQrWrap").prop("hidden", true);
+      $("#mobileAccessQr").removeAttr("src");
+      $("#mobileAccessUrl").text(t("Chargement…"));
       $("#mobileAccessCode").text("••••••••");
-      ipcRenderer.invoke("mobile-info").then(function (info) {
+      ipcRenderer.invoke("mobile-info").then(async function (info) {
         if (!info.ready) throw new Error("Mobile service unavailable");
-        $("#mobileAccessUrl").text(info.urls[0] || `http://ADRESSE-DE-CET-ORDINATEUR:${info.port}/`);
+        const address = info.urls[0];
+        $("#mobileAccessUrl").text(address || `${info.secure ? "https" : "http"}://ADRESSE-DE-CET-ORDINATEUR:${info.port}/`);
         $("#mobileAccessCode").text(info.code);
-        $("#mobileAccessHint").text(info.urls.length
-          ? "Le code change au prochain démarrage de l’application."
-          : "Connectez cet ordinateur au Wi-Fi pour obtenir son adresse locale.");
+        if (!address) {
+          $("#mobileAccessHint").text(t("Connectez cet ordinateur au Wi-Fi pour obtenir son adresse locale."));
+          return;
+        }
+        mobilePairUrl = buildPairUrl(address, info.code);
+        $("#mobileAccessQr").attr("src", await QRCode.toDataURL(mobilePairUrl, { errorCorrectionLevel: "M", margin: 3, width: 224 }));
+        $("#mobileAccessQrWrap").prop("hidden", false);
+        $("#mobileAccessHint").text(t("Le code change au prochain démarrage de l’application."));
       }).catch(function () {
-        $("#mobileAccessUrl").text("Service mobile indisponible");
-        $("#mobileAccessHint").text("Redémarrez EasyPOS et réessayez.");
+        mobilePairUrl = "";
+        $("#mobileAccessQrWrap").prop("hidden", true);
+        $("#mobileAccessUrl").text(t("Service mobile indisponible"));
+        $("#mobileAccessHint").text(t("Redémarrez EasyPOS et réessayez."));
       });
     });
     $("#mobileAccessClose").on("click", () => mobileOverlay.prop("hidden", true));
     mobileOverlay.on("click", function (event) { if (event.target === this) mobileOverlay.prop("hidden", true); });
     $("#mobileAccessCopy").on("click", async function () {
-      const url = $("#mobileAccessUrl").text();
-      if (!/^http:\/\//.test(url)) return;
+      const url = mobilePairUrl;
+      if (!/^https?:\/\//.test(url)) return;
       try {
         await navigator.clipboard.writeText(url);
-        $(this).text("Copié");
-        setTimeout(() => $(this).text("Copier"), 2000);
-      } catch (_) { $("#mobileAccessHint").text("Sélectionnez l’adresse et copiez-la manuellement."); }
+        $(this).text(t("Copié"));
+        setTimeout(() => $(this).text(t("Copier le lien")), 2000);
+      } catch (_) { $("#mobileAccessHint").text(t("Sélectionnez l’adresse et copiez-la manuellement.")); }
     });
     let activePage = "pos";
     let sidebarCollapsed = false;

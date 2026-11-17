@@ -10,6 +10,7 @@
   "main": "start.js",
   "build": {
     "appId": "com.easypos.desktop",
+    "asarUnpack": ["mobile/downloads/*.apk"],
     "directories": {
       "buildResources": "assets",
       "output": "dist"
@@ -74,6 +75,7 @@
     "multer": "^2.5.0",
     "notiflix": "^3.2.5",
     "print-js": "^1.6.0",
+    "qrcode": "^1.5.4",
     "sanitize": "^2.1.2",
     "sanitize-filename": "^1.6.3",
     "socket.io": "^4.8.1",

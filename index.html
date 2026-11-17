@@ -66,9 +66,10 @@
             <div id="mobileAccessOverlay" class="mobile-access-overlay" hidden>
                 <div class="mobile-access-dialog" role="dialog" aria-modal="true" aria-labelledby="mobileAccessTitle">
                     <div class="mobile-access-head"><div><span>CATALOGUE MOBILE</span><h2 id="mobileAccessTitle">Ajouter des produits sur votre téléphone</h2></div><button id="mobileAccessClose" type="button" aria-label="Fermer"><i class="fa fa-times" aria-hidden="true"></i></button></div>
-                    <p>Connectez le téléphone au même Wi-Fi que cet ordinateur, puis ouvrez cette adresse :</p>
-                    <div class="mobile-access-url"><code id="mobileAccessUrl">Chargement…</code><button id="mobileAccessCopy" type="button">Copier</button></div>
-                    <p>Entrez ce code de connexion sur le téléphone :</p>
+                    <p>Connectez le téléphone au même Wi-Fi, puis scannez ce QR. Il ouvre l’application si elle est installée, ou propose son installation.</p>
+                    <div id="mobileAccessQrWrap" class="mobile-access-qr" hidden><img id="mobileAccessQr" width="224" height="224" alt="Code QR pour connecter le téléphone"></div>
+                    <p>Ou ouvrez cette adresse et entrez le code de connexion :</p>
+                    <div class="mobile-access-url"><code id="mobileAccessUrl">Chargement…</code><button id="mobileAccessCopy" type="button">Copier le lien</button></div>
                     <strong id="mobileAccessCode" class="mobile-access-code">••••••••</strong>
                     <p id="mobileAccessHint" class="mobile-access-hint">Le code change au prochain démarrage de l’application.</p>
                 </div>

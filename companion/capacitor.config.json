@@ -1,0 +1,9 @@
+{
+  "appId": "com.easypos.companion",
+  "appName": "EasyPOS Mobile",
+  "webDir": "www",
+  "server": {
+    "hostname": "localhost",
+    "androidScheme": "http"
+  }
+}

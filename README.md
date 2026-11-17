@@ -16,6 +16,7 @@ EasyPOS is an open-source desktop point-of-sale system for hardware, plumbing, p
 | Catalogue | Manage products, categories, prices, photos, suppliers, and stock thresholds. Select products to export a barcode-sheet PDF. |
 | Inventory | Decrease stock after paid sales, increase it with supplier receipts, record adjustments and movements, and identify low-stock products. |
 | Mobile | Pair a phone on the same Wi-Fi, photograph barcodes, create or edit products, and use the mobile cart and checkout. |
+| Mobile companion | Install the Capacitor Android/iPhone app for native camera scanning and QR pairing. See [companion/README.md](companion/README.md). |
 | Administration | Manage customers, suppliers, staff permissions, local backups, catalogue ZIP imports, updates, language, and themes. |
 
 The interface supports French, Arabic with right-to-left layout, and English. Five color themes are available in **Settings → Appearance**.
@@ -41,9 +42,9 @@ The illustrated [step-by-step user guide](https://frnaky-op.github.io/EasyPOS/gu
 
 ## Mobile catalogue and checkout
 
-On the PC, click **Accès mobile** in the header. Open the displayed local address on a phone connected to the same Wi-Fi, then enter the eight-digit pairing code. You can take a photo of a barcode, add or edit the product, or open **Caisse** on the phone. Mobile checkout reads current prices from the local database and checks stock before recording a paid sale.
+On the PC, click **Accès mobile** in the header. Connect the phone to the same Wi-Fi and scan the displayed QR code to open and pair automatically. You can also open the local address and enter the eight-digit pairing code. You can take a photo of a barcode, add or edit the product, or open **Caisse** on the phone. Mobile checkout reads current prices from the local database and checks stock before recording a paid sale.
 
-The pairing code changes when EasyPOS restarts; sessions expire after 12 hours. See [mobile/README.md](mobile/README.md) for details.
+The pairing code changes when EasyPOS restarts; sessions expire after 12 hours. For guided live camera scanning, serve the mobile page over trusted HTTPS; the default local HTTP connection offers photo capture. See [mobile/README.md](mobile/README.md) for setup details.
 
 ## Run from source
 
