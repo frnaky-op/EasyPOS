@@ -163,8 +163,10 @@
       $('updateBadge').hidden = false;
       $('updateVersions').textContent = `${t('Version installée')} ${installed.version} · ${t('Nouvelle version')} ${release.versionName}`;
       $('updateStatus').textContent = t('Une nouvelle version est prête sur l’ordinateur.');
+      $('updateStatus').classList.remove('update-error');
       $('updateInstall').textContent = t(companion.updates.platform === 'android' ? 'Télécharger et installer' : 'Ouvrir la mise à jour');
       $('updateInstall').disabled = false;
+      $('updateManual').hidden = true;
       $('updateOverlay').hidden = false;
     } catch (error) { if (manual) message(error.message, true); }
     finally { updateChecking = false; }
@@ -173,6 +175,8 @@
     if (!companion || !availableUpdate) return;
     const button = $('updateInstall');
     button.disabled = true;
+    $('updateStatus').classList.remove('update-error');
+    $('updateManual').hidden = true;
     try {
       if (companion.updates.platform === 'ios') {
         await companion.updates.openStore(availableUpdate.url);
@@ -190,7 +194,11 @@
         ? 'Autorisez cette application à installer les mises à jour, puis réessayez.'
         : 'Confirmez l’installation dans Android.');
       if (result.status === 'permission_required') button.textContent = t('Réessayer');
-    } catch (error) { $('updateStatus').textContent = error.message; }
+    } catch (error) {
+      $('updateStatus').textContent = error.message;
+      $('updateStatus').classList.add('update-error');
+      $('updateManual').hidden = companion.updates.platform !== 'android';
+    }
     finally { button.disabled = false; }
   }
   async function pairWithCode(code, serverAddress) {
@@ -716,6 +724,10 @@
   $('menuUpdates').addEventListener('click', () => checkForUpdates(true));
   $('updateLater').addEventListener('click', () => { $('updateOverlay').hidden = true; });
   $('updateInstall').addEventListener('click', installUpdate);
+  $('updateManual').addEventListener('click', async () => {
+    try { await companion.updates.openAndroidDownload(companion.apiUrl('/download/android')); }
+    catch (error) { $('updateStatus').textContent = error.message; $('updateStatus').classList.add('update-error'); }
+  });
   $('navCatalogue').addEventListener('click', goCatalogue);
   $('navPos').addEventListener('click', goPos);
   $('navStock').addEventListener('click', goStock);

@@ -27,9 +27,11 @@ public class UpdateInstallerPlugin extends Plugin {
         String urlText = call.getString("url");
         String expectedSha = call.getString("sha256");
         Integer expectedVersion = call.getInt("versionCode");
-        Long expectedSize = call.getLong("size");
+        Long longSize = call.getLong("size");
+        Integer intSize = call.getInt("size");
+        long expectedSize = longSize != null ? longSize : intSize != null ? intSize.longValue() : -1;
         if (urlText == null || expectedSha == null || !expectedSha.matches("[a-f0-9]{64}") ||
-            expectedVersion == null || expectedVersion < 1 || expectedSize == null || expectedSize < 1 || expectedSize > MAX_APK_SIZE) {
+            expectedVersion == null || expectedVersion < 1 || expectedSize < 1 || expectedSize > MAX_APK_SIZE) {
             call.reject("Invalid update details.");
             return;
         }

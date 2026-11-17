@@ -90,6 +90,14 @@ if (Capacitor.isNativePlatform()) {
         if (!/^https:\/\//i.test(url)) throw new Error('Lien de mise à jour invalide.');
         return Browser.open({ url });
       },
+      openAndroidDownload(url) {
+        const server = new URL(localStorage.getItem(serverKey));
+        const target = new URL(url);
+        if (target.origin !== server.origin || target.pathname !== '/download/android' || target.search || target.hash) {
+          throw new Error('Lien de téléchargement invalide.');
+        }
+        return Browser.open({ url: target.href });
+      },
     },
     scanner: { start, stop, toggleTorch: () => BarcodeScanner.toggleTorch() },
   };
