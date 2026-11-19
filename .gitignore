@@ -11,8 +11,10 @@ mobile/downloads/*.apk
 mobile/downloads/*.json
 notes.txt
 package.*.json
+!website/package-lock.json
 TODO
 out/
+website/.next/
 dist/
 .gitignore
 LICENSE

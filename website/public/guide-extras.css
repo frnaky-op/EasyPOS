@@ -1,0 +1,5 @@
+.guide-scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:28px 0}
+.guide-scenario-grid figure{min-width:0;margin:0;padding:8px;border:1px solid var(--line);border-radius:13px;background:#fff}
+.guide-scenario-grid img{display:block;width:100%;height:auto;border-radius:9px}
+.guide-scenario-grid figcaption{padding:10px 5px 4px;color:var(--dark);font-size:11px;font-weight:800;line-height:1.4}
+@media(max-width:700px){.guide-scenario-grid{grid-template-columns:1fr}.guide-scenario-grid figure{max-width:570px}}
