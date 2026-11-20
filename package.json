@@ -1,7 +1,7 @@
 {
   "name": "PharmaSpot",
   "productName": "EasyPOS",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "Open-source point of sale for hardware and general retail shops",
   "author": "Patterns Digital Limited",
   "credits": "electronjs.org",
@@ -36,7 +36,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "include": "assets/installer.nsh"
     },
     "publish": [
       {

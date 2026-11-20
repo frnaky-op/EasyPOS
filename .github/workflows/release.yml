@@ -24,6 +24,15 @@ jobs:
           if ($env:GITHUB_REF_NAME -ne $expected) { throw "Tag $env:GITHUB_REF_NAME must match $expected" }
       - run: npm ci
       - run: npm test
+      - name: Download verified Android companion
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          New-Item -ItemType Directory -Force mobile/downloads | Out-Null
+          gh release download mobile-v1.1.2 --repo frnaky-op/EasyPOS --pattern 'EasyPOS-Mobile.*' --dir mobile/downloads
+          if ($LASTEXITCODE -ne 0) { throw "Could not download the Android companion" }
+          node scripts/verify-mobile-download.js
       - name: Build Windows installer
         run: npm run electron-build
       - name: Publish Windows installer and update metadata
@@ -36,7 +45,9 @@ jobs:
           $assets = @(
             "dist/EasyPOS-Setup-$version-x64.exe",
             "dist/EasyPOS-Setup-$version-x64.exe.blockmap",
-            "dist/latest.yml"
+            "dist/latest.yml",
+            "mobile/downloads/EasyPOS-Mobile.apk",
+            "mobile/downloads/EasyPOS-Mobile.json"
           )
           foreach ($asset in $assets) {
             if (-not (Test-Path $asset)) { throw "Release asset missing: $asset" }

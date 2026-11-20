@@ -14,7 +14,7 @@ The header menu and bottom navigation open **Caisse**, **Catalogue**, and **Stoc
 
 The installed companion checks for a newer build after pairing and offers **Vérifier les mises à jour** in its menu. Android downloads the newer APK from the same shop PC and opens the system installer after verification. iPhone updates use a configured TestFlight or App Store link. The browser version always loads the current files from the PC.
 
-The mobile address is available while EasyPOS is running. If the phone cannot open it, allow EasyPOS or TCP port 3211 through the computer's firewall on the **private** network. The pairing code changes each time the desktop app restarts, and phone sessions expire after 12 hours.
+The mobile address is available while EasyPOS is running. Starting with desktop version 1.8.3, the Windows installer requests one administrator confirmation to add a firewall rule for EasyPOS on TCP port 3211, restricted to the local subnet. It works even if Windows labels the shop Wi-Fi as Public. The uninstaller removes the rule. If the confirmation is declined or company policy blocks local firewall rules, a Windows administrator must allow the app. The pairing code changes each time the desktop app restarts, and phone sessions expire after 12 hours.
 
 Tap **Scanner avec la caméra** to open the guided scanner. On a trusted HTTPS connection it shows the rear camera and reads common retail barcodes. The camera stops after the first sale product is recognized, so the same code cannot be added repeatedly. Confirm its quantity before scanning the next product or checking out. It uses the browser's native Barcode Detector when available and the bundled ZXing reader otherwise. **Prendre une photo** and manual code entry remain available.
 
