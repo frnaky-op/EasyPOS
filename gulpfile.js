@@ -76,3 +76,4 @@ function reload(done) {
 
 const watch = () => gulp.watch(paths.syncFiles, gulp.series(reload));
 exports.default = gulp.parallel(watch, sync);
+exports.build = gulp.parallel(packCss, packJs);
